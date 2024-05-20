@@ -14,7 +14,7 @@ export default function Intro() {
       t1.from("#intro-slider", {
         xPercent: "-100",
         duration: 1.2,
-        delay: 0.3,
+        delay: .8,
       })
         .from(["#title-1", "#title-2"], {
           opacity: 0,
@@ -80,9 +80,9 @@ export default function Intro() {
         .from(
           "#button-cv",
           {
-            opacity: 0,
-            duration: 0.4,
             x: "-=100",
+            opacity: 0,
+            duration: 0.5,
             delay: 0.6,
           },
           "<"
@@ -90,9 +90,9 @@ export default function Intro() {
         .from(
           "#button-contact",
           {
-            opacity: 0,
-            duration: 0.4,
             x: "+=100",
+            opacity: 0,
+            duration: 0.5,
           },
           "<"
         );

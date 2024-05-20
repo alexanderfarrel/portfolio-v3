@@ -4,7 +4,8 @@ import { useTypewriter, Cursor } from "react-simple-typewriter";
 export default function MainContent() {
   const [text] = useTypewriter({
     words: ["Web Developer", "Fullstack Developer", "Software Engineer"],
-    loop: {},
+    loop: true,
+    delaySpeed: 1500,
   });
   return (
     <>
@@ -48,7 +49,7 @@ export default function MainContent() {
             >
               Download CV
             </Button>
-            <Button className={`text-sm`} id="button-contact" delay={4.5}>
+            <Button className={`text-sm`} id="button-contact" delay={4.3}>
               Contact Me
             </Button>
           </div>
