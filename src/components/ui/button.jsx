@@ -24,7 +24,7 @@ export default function Button({
       id={id}
       transition={
         intro
-          ? { duration: 3.6, delay: 4.2, type: "tween" }
+          ? { duration: 3.6, delay: 4.5, type: "tween" }
           : {
               repeat: Infinity,
               repeatType: "loop",

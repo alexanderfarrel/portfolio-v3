@@ -4,6 +4,7 @@ import MainContent from "../components/views/MainContent";
 
 import SkillsBar from "../components/views/skillsBar";
 import Button from "../components/ui/button";
+import Navbar from "../components/views/navbar";
 
 export default function Intro() {
   const comp = useRef(null);
@@ -95,7 +96,11 @@ export default function Intro() {
             duration: 0.5,
           },
           "<"
-        );
+        ).from("#hamburger", {
+          opacity: 0,
+          duration: 0.4,
+          x: "+=100",
+        }, "<")
     }, comp);
 
     return () => ctx.revert();
@@ -116,6 +121,7 @@ export default function Intro() {
         </div>
 
         <div className="relative h-[100dvh] flex flex-col bg-neutral-950 items-center justify-between py-3">
+          <Navbar/>
           <SkillsBar id={"skill-upper"} />
           <Button id={"welcome"} intro className={"text-[5rem]"}>
             Alexander Portfolio
