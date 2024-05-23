@@ -71,5 +71,5 @@ export default function MainContent({color}) {
 }
 
 MainContent.propTypes = {
-  color: propTypes.string,
+  color: propTypes.object,
 };

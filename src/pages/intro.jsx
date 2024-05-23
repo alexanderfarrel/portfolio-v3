@@ -4,6 +4,7 @@ import {animate, motion, useMotionTemplate, useMotionValue} from "framer-motion"
 import MainContent from "../components/views/MainContent";
 import {Stars} from "@react-three/drei"
 import {Canvas} from "@react-three/fiber"
+import useWindowWidth from "../hooks/windowWidth"
 
 
 import SkillsBar from "../components/views/skillsBar";
@@ -13,7 +14,8 @@ import Navbar from "../components/views/navbar";
 export default function Intro() {
   const [colors, setColors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
   const comp = useRef(null);
-
+  const windowWidth = useWindowWidth();
+  console.log(windowWidth)
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const t1 = gsap.timeline();
@@ -145,9 +147,9 @@ export default function Intro() {
           <SkillsBar id={"skill-below"} />
         </motion.div>
       </div>
-          <div className="absolute inset-0 -z-20"><Canvas>
-              <Stars radius={50} count={1000} factor={2} fade speed={2} />
-            </Canvas></div>
+          <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{delay: 7, duration: 5}} className="absolute inset-0 -z-20"><Canvas>
+              <Stars radius={50} count={1000} factor={3} fade speed={2} />
+            </Canvas></motion.div>
     </>
   );
 }
