@@ -128,7 +128,6 @@ export default function Intro() {
   useEffect(() => {
     animate(color, colors, { duration: 15, repeat: Infinity, repeatType: "mirror", ease: "easeInOut"});
   },[])
-
   return (
     <>
       <div className="relative overflow-x-hidden" ref={comp}>
@@ -158,7 +157,7 @@ export default function Intro() {
         </motion.div>
       </div>
           <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{delay: 7, duration: 5}} className="absolute inset-0 -z-20"><Canvas>
-              <Stars radius={50} count={1000} factor={3} fade speed={2} />
+              <Stars radius={50} count={1000} factor={windowWidth < 1000 ? "5" : "3"} fade speed={2} />
             </Canvas></motion.div>
     </>
   );

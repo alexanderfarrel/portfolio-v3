@@ -7,18 +7,21 @@ export default function Button({
   id,
   delay,
   intro = false,
+  color = null,
   onClick = () => {},
 }) {
+  const tes = "rgba(150,240,138,1)"
   return (
     <motion.button
       onClick={onClick}
       className={`px-6 py-2 rounded-md relative ${
-        !intro ? "radial-gradient" : "cursor-default"
-      } ${className}`}
+        !intro ? "radial-gradient sm:text-[13px]" : "cursor-default sm:text-6xl"
+      } ${className} sm:px-4 sm:py-[6px]`}
       initial={{ "--x": "100%", scale: 1 }}
       animate={{ "--x": "-100%" }}
       style={{
-        "--overlay-color": "255,255,255",
+        "--overlay-color": color ? color?.current?.split("(")[1]?.split(")")[0]?.split(",")?.slice(0, -1)?.join(",") : "225,225,225",
+        "--radial-gradient-background": color ? color?.current?.split("(")[1]?.split(")")[0]?.split(",")?.slice(0, -1)?.join(",") : "225,225,225"
       }}
       whileTap={!intro && { scale: 0.97, transition: { duration: 0.1 } }}
       id={id}
@@ -68,4 +71,5 @@ Button.propTypes = {
   delay: PropTypes.bool,
   intro: PropTypes.bool,
   onClick: PropTypes.func,
+  color: PropTypes.object,
 };

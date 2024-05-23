@@ -7,7 +7,8 @@ export default function Navbar() {
     const [initial, setInitial] = useState(true);
     const [options, setOptions] = useState({ isHidden: false, startCount: false });
     const { isHidden, startCount } = options;
-    const [timeoutId, setTimeoutId] = useState(null); // state to store the timeout ID
+    const [timeoutId, setTimeoutId] = useState(null);
+
 
     useEffect(() => {
         if (startCount) {
@@ -16,9 +17,8 @@ export default function Navbar() {
                     setOptions({ isHidden: true, startCount: false });
                 }
             }, 3000);
-            setTimeoutId(id); // store the timeout ID
+            setTimeoutId(id);
 
-            // cleanup function to clear the timeout if startCount changes
             return () => clearTimeout(id);
         }
     }, [startCount, open]);
@@ -44,7 +44,7 @@ export default function Navbar() {
                 setOptions({ startCount: false });
 
                 if (timeoutId) {
-                    clearTimeout(timeoutId); // clear the timeout if it exists
+                    clearTimeout(timeoutId);
                 }
             } else {
                 setOpen(false);
@@ -53,7 +53,6 @@ export default function Navbar() {
         }
     };
 
-    console.log(open)
 
     const variants = {
         open: {
@@ -74,6 +73,27 @@ export default function Navbar() {
                 type: "spring",
                 stiffness: 500,
                 damping: 30,
+              },
+        }
+    }
+
+    const mainVariants = {
+        hiddenTrue: {
+            scale: 1,
+            x: "80%",
+            transition: {
+                type: "spring",
+                stiffness: 250,
+                damping: 40,
+              },
+        },
+        hiddenFalse: {
+            scale: 1,
+            x: "0%",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
               },
         }
     }
@@ -131,8 +151,9 @@ export default function Navbar() {
    
 
     return (
-        <motion.nav className="absolute right-0 top-0 bottom-0 w-24 flex justify-center items-center overflow-hidden" animate={initial ? {x: "100%"} : {x: 0}} initial={{x: "100%"}}>
-            <motion.main className="w-full h-full max-h-[18rem] max-w-[3rem] flex justify-center items-center relative rounded-full overflow-hidden scale-0" animate={initial ? {scale: 0} : isHidden ? {scale: 1, x:"100%"} : {scale: 1}}>
+        <motion.nav className="absolute right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden" animate={initial ? {x: "100%"} : {x: 0}} initial={{x: "100%"}}>
+            <motion.main className="w-full h-full max-h-[18rem] max-w-[3rem] flex justify-center items-center relative rounded-full overflow-hidden scale-0"
+            variants={mainVariants} animate={initial ? {scale: 0} : isHidden ? "hiddenTrue" : "hiddenFalse"}>
             <motion.div className="w-full h-full absolute bg-gray-700/70 blur-xl z-10 scale-0" variants={variants} animate={open ? "open" : "close"}/>
             <div className="w-9 h-9 py-[10px] px-2 flex flex-col justify-between z-10 cursor-pointer" onClick={() => handleClick()} id="hamburger">
                 <motion.span variants={hamburgerVariants} animate={open ? "lineFirstOpen" : "lineFirstClose"} className="w-full h-[2px] bg-white"/>
@@ -141,7 +162,7 @@ export default function Navbar() {
             </div>
             </motion.main>
                 
-                <div id="roundedBlue" className="w-full h-full absolute bg-blue-500 scale-[1.5]" style={{clipPath: "circle(20px at 50% 50%)"}}/>
+                <div id="roundedBlue" className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10" style={{clipPath: "circle(20px at 50% 50%)"}}/>
         </motion.nav>
     )
 }

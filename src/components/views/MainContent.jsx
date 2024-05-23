@@ -29,7 +29,7 @@ export default function MainContent({color}) {
           </h2>
           <p
             id="typing"
-            className="text-4xl lg:text-3xl md:text-2xl sm:text-xl mt-3 sm:mt-1 font-medium"
+            className="text-4xl lg:text-3xl md:text-2xl sm:text-xl font-medium"
           >
             <span style={{ backgroundImage : `linear-gradient(to bottom, ${color.current} 0%, rgb(156 163 175) 100%)` }} className={`text-transparent bg-clip-text`}>{text}</span>{" "}
             <span className="-ml-2">
@@ -47,10 +47,12 @@ export default function MainContent({color}) {
               }
               className={`text-sm`}
               id="button-cv"
+              color={color}
             >
               Download CV
             </Button>
-            <Button className={`text-sm`} id="button-contact" delay={4.3}>
+            <Button className={`text-sm`} id="button-contact" delay={4.4} onClick={() => window.open(window.open("https://www.instagram.com/al_ael.18/", "_blank"))}
+            color={color}>
               Contact Me
             </Button>
           </div>

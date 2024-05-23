@@ -46,7 +46,7 @@ export default function SkillsBar({ id }) {
         <Javascript className="max-w-9 min-w-9 text-yellow-500" />
         <Html className="max-w-9 min-w-9 text-orange-500" />
         <Css className="max-w-9 min-w-9 text-blue-500" />
-        <Bootstrap className="max-w-10 text-purple-500" />
+        <Bootstrap className="min-w-10 max-w-10 text-purple-500" />
         <img src="/icons/sass.png" className="max-w-10" alt="sass" />
         <ReactIcon className="max-w-10 min-w-10 text-cyan-500" />
         <Github className="max-w-10 min-w-10 text-gray-300" />
@@ -57,7 +57,7 @@ export default function SkillsBar({ id }) {
           className="max-w-9 -ml-2 -mr-1"
         />
         <Nodejs className={"max-w-9 min-w-9 text-green-500"} />
-        <Npm className={"max-w-10 text-red-500"} />
+        <Npm className={"min-w-10 max-w-10 text-red-500"} />
         <p className="text-white text-xl bg-gray-700 rounded-full px-[7px] p-[1px] pb-[6px] -ml-1">
           ex
         </p>
