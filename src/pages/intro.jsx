@@ -15,7 +15,6 @@ export default function Intro() {
   const [colors, setColors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
   const comp = useRef(null);
   const windowWidth = useWindowWidth();
-  console.log(windowWidth)
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const t1 = gsap.timeline();
@@ -26,13 +25,13 @@ export default function Intro() {
       })
         .from(["#title-1", "#title-2"], {
           opacity: 0,
-          y: "+=30",
+          x: "-=30",
           duration: 0.4,
           stagger: 0.4,
         })
         .to(["#title-1", "#title-2"], {
           opacity: 0,
-          y: "-=30",
+          x: "+=30",
           delay: 0.6,
         })
         .to("#intro-slider", {
@@ -107,7 +106,18 @@ export default function Intro() {
           opacity: 0,
           duration: 0.4,
           x: "+=100",
-        }, "<")
+        }, "<").from("#roundedBlue", {
+          scale: 0,
+          duration: 0.4,
+          ease: "easeOut",
+          delay: 0.02,
+          
+        }).to("#roundedBlue", {
+          scale: 0 ,
+          duration: 0.4,
+          delay: 0.1,
+          ease: "easeIn",
+        })
     }, comp);
 
     return () => ctx.revert();

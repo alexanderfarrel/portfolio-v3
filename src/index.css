@@ -98,7 +98,7 @@ body {
   width: max-content;
   overflow: hidden;
   flex-wrap: nowrap;
-  animation: scroll 100s linear infinite;
+  animation: scroll 250s linear infinite;
 }
 .scroller[data-direction="skill-upper"] .scroller-inner {
   animation-direction: reverse;
