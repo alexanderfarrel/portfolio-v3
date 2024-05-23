@@ -1,7 +1,8 @@
 import Button from "../ui/button";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
+import propTypes from "prop-types";
 
-export default function MainContent() {
+export default function MainContent({color}) {
   const [text] = useTypewriter({
     words: ["Web Developer", "Fullstack Developer", "Software Engineer"],
     loop: true,
@@ -13,16 +14,16 @@ export default function MainContent() {
         id="main"
         className="text-5xl text-gray-100 flex w-full justify-around items-center max-w-7xl px-5 md:flex-col md:gap-10 sm:flex-col sm:gap-10 py-2"
       >
-        <section className="flex flex-col gap-2 lg:text-4xl md:text-4xl md:gap-0 sm:text-3xl sm:gap-0">
+        <section className="flex flex-col gap-2 lg:text-4xl md:text-4xl md:gap-0 sm:text-3xl sm:gap-0 ">
           <h2
             id="greeting"
-            className="text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-light"
+            className="text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-light bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent"
           >
             Hi Everyone
           </h2>
           <h2
             id="name"
-            className="text-6xl lg:text-5xl md:text-4xl sm:text-3xl font-light"
+            className="text-6xl lg:text-5xl md:text-4xl sm:text-3xl font-light bg-gradient-to-br from-white to-gray-500 bg-clip-text text-transparent"
           >
             I{"'"}m <span className="font-normal">Alexander Farrel</span>
           </h2>
@@ -30,7 +31,7 @@ export default function MainContent() {
             id="typing"
             className="text-4xl lg:text-3xl md:text-2xl sm:text-xl mt-3 sm:mt-1 font-medium"
           >
-            <span className="text-amber-300">{text}</span>{" "}
+            <span style={{ backgroundImage : `linear-gradient(to bottom, ${color.current} 0%, rgb(156 163 175) 100%)` }} className={`text-transparent bg-clip-text`}>{text}</span>{" "}
             <span className="-ml-2">
               <Cursor></Cursor>
             </span>
@@ -68,3 +69,7 @@ export default function MainContent() {
     </>
   );
 }
+
+MainContent.propTypes = {
+  color: propTypes.string,
+};

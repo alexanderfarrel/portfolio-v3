@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import {delay, motion} from "framer-motion"
 
+
 export default function Navbar() {
     const [open, setOpen] = useState(false)
     const [initial,setInitial ] = useState(true)
@@ -91,7 +92,7 @@ export default function Navbar() {
     return (
         <motion.nav className="absolute right-0 top-0 bottom-0 w-20 flex justify-center items-center">
             <div className="w-full h-full max-h-[18rem] max-w-[3.5rem] flex justify-center items-center relative rounded-full overflow-hidden">
-            <motion.div className="w-full h-full absolute bg-gray-600/50 z-10" variants={variants} animate={initial ? "initial" : open ? "open" : "close"}/>
+            <motion.div className="w-full h-full absolute bg-gray-700/70 blur-xl z-10" variants={variants} animate={initial ? "initial" : open ? "open" : "close"}/>
             <div className="w-6 h-4 flex flex-col justify-between z-10 cursor-pointer" onClick={() => setOpen(!open)} id="hamburger">
                 <motion.span variants={hamburgerVariants} animate={open ? "lineFirstOpen" : "lineFirstClose"} className="w-full h-[2px] bg-white"/>
                 <motion.span variants={hamburgerVariants} animate={open ? "lineSecondOpen" : "lineSecondClose"} className="w-full h-[2px] bg-white"/>

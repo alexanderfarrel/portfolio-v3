@@ -1,12 +1,17 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import {animate, motion, useMotionTemplate, useMotionValue} from "framer-motion"
 import MainContent from "../components/views/MainContent";
+import {Stars} from "@react-three/drei"
+import {Canvas} from "@react-three/fiber"
+
 
 import SkillsBar from "../components/views/skillsBar";
 import Button from "../components/ui/button";
 import Navbar from "../components/views/navbar";
 
 export default function Intro() {
+  const [colors, setColors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
   const comp = useRef(null);
 
   useLayoutEffect(() => {
@@ -105,6 +110,13 @@ export default function Intro() {
 
     return () => ctx.revert();
   }, []);
+
+  const color = useMotionValue(colors[0]);
+  const backgroundImage = useMotionTemplate`radial-gradient(175% 175% at 50% 0%, #020617 45%, ${color})`
+  useEffect(() => {
+    animate(color, colors, { duration: 15, repeat: Infinity, repeatType: "mirror", ease: "easeInOut"});
+  },[])
+
   return (
     <>
       <div className="relative overflow-x-hidden" ref={comp}>
@@ -120,16 +132,22 @@ export default function Intro() {
           </h1>
         </div>
 
-        <div className="relative h-[100dvh] flex flex-col bg-neutral-950 items-center justify-between py-3">
+        <motion.div
+        className="relative h-[100dvh] flex flex-col items-center justify-between py-3">
+          <motion.div animate={{opacity: 1}} initial={{opacity: 0}} transition={{delay: 7, duration: 5}} className="absolute top-0 left-0 right-0 bottom-0 -z-20 opacity-0" style={{backgroundImage}}>
+          </motion.div>
           <Navbar/>
           <SkillsBar id={"skill-upper"} />
           <Button id={"welcome"} intro className={"text-[5rem]"}>
             Alexander Portfolio
           </Button>
-          <MainContent />
+          <MainContent color={color}/>
           <SkillsBar id={"skill-below"} />
-        </div>
+        </motion.div>
       </div>
+          <div className="absolute inset-0 -z-20"><Canvas>
+              <Stars radius={50} count={1000} factor={2} fade speed={2} />
+            </Canvas></div>
     </>
   );
 }
