@@ -22,12 +22,14 @@ export default function Intro() {
         xPercent: "-100",
         duration: 1.2,
         delay: .8,
+        ease: "expo.inOut"
       })
         .from(["#title-1", "#title-2"], {
           opacity: 0,
           x: "-=30",
           duration: 0.4,
           stagger: 0.4,
+          ease: "power3.inOut"
         })
         .to(["#title-1", "#title-2"], {
           opacity: 0,
@@ -37,6 +39,7 @@ export default function Intro() {
         .to("#intro-slider", {
           xPercent: "-100",
           duration: 0.6,
+          ease: "power2.inOut"
         })
         .from("#welcome", {
           opacity: 0,
@@ -87,19 +90,19 @@ export default function Intro() {
         .from(
           "#button-cv",
           {
-            x: "-=100",
             opacity: 0,
-            duration: 0.5,
-            delay: 0.6,
+            x: "-=100",
+            duration: .5,
+            delay: 0.6
           },
           "<"
         )
         .from(
           "#button-contact",
           {
-            x: "+=100",
             opacity: 0,
-            duration: 0.5,
+            x: "+=100",
+            duration: .5,
           },
           "<"
         ).from("#hamburger", {
@@ -110,10 +113,10 @@ export default function Intro() {
           scale: 0,
           duration: 0.4,
           ease: "easeOut",
-          delay: 0.02,
+          delay: 0.1,
           
         }).to("#roundedBlue", {
-          scale: 0 ,
+          scale: 0,
           duration: 0.4,
           delay: 0.1,
           ease: "easeIn",

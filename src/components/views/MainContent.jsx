@@ -38,23 +38,25 @@ export default function MainContent({color}) {
           </p>
 
           <div className="flex gap-4 mt-2">
+            <span
+              id="button-cv"
+              >
             <Button
               onClick={() =>
-                window.open(
-                  "/pdf/Alexander Chiko Farrel Widagdo CV.pdf",
-                  "_blank"
-                )
+                alert("Contact Developer Untuk Mendapatkan CV")
               }
               className={`text-sm`}
-              id="button-cv"
               color={color}
-            >
+              >
               Download CV
             </Button>
-            <Button className={`text-sm`} id="button-contact" delay={4.4} onClick={() => window.open(window.open("https://www.instagram.com/al_ael.18/", "_blank"))}
+              </span>
+              <span id="button-contact">
+            <Button className={`text-sm`}  delay={4.4} onClick={() => window.open(window.open("https://www.instagram.com/al_ael.18/", "_blank"))}
             color={color}>
               Contact Me
             </Button>
+              </span>
           </div>
         </section>
         <div

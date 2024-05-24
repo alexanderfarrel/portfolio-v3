@@ -1,14 +1,35 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Home from "../icons/navIcons/home";
 
 
 export default function Navbar() {
-    const [open, setOpen] = useState(false);
-    const [initial, setInitial] = useState(true);
-    const [options, setOptions] = useState({ isHidden: false, startCount: false });
+    const url = window.location.pathname;
+    
+    const [open, setOpen] = useState(false); // for open navbar
+    const [initial, setInitial] = useState(true); // animation initialization
+    const [options, setOptions] = useState({ isHidden: false, startCount: false }); // hidden navbar after 3s
     const { isHidden, startCount } = options;
-    const [timeoutId, setTimeoutId] = useState(null);
+    
+    const [defaultYValue, setDefaultYValue] = useState(0);
+    const [yValue, setYValue] = useState(0); // bg blue animation
+    const [timeoutId, setTimeoutId] = useState(null); // bg blue animation
 
+    useEffect(() => {
+        if (url === "/") {
+            setDefaultYValue(42);
+            setYValue(42);
+        } else if (url === "/achievements") {
+            setDefaultYValue(-85);
+            setYValue(-85);
+        } else if (url === "/projects") {
+            setDefaultYValue(85);
+            setYValue(85);
+        } else if (url === "/contact") {
+            setDefaultYValue(-42);
+            setYValue(-42);
+        }
+    },[])
 
     useEffect(() => {
         if (startCount) {
@@ -61,7 +82,7 @@ export default function Navbar() {
             scale: 1,
             transition: {
                 type: "spring",
-                stiffness: 220,
+                stiffness: 150,
                 damping: 40,
               },
         },
@@ -102,7 +123,7 @@ export default function Navbar() {
         lineFirstOpen: {
             rotate: -45,
             originX: "right",
-            y: -0,
+            y: 2,
             x: -3,
             transition: {
                 type: "spring",
@@ -129,6 +150,7 @@ export default function Navbar() {
         lineThirdOpen: {
             rotate: 45,
             originX: "right",
+            y: -2,
             x: -3,
             transition: {
                 type: "spring",
@@ -148,21 +170,126 @@ export default function Navbar() {
         },
     }
 
+    const navListVariants = {
+        hiddenAbove1: {
+            opacity: 0,
+            y: 14,
+            display: "none",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+            }
+
+        },
+        visibleAbove1: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+                delay: 0.1
+            }
+        },
+        hiddenAbove2: {
+            opacity: 0,
+            y: 14,
+            display: "none",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+            }
+
+        },
+        visibleAbove2: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+            }
+        },
+        hiddenBelow1: {
+            opacity: 0,
+            y: -14,
+            display: "none",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+            }
+
+        },
+        visibleBelow1: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+                delay: 0.1
+            }
+        },
+        hiddenBelow2: {
+            opacity: 0,
+            y: -14,
+            display: "none",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+            }
+
+        },
+        visibleBelow2: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+            }
+        }
+    }
    
+    const handleNavClick = (num) => {
+        // if (path && window.location.pathname !== path) {
+        //     window.location.href = path;
+        // }
+            setYValue(num);
+            const time = setTimeout(() => {
+                handleClick();
+            }, 300)
+            return () => clearTimeout(time);
+        
+    }
 
     return (
         <motion.nav className="absolute right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden" animate={initial ? {x: "100%"} : {x: 0}} initial={{x: "100%"}}>
-            <motion.main className="w-full h-full max-h-[18rem] max-w-[3rem] flex justify-center items-center relative rounded-full overflow-hidden scale-0"
+            <motion.main className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0"
             variants={mainVariants} animate={initial ? {scale: 0} : isHidden ? "hiddenTrue" : "hiddenFalse"}>
             <motion.div className="w-full h-full absolute bg-gray-700/70 blur-xl z-10 scale-0" variants={variants} animate={open ? "open" : "close"}/>
-            <div className="w-9 h-9 py-[10px] px-2 flex flex-col justify-between z-10 cursor-pointer" onClick={() => handleClick()} id="hamburger">
-                <motion.span variants={hamburgerVariants} animate={open ? "lineFirstOpen" : "lineFirstClose"} className="w-full h-[2px] bg-white"/>
-                <motion.span variants={hamburgerVariants} animate={open ? "lineSecondOpen" : "lineSecondClose"} className="w-full h-[2px] bg-white"/>
-                <motion.span variants={hamburgerVariants} animate={open ? "lineThirdOpen" : "lineThirdClose"} className="w-full h-[2px] bg-white"/>
-            </div>
+
+            <motion.img src="/navIcons/certificate.png" alt="certificateIcon" className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleAbove1" : "hiddenAbove1"} onClick={() => handleNavClick(-85, "", true)} onHoverStart={() => setYValue(-85)} onHoverEnd={() => setYValue(defaultYValue)}/>
+            <motion.img src="/navIcons/contact.png" alt="contactIcon" className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleAbove2"  : "hiddenAbove2"} onClick={() => handleNavClick(-42, "", true)} onHoverStart={() => setYValue(-42)} onHoverEnd={() => setYValue(defaultYValue)}/>
+
+            <motion.div className="w-9 h-9 py-[8px] px-2 flex flex-col justify-between z-30 cursor-pointer" onClick={() => handleClick()} id="hamburger" onHoverStart={() => setYValue(0)} onHoverEnd={() => setYValue(defaultYValue)}>
+                <motion.span variants={hamburgerVariants} animate={open ? "lineFirstOpen" : "lineFirstClose"} className="w-full h-[2px] bg-white rounded-xl"/>
+                <motion.span variants={hamburgerVariants} animate={open ? "lineSecondOpen" : "lineSecondClose"} className="w-full h-[2px] bg-white rounded-xl"/>
+                <motion.span variants={hamburgerVariants} animate={open ? "lineThirdOpen" : "lineThirdClose"} className="w-full h-[2px] bg-white rounded-xl"/>
+            </motion.div>
+
+            <motion.span className="max-w-8 min-w-8 text-white z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleBelow2" : "hiddenBelow2"} onClick={() => handleNavClick(42,"", true)} onHoverStart={() => setYValue(42)} onHoverEnd={() => setYValue(defaultYValue)}>
+            <Home/>
+            </motion.span>
+            <motion.img src="/navIcons/project-icon.png" alt="projectIcon" className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleBelow1" : "hiddenBelow1"} onClick={() => handleNavClick(85, "", true)} onHoverStart={() => setYValue(85)} onHoverEnd={() => setYValue(defaultYValue)}/>
+
             </motion.main>
                 
-                <div id="roundedBlue" className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10" style={{clipPath: "circle(20px at 50% 50%)"}}/>
+                <motion.div id="roundedBlue" className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10" animate={open ? {scale: 1, y: yValue,  transition:{ type: "spring", bounce: 0.2, duration: 0.6 }} : {scale: 0, y: 0}} style={{clipPath: "circle(20px at 50% 50%)"}}/>
         </motion.nav>
     )
 }
