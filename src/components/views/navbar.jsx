@@ -2,294 +2,369 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Home from "../icons/navIcons/home";
 
-
 export default function Navbar() {
-    const url = window.location.pathname;
-    
-    const [open, setOpen] = useState(false); // for open navbar
-    const [initial, setInitial] = useState(true); // animation initialization
-    const [options, setOptions] = useState({ isHidden: false, startCount: false }); // hidden navbar after 3s
-    const { isHidden, startCount } = options;
-    
-    const [defaultYValue, setDefaultYValue] = useState(0);
-    const [yValue, setYValue] = useState(0); // bg blue animation
-    const [timeoutId, setTimeoutId] = useState(null); // bg blue animation
+  const url = window.location.pathname;
+  const [open, setOpen] = useState(false); // for open navbar
+  const [initial, setInitial] = useState(true); // animation initialization
+  const [options, setOptions] = useState({
+    isHidden: false,
+    startCount: false,
+  }); // hidden navbar after 3s
+  const { isHidden, startCount } = options;
 
-    useEffect(() => {
-        if (url === "/") {
-            setDefaultYValue(42);
-            setYValue(42);
-        } else if (url === "/achievements") {
-            setDefaultYValue(-85);
-            setYValue(-85);
-        } else if (url === "/projects") {
-            setDefaultYValue(85);
-            setYValue(85);
-        } else if (url === "/contact") {
-            setDefaultYValue(-42);
-            setYValue(-42);
-        }
-    },[])
+  const [defaultYValue, setDefaultYValue] = useState(0);
+  const [yValue, setYValue] = useState(0); // bg blue animation
+  const [timeoutId, setTimeoutId] = useState(null); // bg blue animation
 
-    useEffect(() => {
-        if (startCount) {
-            const id = setTimeout(() => {
-                if (!open) {
-                    setOptions({ isHidden: true, startCount: false });
-                }
-            }, 3000);
-            setTimeoutId(id);
-
-            return () => clearTimeout(id);
-        }
-    }, [startCount, open]);
-
-    useEffect(() => {
-        const time = setTimeout(() => {
-            setInitial(false);
-            setOptions({ isHidden: false, startCount: true });
-        }, 9000);
-
-        return () => clearTimeout(time);
-    }, []);
-
-    const handleClick = () => {
-        if (isHidden) {
-            setOptions({ isHidden: false, startCount: false });
-            setTimeout(() => {
-                setOpen(true);
-            }, 100);
-        } else {
-            if (!open) {
-                setOpen(true);
-                setOptions({ startCount: false });
-
-                if (timeoutId) {
-                    clearTimeout(timeoutId);
-                }
-            } else {
-                setOpen(false);
-                setOptions({ startCount: true });
-            }
-        }
-    };
-
-
-    const variants = {
-        open: {
-            clipPath: "circle(150px at 50% 50%)",
-            x:0,
-            scale: 1,
-            transition: {
-                type: "spring",
-                stiffness: 150,
-                damping: 40,
-              },
-        },
-        close: {
-            clipPath: "circle(20px at 50% 50%)",
-            x:0,
-            scale: 1,
-            transition: {
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
-              },
-        }
+  useEffect(() => {
+    if (url === "/") {
+      setDefaultYValue(42);
+      setYValue(42);
+    } else if (url === "/achievements") {
+      setDefaultYValue(-85);
+      setYValue(-85);
+    } else if (url === "/projects") {
+      setDefaultYValue(85);
+      setYValue(85);
+    } else if (url === "/contact") {
+      setDefaultYValue(-42);
+      setYValue(-42);
     }
+  }, []);
 
-    const mainVariants = {
-        hiddenTrue: {
-            scale: 1,
-            x: "80%",
-            transition: {
-                type: "spring",
-                stiffness: 250,
-                damping: 40,
-              },
-        },
-        hiddenFalse: {
-            scale: 1,
-            x: "0%",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-              },
+  useEffect(() => {
+    if (startCount) {
+      const id = setTimeout(() => {
+        if (!open) {
+          setOptions({ isHidden: true, startCount: false });
         }
+      }, 3000);
+      setTimeoutId(id);
+
+      return () => clearTimeout(id);
     }
+  }, [startCount, open]);
 
-    const hamburgerVariants ={
-        lineFirstOpen: {
-            rotate: -45,
-            originX: "right",
-            y: 2,
-            x: -3,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-        },
-        lineFirstClose: {
-            rotate: 0,
-            y: 0,
-            originX: "right",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-        },
-        lineSecondOpen: {
-            scale: 0,
-        },
-        lineSecondClose: {
-            scale: 1,
-        },
-        lineThirdOpen: {
-            rotate: 45,
-            originX: "right",
-            y: -2,
-            x: -3,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-        },
-        lineThirdClose: {
-            rotate: 0,
-            y: 0,
-            originX: "right",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-        },
-    }
+  useEffect(() => {
+    const time = setTimeout(
+      () => {
+        setInitial(false);
+        setOptions({ isHidden: false, startCount: true });
+      },
+      url != "/" ? 0 : 9000
+    );
 
-    const navListVariants = {
-        hiddenAbove1: {
-            opacity: 0,
-            y: 14,
-            display: "none",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
+    return () => clearTimeout(time);
+  }, []);
 
-        },
-        visibleAbove1: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-                delay: 0.1
-            }
-        },
-        hiddenAbove2: {
-            opacity: 0,
-            y: 14,
-            display: "none",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
+  const handleClick = () => {
+    if (isHidden) {
+      setOptions({ isHidden: false, startCount: false });
+      setTimeout(() => {
+        setOpen(true);
+      }, 100);
+    } else {
+      if (!open) {
+        setOpen(true);
+        setOptions({ startCount: false });
 
-        },
-        visibleAbove2: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-        },
-        hiddenBelow1: {
-            opacity: 0,
-            y: -14,
-            display: "none",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-
-        },
-        visibleBelow1: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-                delay: 0.1
-            }
-        },
-        hiddenBelow2: {
-            opacity: 0,
-            y: -14,
-            display: "none",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
-
-        },
-        visibleBelow2: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            }
+        if (timeoutId) {
+          clearTimeout(timeoutId);
         }
+      } else {
+        setOpen(false);
+        setOptions({ startCount: true });
+      }
     }
-   
-    const handleNavClick = (num) => {
-        // if (path && window.location.pathname !== path) {
-        //     window.location.href = path;
-        // }
-            setYValue(num);
-            const time = setTimeout(() => {
-                handleClick();
-            }, 300)
-            return () => clearTimeout(time);
-        
+  };
+
+  const variants = {
+    open: {
+      clipPath: "circle(150px at 50% 50%)",
+      x: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 150,
+        damping: 40,
+      },
+    },
+    close: {
+      clipPath: "circle(20px at 50% 50%)",
+      x: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 30,
+      },
+    },
+  };
+
+  const mainVariants = {
+    hiddenTrue: {
+      scale: 1,
+      x: "80%",
+      transition: {
+        type: "spring",
+        stiffness: 250,
+        damping: 40,
+      },
+    },
+    hiddenFalse: {
+      scale: 1,
+      x: "0%",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+  };
+
+  const hamburgerVariants = {
+    lineFirstOpen: {
+      rotate: -45,
+      originX: "right",
+      y: 2,
+      x: -3,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    lineFirstClose: {
+      rotate: 0,
+      y: 0,
+      originX: "right",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    lineSecondOpen: {
+      scale: 0,
+    },
+    lineSecondClose: {
+      scale: 1,
+    },
+    lineThirdOpen: {
+      rotate: 45,
+      originX: "right",
+      y: -2,
+      x: -3,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    lineThirdClose: {
+      rotate: 0,
+      y: 0,
+      originX: "right",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+  };
+
+  const navListVariants = {
+    hiddenAbove1: {
+      opacity: 0,
+      y: 14,
+      display: "none",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    visibleAbove1: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+        delay: 0.1,
+      },
+    },
+    hiddenAbove2: {
+      opacity: 0,
+      y: 14,
+      display: "none",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    visibleAbove2: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    hiddenBelow1: {
+      opacity: 0,
+      y: -14,
+      display: "none",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    visibleBelow1: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+        delay: 0.1,
+      },
+    },
+    hiddenBelow2: {
+      opacity: 0,
+      y: -14,
+      display: "none",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    visibleBelow2: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+  };
+
+  const handleNavClick = (num, path) => {
+    if (path?.length > 0 && window?.location?.pathname !== path) {
+      window.location.href = path;
     }
+    setYValue(num);
+    const time = setTimeout(() => {
+      handleClick();
+    }, 300);
+    return () => clearTimeout(time);
+  };
 
-    return (
-        <motion.nav className="absolute right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden" animate={initial ? {x: "100%"} : {x: 0}} initial={{x: "100%"}}>
-            <motion.main className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0"
-            variants={mainVariants} animate={initial ? {scale: 0} : isHidden ? "hiddenTrue" : "hiddenFalse"}>
-            <motion.div className="w-full h-full absolute bg-gray-700/70 blur-xl z-10 scale-0" variants={variants} animate={open ? "open" : "close"}/>
+  return (
+    <motion.nav className="fixed right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden z-30">
+      <motion.main
+        className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0"
+        variants={mainVariants}
+        animate={
+          initial
+            ? { scale: 0, x: "100%" }
+            : isHidden
+            ? "hiddenTrue"
+            : "hiddenFalse"
+        }
+      >
+        <motion.div
+          className="w-full h-full absolute bg-gray-700/70 blur-xl z-10 scale-0"
+          variants={variants}
+          animate={open ? "open" : "close"}
+        />
 
-            <motion.img src="/navIcons/certificate.png" alt="certificateIcon" className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleAbove1" : "hiddenAbove1"} onClick={() => handleNavClick(-85, "", true)} onHoverStart={() => setYValue(-85)} onHoverEnd={() => setYValue(defaultYValue)}/>
-            <motion.img src="/navIcons/contact.png" alt="contactIcon" className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleAbove2"  : "hiddenAbove2"} onClick={() => handleNavClick(-42, "", true)} onHoverStart={() => setYValue(-42)} onHoverEnd={() => setYValue(defaultYValue)}/>
+        <motion.img
+          src="/navIcons/certificate.png"
+          alt="certificateIcon"
+          className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]"
+          variants={navListVariants}
+          animate={open ? "visibleAbove1" : "hiddenAbove1"}
+          onClick={() => handleNavClick(-85)}
+          onHoverStart={() => setYValue(-85)}
+          onHoverEnd={() => setYValue(defaultYValue)}
+        />
+        <motion.img
+          src="/navIcons/contact.png"
+          alt="contactIcon"
+          className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]"
+          variants={navListVariants}
+          animate={open ? "visibleAbove2" : "hiddenAbove2"}
+          onClick={() => handleNavClick(-42)}
+          onHoverStart={() => setYValue(-42)}
+          onHoverEnd={() => setYValue(defaultYValue)}
+        />
 
-            <motion.div className="w-9 h-9 py-[8px] px-2 flex flex-col justify-between z-30 cursor-pointer" onClick={() => handleClick()} id="hamburger" onHoverStart={() => setYValue(0)} onHoverEnd={() => setYValue(defaultYValue)}>
-                <motion.span variants={hamburgerVariants} animate={open ? "lineFirstOpen" : "lineFirstClose"} className="w-full h-[2px] bg-white rounded-xl"/>
-                <motion.span variants={hamburgerVariants} animate={open ? "lineSecondOpen" : "lineSecondClose"} className="w-full h-[2px] bg-white rounded-xl"/>
-                <motion.span variants={hamburgerVariants} animate={open ? "lineThirdOpen" : "lineThirdClose"} className="w-full h-[2px] bg-white rounded-xl"/>
-            </motion.div>
+        <motion.div
+          className="w-9 h-9 py-[8px] px-2 flex flex-col justify-between z-30 cursor-pointer"
+          onClick={() => handleClick()}
+          id="hamburger"
+          onHoverStart={() => setYValue(0)}
+          onHoverEnd={() => setYValue(defaultYValue)}
+        >
+          <motion.span
+            variants={hamburgerVariants}
+            animate={open ? "lineFirstOpen" : "lineFirstClose"}
+            className="w-full h-[2px] bg-white rounded-xl"
+          />
+          <motion.span
+            variants={hamburgerVariants}
+            animate={open ? "lineSecondOpen" : "lineSecondClose"}
+            className="w-full h-[2px] bg-white rounded-xl"
+          />
+          <motion.span
+            variants={hamburgerVariants}
+            animate={open ? "lineThirdOpen" : "lineThirdClose"}
+            className="w-full h-[2px] bg-white rounded-xl"
+          />
+        </motion.div>
 
-            <motion.span className="max-w-8 min-w-8 text-white z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleBelow2" : "hiddenBelow2"} onClick={() => handleNavClick(42,"", true)} onHoverStart={() => setYValue(42)} onHoverEnd={() => setYValue(defaultYValue)}>
-            <Home/>
-            </motion.span>
-            <motion.img src="/navIcons/project-icon.png" alt="projectIcon" className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]" variants={navListVariants} animate={open ? "visibleBelow1" : "hiddenBelow1"} onClick={() => handleNavClick(85, "", true)} onHoverStart={() => setYValue(85)} onHoverEnd={() => setYValue(defaultYValue)}/>
+        <motion.span
+          className="max-w-8 min-w-8 text-white z-10 cursor-pointer py-[7px]"
+          variants={navListVariants}
+          animate={open ? "visibleBelow2" : "hiddenBelow2"}
+          onClick={() => handleNavClick(42, "/")}
+          onHoverStart={() => setYValue(42)}
+          onHoverEnd={() => setYValue(defaultYValue)}
+        >
+          <Home />
+        </motion.span>
+        <motion.img
+          src="/navIcons/project-icon.png"
+          alt="projectIcon"
+          className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]"
+          variants={navListVariants}
+          animate={open ? "visibleBelow1" : "hiddenBelow1"}
+          onClick={() => handleNavClick(85, "/projects")}
+          onHoverStart={() => setYValue(85)}
+          onHoverEnd={() => setYValue(defaultYValue)}
+        />
+      </motion.main>
 
-            </motion.main>
-                
-                <motion.div id="roundedBlue" className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10" animate={open ? {scale: 1, y: yValue,  transition:{ type: "spring", bounce: 0.2, duration: 0.6 }} : {scale: 0, y: 0}} style={{clipPath: "circle(20px at 50% 50%)"}}/>
-        </motion.nav>
-    )
+      <motion.div
+        id="roundedBlue"
+        className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10"
+        animate={
+          open
+            ? {
+                scale: 1,
+                y: yValue,
+                transition: { type: "spring", bounce: 0.2, duration: 0.6 },
+              }
+            : { scale: 0, y: 0 }
+        }
+        style={{ clipPath: "circle(20px at 50% 50%)" }}
+      />
+    </motion.nav>
+  );
 }

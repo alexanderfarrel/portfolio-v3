@@ -1,16 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Intro from "./pages/intro";
+import { BrowserRouter as Router } from "react-router-dom";
+import AnimateRoutes from "./pageTransition/animateRoutes";
 
 const App = () => {
   return (
     <>
       <Router>
-        <Routes>
-          <Route path="/" element={<Intro />} />
-          <Route path="/achievements" element={<Intro />}></Route>
-          <Route path="/projects" element={<Intro />}></Route>
-          <Route path="/contact" element={<Intro />}></Route>
-        </Routes>
+        <AnimateRoutes></AnimateRoutes>
       </Router>
     </>
   );
