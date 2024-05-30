@@ -15,7 +15,7 @@ import Navbar from "../components/views/navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Projects() {
+export default function Projects() {
   const windowWidth = useWindowWidth();
   const [image, setImage] = useState(1);
   const containerDesktopRef = useRef(null);
@@ -499,5 +499,3 @@ function Projects() {
     </>
   );
 }
-
-export default Projects;

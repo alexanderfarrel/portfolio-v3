@@ -153,7 +153,7 @@ export default function Intro() {
   }, []);
   return (
     <>
-      <div className="relative overflow-x-hidden" ref={comp}>
+      <div className="relative overflow-x-hidden h-[200dvh]" ref={comp}>
         <div
           id="intro-slider"
           className="h-[100dvh] p-10 bg-gray-50 absolute top-0 left-0 z-10 w-full flex flex-col justify-center gap-10 tracking-tight md:gap-5 sm:gap-5 text-black"
