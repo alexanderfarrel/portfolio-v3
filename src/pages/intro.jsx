@@ -14,7 +14,6 @@ import useWindowWidth from "../hooks/windowWidth";
 import SkillsBar from "../components/views/skillsBar";
 import Button from "../components/ui/button";
 import Navbar from "../components/views/navbar";
-import Tes from "../pageTransition/tes";
 
 export default function Intro() {
   const [colors, setColors] = useState([
@@ -31,7 +30,7 @@ export default function Intro() {
       t1.from("#intro-slider", {
         xPercent: "-100",
         duration: 1.2,
-        delay: 0.8,
+        delay: 2,
         ease: "expo.inOut",
       })
         .from(["#title-1", "#title-2"], {
@@ -153,7 +152,7 @@ export default function Intro() {
     });
   }, []);
   return (
-    <Tes>
+    <>
       <div className="relative overflow-x-hidden" ref={comp}>
         <div
           id="intro-slider"
@@ -200,6 +199,6 @@ export default function Intro() {
           />
         </Canvas>
       </motion.div>
-    </Tes>
+    </>
   );
 }

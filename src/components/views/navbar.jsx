@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Home from "../icons/navIcons/home";
 
-export default function Navbar() {
+export default function Navbar({ appear }) {
+  const [appearing, setAppearing] = useState(appear);
+  useEffect(() => {
+    setAppearing(appear);
+
+    const timeout = setTimeout(() => {
+      setAppearing(false);
+    }, 5000);
+  }, []);
+
   const url = window.location.pathname;
   const [open, setOpen] = useState(false); // for open navbar
   const [initial, setInitial] = useState(true); // animation initialization
@@ -269,10 +278,13 @@ export default function Navbar() {
     <motion.nav className="fixed right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden z-30">
       <motion.main
         className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0"
+        id="parentNav"
         variants={mainVariants}
         animate={
           initial
             ? { scale: 0, x: "100%" }
+            : appearing
+            ? "hiddenFalse"
             : isHidden
             ? "hiddenTrue"
             : "hiddenFalse"

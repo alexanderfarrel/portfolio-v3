@@ -10,7 +10,7 @@ export default function Button({
   color = null,
   onClick = () => {},
 }) {
-  const tes = "rgba(150,240,138,1)"
+  const tes = "rgba(150,240,138,1)";
   return (
     <motion.button
       onClick={onClick}
@@ -20,14 +20,28 @@ export default function Button({
       initial={{ "--x": "100%", scale: 1 }}
       animate={{ "--x": "-100%" }}
       style={{
-        "--overlay-color": color ? color?.current?.split("(")[1]?.split(")")[0]?.split(",")?.slice(0, -1)?.join(",") : "225,225,225",
-        "--radial-gradient-background": color ? color?.current?.split("(")[1]?.split(")")[0]?.split(",")?.slice(0, -1)?.join(",") : "225,225,225"
+        "--overlay-color": color
+          ? color?.current
+              ?.split("(")[1]
+              ?.split(")")[0]
+              ?.split(",")
+              ?.slice(0, -1)
+              ?.join(",")
+          : "225,225,225",
+        "--radial-gradient-background": color
+          ? color?.current
+              ?.split("(")[1]
+              ?.split(")")[0]
+              ?.split(",")
+              ?.slice(0, -1)
+              ?.join(",")
+          : "225,225,225",
       }}
       whileTap={!intro && { scale: 0.97, transition: { duration: 0.1 } }}
       id={id}
       transition={
         intro
-          ? { duration: 3.6, delay: 4.5, type: "tween" }
+          ? { duration: 3.6, delay: 5.7, type: "tween" }
           : {
               repeat: Infinity,
               repeatType: "loop",

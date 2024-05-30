@@ -12,11 +12,10 @@ import {
 import useWindowWidth from "../hooks/windowWidth";
 import Lenis from "lenis";
 import Navbar from "../components/views/navbar";
-import Tes from "../pageTransition/tes";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function ServiceType() {
+function Projects() {
   const windowWidth = useWindowWidth();
   const [image, setImage] = useState(1);
   const containerDesktopRef = useRef(null);
@@ -165,9 +164,12 @@ function ServiceType() {
     }),
   };
   return (
-    <Tes>
-      <Navbar></Navbar>
-      <div className="min-h-[40dvh] text-white flex justify-center items-center bg-neutral-800 image-mask">
+    <>
+      <Navbar appear={true}></Navbar>
+      <div
+        id="header"
+        className="min-h-[40dvh] text-white flex justify-center items-center bg-neutral-800 image-mask"
+      >
         <h1 className="font-bold text-7xl">Projects</h1>
       </div>
 
@@ -494,8 +496,8 @@ function ServiceType() {
         </>
       )}
       <div className="h-screen"></div>
-    </Tes>
+    </>
   );
 }
 
-export default ServiceType;
+export default Projects;

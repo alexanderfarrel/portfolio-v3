@@ -1,5 +1,3 @@
-import Tes from "../pageTransition/tes";
-
 export default function Coba() {
   const initialPath = `
     M0 300 
@@ -17,12 +15,8 @@ export default function Coba() {
     L0 0
 `;
   return (
-    // <div className="w-full h-screen bg-gray-300 border">
-    <Tes>
-      {/* <svg viewBox={`0 0 ${1920} ${1080 + 600}`} className="bg-green-600">
-        <path d={targetPath} />
-      </svg> */}
-    </Tes>
-    // </div>
+    <div>
+      <p>halo</p>
+    </div>
   );
 }
