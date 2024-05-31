@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
+import useWindowWidth from "../hooks/windowWidth";
 
 const routes = {
   "/": "Home",
@@ -22,6 +23,7 @@ const routes = {
 
 export default function Transition({ children, backgroundColor }) {
   const location = useLocation();
+  const windowWidth = useWindowWidth();
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -32,13 +34,17 @@ export default function Transition({ children, backgroundColor }) {
         delay: 0.3,
         duration: 0.5,
         ease: "circ",
-      }).to("#title", {
-        opacity: 0,
-        y: "-=50dvh",
-        delay: 0.5,
-        duration: 0.5,
-        ease: "expo.in",
-      });
+      })
+        .to("#title", {
+          opacity: 0,
+          y: "-=50dvh",
+          delay: 0.5,
+          duration: 0.5,
+          ease: "expo.in",
+        })
+        .to("#title", {
+          display: "none",
+        });
     });
 
     return () => ctx.revert();
@@ -53,7 +59,7 @@ export default function Transition({ children, backgroundColor }) {
       <motion.div
         initial={{ height: "0dvh" }}
         animate={{
-          height: "110dvh",
+          height: "120dvh",
           display: "none",
           transition: {
             duration: 0.8,
@@ -61,10 +67,12 @@ export default function Transition({ children, backgroundColor }) {
             ease: [0.33, 1, 0.68, 1],
           },
         }}
-        className="bg-green-500 w-full z-10 fixed bottom-0 rounded-t-[100px]"
+        className={`bg-gradient-to-br from-gray-700 to-gray-900 w-full fixed bottom-[-10dvh] ${
+          windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
+        } z-50`}
       ></motion.div>
       <motion.div
-        initial={{ height: "110dvh" }}
+        initial={{ height: "120dvh" }}
         animate={{
           height: "0dvh",
           display: "block",
@@ -75,11 +83,13 @@ export default function Transition({ children, backgroundColor }) {
             ease: [0.76, 0, 0.24, 1],
           },
         }}
-        className="w-full h-full fixed z-10 bg-green-500 top-0 rounded-b-[100px] hidden"
+        className={`w-full h-full fixed bg-gradient-to-tl from-gray-900 to-gray-700 top-[-10dvh] ${
+          windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
+        } hidden z-50`}
       ></motion.div>
       <div
         id="title"
-        className="w-full h-full fixed top-0 z-10 flex justify-center items-center text-7xl"
+        className="w-full h-full fixed top-0 z-50 flex justify-center items-center text-7xl"
       >
         {routes[location.pathname]}
       </div>

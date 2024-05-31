@@ -16,15 +16,86 @@ import Navbar from "../components/views/navbar";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Projects() {
+  const comp = useRef(null);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      const t1 = gsap.timeline();
+      t1.from("#header", {
+        delay: 2,
+        opacity: 0,
+        yPercent: -100,
+        duration: 0.5,
+        ease: "circ",
+      })
+        .from("#roundedBlue", {
+          scale: 0,
+          duration: 0.4,
+          ease: "easeOut",
+          delay: 0.1,
+        })
+        .to("#roundedBlue", {
+          scale: 0,
+          duration: 0.4,
+          delay: 0.1,
+          ease: "easeIn",
+        })
+        .from(
+          "#desk-left",
+          {
+            opacity: 0,
+            x: -50,
+          },
+          "-=.8"
+        )
+        .from(
+          "#desk-right",
+          {
+            opacity: 0,
+            x: 50,
+          },
+          "<"
+        );
+    });
+    return () => ctx.revert();
+  }, []);
+
   const windowWidth = useWindowWidth();
   const [image, setImage] = useState(1);
   const containerDesktopRef = useRef(null);
   const ref1 = useRef(null);
   const ref2 = useRef(null);
   const ref3 = useRef(null);
+  const video1 = useRef(null);
+  const video2 = useRef(null);
+  const video3 = useRef(null);
   const isInView1 = useInView(ref1, { margin: "-200px 0px -200px 0px" });
   const isInView2 = useInView(ref2, { margin: "-200px 0px -200px 0px" });
   const isInView3 = useInView(ref3, { margin: "-200px 0px -200px 0px" });
+
+  useEffect(() => {
+    if (!isInView1 && !isInView2 && !isInView3) {
+      return;
+    }
+    if (isInView1) {
+      video1.current.play();
+    } else {
+      video1.current.pause();
+    }
+
+    if (isInView2) {
+      video2.current.play();
+    } else {
+      video2.current.pause();
+    }
+
+    if (isInView3) {
+      video3.current.play();
+    } else {
+      video3.current.pause();
+    }
+  }, [isInView1, isInView2, isInView3]);
+
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       // const animation = gsap.to(".photo:not(:first-child)", {
@@ -64,26 +135,6 @@ export default function Projects() {
 
     requestAnimationFrame(raf);
   }, []);
-
-  const desktopScroll = useScroll({
-    target: containerDesktopRef,
-    offset: ["start start", "end 65%"],
-  });
-  const scaleXTopDesktop = useTransform(
-    desktopScroll.scrollYProgress,
-    [0, 0.333333333334, 0.666666666667, 1],
-    [0, 1, 1, 1]
-  );
-  const scaleXSideDesktop = useTransform(
-    desktopScroll.scrollYProgress,
-    [0, 0.333333333334, 0.666666666667, 1],
-    [0, 0, 1, 1]
-  );
-  const scaleXBottomDesktop = useTransform(
-    desktopScroll.scrollYProgress,
-    [0, 0.333333333334, 0.666666666667, 1],
-    [0, 0, 0, 1]
-  );
 
   // mobile
   const refContainerMobile = useRef(null);
@@ -164,13 +215,16 @@ export default function Projects() {
     }),
   };
   return (
-    <>
+    <div className="" ref={comp}>
       <Navbar appear={true}></Navbar>
       <div
         id="header"
-        className="min-h-[40dvh] text-white flex justify-center items-center bg-neutral-800 image-mask"
+        className="flex-col min-h-[30dvh] text-white flex justify-center items-center bg-neutral-900 image-mask gap-10"
       >
-        <h1 className="font-bold text-7xl">Projects</h1>
+        <h1 className="font-bold text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
+          Projects
+        </h1>
+        <p>~ Scroll Down ~</p>
       </div>
 
       {windowWidth > 1200 ? (
@@ -179,103 +233,153 @@ export default function Projects() {
           style={{ display: "flex" }}
           ref={containerDesktopRef}
         >
-          <div className="left w-2/3">
+          <div className="left w-2/3" id={`desk-left`}>
             <div
-              className={`h-[100dvh] flex flex-col justify-center items-center ${
+              className={`h-[100dvh] px-10 flex flex-col gap-2 justify-center items-center ${
                 isInView1 ? "text-violet-600" : "text-gray-600"
-              } transition-colors duration-700`}
+              } transition-colors duration-700 text-center max-w-3xl mx-auto`}
             >
               <h1 className="text-5xl" ref={ref1}>
                 E-Commerce Concept 1
               </h1>
-              <p>warungjujugan.vercel.app</p>
+              <p
+                className={`text-3xl underline underline-offset- ${
+                  isInView1
+                    ? "decoration-violet-600 text-neutral-300"
+                    : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                warungjujugan.vercel.app
+              </p>
+              <p
+                className={`text-xl ${
+                  isInView1 ? "text-neutral-300" : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                Tech : NextJS, Firebase, Node
+              </p>
+              <p
+                className={`text-xl ${
+                  isInView1 ? "text-neutral-300" : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                Terdapat banyak feature didalamnya seperti checkout,
+                authentication, darkmode, animation menggunakan framer-motion,
+                redux, role, dan lain sebagainya, namun masih belum tersedia
+                payment gateway
+              </p>
             </div>
             <div
-              className={`h-[100dvh] flex flex-col justify-center items-center ${
+              className={`h-[100dvh] px-10 flex flex-col gap-2 justify-center items-center ${
                 isInView2 ? "text-emerald-600" : "text-gray-600"
-              } transition-colors duration-700`}
+              } transition-colors duration-700 text-center max-w-3xl mx-auto`}
             >
               <h1 className="text-5xl" ref={ref2}>
                 E-Commerce Concept 2
               </h1>
-              <p>warungjujugan.vercel.app</p>
+              <p
+                className={`text-3xl underline underline-offset- ${
+                  isInView2
+                    ? "decoration-emerald-600 text-neutral-300"
+                    : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                warungjujugan.vercel.app
+              </p>
+              <p
+                className={`text-xl ${
+                  isInView2 ? "text-neutral-300" : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                Tech : NextJS, Firebase, Node
+              </p>
+              <p
+                className={`text-xl ${
+                  isInView2 ? "text-neutral-300" : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                Terdapat banyak feature didalamnya seperti checkout,
+                authentication, darkmode, animation menggunakan framer-motion,
+                redux, role, dan lain sebagainya, namun masih belum tersedia
+                payment gateway
+              </p>
             </div>
             <div
-              className={`h-[100dvh] flex flex-col justify-center items-center ${
+              className={`h-[100dvh] px-10 flex flex-col gap-2 justify-center items-center ${
                 isInView3 ? "text-fuchsia-600" : "text-gray-600"
-              } transition-colors duration-700`}
+              } transition-colors duration-700 text-center max-w-3xl mx-auto`}
             >
               <h1 className="text-5xl" ref={ref3}>
                 E-Commerce Concept 3
               </h1>
-              <p>warungjujugan.vercel.app</p>
+              <p
+                className={`text-3xl underline underline-offset- ${
+                  isInView3
+                    ? "decoration-fuchsia-600 text-neutral-300"
+                    : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                warungjujugan.vercel.app
+              </p>
+              <p
+                className={`text-xl ${
+                  isInView3 ? "text-neutral-300" : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                Tech : NextJS, Firebase, Node
+              </p>
+              <p
+                className={`text-xl ${
+                  isInView3 ? "text-neutral-300" : "text-gray-600"
+                } transition-colors duration-700`}
+              >
+                Terdapat banyak feature didalamnya seperti checkout,
+                authentication, darkmode, animation menggunakan framer-motion,
+                redux, role, dan lain sebagainya, namun masih belum tersedia
+                payment gateway
+              </p>
             </div>
           </div>
 
           <div className="rightblock w-1/3 h-screen flex flex-col justify-center items-center">
-            <div className="w-full h-full max-w-xl max-h-[25rem] p-2 relative rounded-[32px] overflow-hidden">
-              {/* Scroll Progress */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                style={{ scaleX: scaleXTopDesktop }}
-                className="absolute bg-green-300 w-full scale-0 h-[15px] left-0 top-0"
-              ></motion.div>
-              <motion.div
-                initial={{ scaleY: 0 }}
-                style={{ scaleY: scaleXSideDesktop }}
-                className="absolute bg-green-300 w-[15px] h-full origin-top scale-0 right-0 top-0"
-              ></motion.div>
-              <motion.div
-                initial={{ scaleY: 0 }}
-                style={{ scaleY: scaleXSideDesktop }}
-                className="absolute bg-green-300 w-[15px] h-full origin-top scale-0 left-0 top-0"
-              ></motion.div>
-              <motion.div
-                initial={{ scaleXBttom: 0 }}
-                style={{ scaleX: scaleXBottomDesktop }}
-                className="absolute bg-green-300 w-full scale-0 h-[15px] origin-left left-0 bottom-0"
-              ></motion.div>
-              <motion.div
-                initial={{ scaleXBottom: 0 }}
-                style={{ scaleX: scaleXBottomDesktop }}
-                className="absolute bg-green-300 w-full scale-0 h-[15px] origin-right right-0 bottom-0"
-              ></motion.div>
-              {/* Scroll Progress End*/}
+            <div
+              className={`w-full h-full max-w-xl ${
+                windowWidth > 1811 ? "max-h-[21.5rem]" : "max-h-[19dvw]"
+              } p-2 relative rounded-[32px] overflow-hidden`}
+              id={`desk-right`}
+            >
               {/* videos */}
               <motion.div
                 id="bg-image"
-                className={`w-full h-full max-w-xl max-h-[25rem] flex flex-col justify-center items-center relative overflow-hidden rounded-3xl`}
+                className={`w-full h-full max-w-xl flex flex-col justify-center items-center relative overflow-hidden rounded-3xl`}
               >
                 {/* background color */}
                 <motion.div
-                  className="w-full h-full absolute bg-violet-600"
+                  className="w-full h-full absolute bg-violet-600 blur-[200px]"
                   animate={{
                     opacity: image == 1 ? 1 : 0,
                     transition: {
                       duration: image == 1 ? 0.4 : 1,
-                      delay: image == 1 ? 0 : 0.5,
                       type: "tween",
                     },
                   }}
                 ></motion.div>
                 <motion.div
-                  className="w-full h-full absolute bg-emerald-600"
+                  className="w-full h-full absolute bg-emerald-600 blur-[200px]"
                   animate={{
                     opacity: image == 2 ? 1 : 0,
                     transition: {
                       duration: image == 2 ? 0.4 : 1,
-                      delay: image == 2 ? 0 : 0.5,
                       type: "tween",
                     },
                   }}
                 ></motion.div>
                 <motion.div
-                  className="w-full h-full absolute bg-fuchsia-600"
+                  className="w-full h-full absolute bg-fuchsia-600 blur-[200px]"
                   animate={{
                     opacity: image == 3 ? 1 : 0,
                     transition: {
                       duration: image == 3 ? 0.4 : 1,
-                      delay: image == 3 ? 0 : 0.5,
                       type: "tween",
                     },
                   }}
@@ -291,9 +395,16 @@ export default function Projects() {
                   initial={{
                     y: 0,
                   }}
-                  className="max-w-[22rem] absolute w-full h-full max-h-[14rem] rounded-xl overflow-hidden"
+                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4"
                 >
-                  <div className="w-full h-full bg-blue-600"></div>
+                  <video
+                    ref={video1}
+                    src="/videos/warungjujugan.mp4"
+                    autoPlay={isInView1}
+                    loop={isInView1}
+                    muted
+                    className="object-cover"
+                  ></video>
                 </motion.div>
                 <motion.div
                   animate={{
@@ -304,9 +415,16 @@ export default function Projects() {
                   initial={{
                     y: "200%",
                   }}
-                  className="max-w-[22rem] absolute w-full h-full max-h-[14rem] rounded-xl overflow-hidden"
+                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4"
                 >
-                  <div className="w-full h-full bg-red-600"></div>
+                  <video
+                    ref={video2}
+                    src="/videos/warungjujugan.mp4"
+                    autoPlay={isInView2}
+                    loop={isInView2}
+                    muted
+                    className="object-cover"
+                  ></video>
                 </motion.div>
                 <motion.div
                   animate={{
@@ -317,9 +435,16 @@ export default function Projects() {
                   initial={{
                     y: "200%",
                   }}
-                  className="max-w-[22rem] absolute w-full h-full max-h-[14rem] rounded-xl overflow-hidden"
+                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4"
                 >
-                  <div className="w-full h-full bg-green-600"></div>
+                  <video
+                    ref={video3}
+                    src="/videos/portfolio_v2.mp4"
+                    autoPlay={isInView3}
+                    loop={isInView3}
+                    muted
+                    className="object-cover"
+                  ></video>
                 </motion.div>
                 {/* end content */}
               </motion.div>
@@ -329,20 +454,23 @@ export default function Projects() {
       ) : (
         <>
           <div
-            className="flex flex-col items-center h-[300dvh] relative"
+            className="relative flex flex-col items-center min-h-[300dvh]"
             ref={refContainerMobile}
           >
-            <div className="sticky w-full h-screen top-40 flex flex-col items-center">
+            <div
+              id="mainContentMobile"
+              className="sticky top-40 w-full h-[80dvh] flex flex-col items-center"
+            >
               <div className="max-w-[22rem] w-full h-full max-h-[14rem] p-2 rounded-2xl relative overflow-hidden">
                 <motion.div
                   initial={{ scaleX: 0 }}
                   style={{ scaleX: scaleXTop }}
-                  className="absolute bg-green-300 w-full scale-0 h-[10px] left-0 top-0"
+                  className={`absolute w-full scale-0 h-[12px] left-0 top-0 bg-green-300`}
                 ></motion.div>
                 <motion.div
                   initial={{ scaleY: 0 }}
                   style={{ scaleY: scaleXSide }}
-                  className="absolute bg-green-300 w-[12px] h-full origin-top scale-0 right-0 top-0"
+                  className={`absolute  w-[12px] h-full origin-top scale-0 right-0 top-0 bg-green-300`}
                 ></motion.div>
                 <motion.div
                   initial={{ scaleY: 0 }}
@@ -352,12 +480,12 @@ export default function Projects() {
                 <motion.div
                   initial={{ scaleXBttom: 0 }}
                   style={{ scaleX: scaleXBottom }}
-                  className="absolute bg-green-300 w-full scale-0 h-[12px] origin-left left-0 bottom-0"
+                  className="absolute bg-green-300 w-[50.5%] scale-0 h-[12px] origin-left left-0 bottom-0"
                 ></motion.div>
                 <motion.div
                   initial={{ scaleXBottom: 0 }}
                   style={{ scaleX: scaleXBottom }}
-                  className="absolute bg-green-300 w-full scale-0 h-[12px] origin-right right-0 bottom-0"
+                  className="absolute bg-green-300 w-[50.5%] scale-0 h-[12px] origin-right right-0 bottom-0"
                 ></motion.div>
                 <div className="relative max-w-[22rem] w-full h-full max-h-[14rem] rounded-xl overflow-hidden">
                   <motion.div
@@ -419,9 +547,16 @@ export default function Projects() {
                     custom={isHidden ? 0 : 2}
                     className="mt-3 font-light"
                   >
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Facere distinctio totam sapiente molestias ratione, at vel
-                    rem voluptatem facilis consequatur.
+                    <span className="text-yellow-500">Tech</span> &{" "}
+                    <span className="text-blue-400">Feature :</span>
+                    <span className="text-yellow-500">
+                      React.js, Next.js, Node
+                    </span>{" "}
+                    |{" "}
+                    <span className="text-blue-400">
+                      Role, Authentication Google Provider, Dark Mode, Redux,
+                      Animation with Framer Motion
+                    </span>
                   </motion.p>
                 </motion.div>
                 <motion.div
@@ -496,6 +631,6 @@ export default function Projects() {
         </>
       )}
       <div className="h-screen"></div>
-    </>
+    </div>
   );
 }

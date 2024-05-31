@@ -9,7 +9,9 @@ export default function Navbar({ appear }) {
 
     const timeout = setTimeout(() => {
       setAppearing(false);
-    }, 5000);
+    }, 3800);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const url = window.location.pathname;
@@ -366,8 +368,11 @@ export default function Navbar({ appear }) {
       <motion.div
         id="roundedBlue"
         className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10"
+        initial={open && { scale: 0 }}
         animate={
-          open
+          appearing
+            ? ""
+            : open
             ? {
                 scale: 1,
                 y: yValue,
