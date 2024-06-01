@@ -124,12 +124,16 @@ export default function Intro() {
           },
           "<"
         )
-        .from("#roundedBlue", {
-          scale: 0,
-          duration: 0.4,
-          ease: "easeOut",
-          delay: 0.1,
-        })
+        .to(
+          "#roundedBlue",
+          {
+            scale: 1.5,
+            duration: 0.4,
+            ease: "easeOut",
+            delay: 0.1,
+          },
+          "-=.2"
+        )
         .to("#roundedBlue", {
           scale: 0,
           duration: 0.4,

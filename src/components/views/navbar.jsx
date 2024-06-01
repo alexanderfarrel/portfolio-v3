@@ -62,7 +62,7 @@ export default function Navbar({ appear }) {
         setInitial(false);
         setOptions({ isHidden: false, startCount: true });
       },
-      url != "/" ? 0 : 9000
+      url != "/" ? 0 : 9600
     );
 
     return () => clearTimeout(time);
@@ -115,6 +115,7 @@ export default function Navbar({ appear }) {
   const mainVariants = {
     hiddenTrue: {
       scale: 1,
+      opacity: 1,
       x: "80%",
       transition: {
         type: "spring",
@@ -124,6 +125,7 @@ export default function Navbar({ appear }) {
     },
     hiddenFalse: {
       scale: 1,
+      opacity: 1,
       x: "0%",
       transition: {
         type: "spring",
@@ -137,7 +139,7 @@ export default function Navbar({ appear }) {
     lineFirstOpen: {
       rotate: -45,
       originX: "right",
-      y: 2,
+      y: 3,
       x: -3,
       transition: {
         type: "spring",
@@ -164,7 +166,7 @@ export default function Navbar({ appear }) {
     lineThirdOpen: {
       rotate: 45,
       originX: "right",
-      y: -2,
+      y: -3,
       x: -3,
       transition: {
         type: "spring",
@@ -279,7 +281,7 @@ export default function Navbar({ appear }) {
   return (
     <motion.nav className="fixed right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden z-30">
       <motion.main
-        className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0"
+        className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
         id="parentNav"
         variants={mainVariants}
         animate={
@@ -320,7 +322,7 @@ export default function Navbar({ appear }) {
         />
 
         <motion.div
-          className="w-9 h-9 py-[8px] px-2 flex flex-col justify-between z-30 cursor-pointer"
+          className="w-9 h-9 py-[7px] px-2 flex flex-col justify-between z-30 cursor-pointer"
           onClick={() => handleClick()}
           id="hamburger"
           onHoverStart={() => setYValue(0)}
@@ -367,11 +369,10 @@ export default function Navbar({ appear }) {
 
       <motion.div
         id="roundedBlue"
-        className="w-full h-full absolute bg-blue-500 scale-[1.5] -z-10"
-        initial={open && { scale: 0 }}
+        className="w-full h-full absolute bg-blue-500 scale-[0] -z-10"
         animate={
           appearing
-            ? ""
+            ? " "
             : open
             ? {
                 scale: 1,

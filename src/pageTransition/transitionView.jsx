@@ -48,7 +48,7 @@ export default function Transition({ children, backgroundColor }) {
     });
 
     return () => ctx.revert();
-  });
+  }, []);
 
   return (
     <motion.div
