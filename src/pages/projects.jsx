@@ -17,7 +17,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Projects() {
   const comp = useRef(null);
-
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const t1 = gsap.timeline();
@@ -39,27 +38,62 @@ export default function Projects() {
           delay: 0.2,
           duration: 0.4,
           ease: "easeIn",
-        })
-        .from(
-          "#desk-left",
-          {
-            opacity: 0,
-            x: -50,
-          },
-          "-=.8"
-        )
-        .from(
-          "#desk-right",
-          {
-            opacity: 0,
-            x: 50,
-          },
-          "<"
-        );
+        });
     });
     return () => ctx.revert();
   }, []);
 
+  const headerRef = useRef(null);
+  const headerScroll = useScroll({
+    target: headerRef,
+    offset: ["start start", "end start"],
+  });
+  const translateYLayer1 = useTransform(
+    headerScroll.scrollYProgress,
+    [0, 1],
+    [0, -50]
+  );
+  const translateYLayer2 = useTransform(
+    headerScroll.scrollYProgress,
+    [0, 1],
+    [0, -250]
+  );
+  const textTranslateYMobile = useTransform(
+    headerScroll.scrollYProgress,
+    [0, 1],
+    [0, 250]
+  );
+  const textTranslateYDesktop = useTransform(
+    headerScroll.scrollYProgress,
+    [0, 1],
+    [0, 500]
+  );
+
+  // back to top
+  const [scrollY, setScrollY] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScrollY(window.scrollY);
+    });
+
+    window.addEventListener("resize", () => {
+      setWindowHeight(window.innerHeight);
+    });
+
+    if (window.innerHeight < 460) {
+      alert("Please use a larger screen");
+    }
+    return () => {
+      window.removeEventListener("scroll", () => {
+        setScrollY(window.scrollY);
+      });
+
+      window.removeEventListener("resize", () => {
+        setWindowHeight(window.innerHeight);
+      });
+    };
+  }, []);
   const windowWidth = useWindowWidth();
   const [image, setImage] = useState(1);
   const containerDesktopRef = useRef(null);
@@ -117,30 +151,18 @@ export default function Projects() {
     }
   }, [isInView1, isInView2, isInView3, image, isVideosActived]);
 
+  const isMainContentDesktopInView = useInView(containerDesktopRef, {
+    margin: "0px 0px -400px 0px",
+  });
+
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      // const animation = gsap.to(".photo:not(:first-child)", {
-      //   opacity: 1,
-      //   scale: 1,
-      //   duration: 1,
-      //   stagger: 1,
-      // });
-
       ScrollTrigger.create({
         trigger: containerDesktopRef.current,
         start: "top top",
         end: "bottom bottom",
         pin: ".rightblock",
         scrub: true,
-        // onUpdate: (e) => {
-        //   if (isInView1) {
-        //     setImage(1);
-        //   } else if (isInView2) {
-        //     setImage(2);
-        //   } else if (isInView3) {
-        //     setImage(3);
-        //   }
-        // },
       });
     });
     return () => ctx.revert();
@@ -148,15 +170,24 @@ export default function Projects() {
 
   useEffect(() => {
     const lenis = new Lenis();
-
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
 
     requestAnimationFrame(raf);
-  }, []);
 
+    document.getElementById("scroll").addEventListener("click", () => {
+      lenis.scrollTo(0);
+    });
+
+    // Cleanup event listener on unmount
+    return () => {
+      document.getElementById("scroll").removeEventListener("click", () => {
+        lenis.scrollTo(0);
+      });
+    };
+  }, []);
   // mobile
   const refContainerMobile = useRef(null);
   const [isHidden, setIsHidden] = useState(true);
@@ -237,26 +268,102 @@ export default function Projects() {
       },
     }),
   };
+
   return (
-    <div className="" ref={comp}>
+    <div
+      className="bg-gradient-to-b from-[#162635] from-20% to-black"
+      ref={comp}
+    >
       <Navbar appear={true}></Navbar>
-      <div
-        id="header"
-        className="flex-col min-h-[30dvh] text-white flex justify-center items-center bg-neutral-900 image-mask gap-8"
+
+      {/* scroll to top */}
+      <motion.div
+        id="scroll"
+        initial={{
+          opacity: scrollY > 0 ? 1 : 0,
+          y: scrollY > 0 ? 20 : 0,
+        }}
+        animate={{
+          opacity: scrollY > 0 ? 1 : 0,
+          y: scrollY > 0 ? 0 : 20,
+        }}
+        className={`w-8 h-8 bg-gray-700 rounded-full fixed bottom-6 right-4 flex justify-center items-center cursor-pointer z-30`}
       >
-        <h1 className="font-bold text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
-          Projects
-        </h1>
-        <p>~ Scroll Down ~</p>
+        <span className="text-3xl -translate-x-1 -rotate-90">›</span>
+      </motion.div>
+
+      {/* header */}
+      <motion.div
+        ref={headerRef}
+        className="min-h-[100vh] w-full relative overflow-hidden bg-[#162635] flex flex-col items-center"
+      >
+        <img
+          src="/images/bgHeader.png"
+          alt=""
+          className=" absolute min-w-[1000px] w-full h-full"
+          loading="lazy"
+        />
+
+        <motion.img
+          style={{
+            y: translateYLayer1,
+          }}
+          src="/images/layer2.png"
+          alt=""
+          className="absolute min-w-[1000px] w-full h-full z-20"
+          loading="lazy"
+        />
+        <motion.img
+          style={{
+            y: translateYLayer2,
+          }}
+          src="/images/layer1.png"
+          alt=""
+          className={`absolute top-[27.2vh] min-w-[1000px] w-full h-full z-20`}
+          loading="lazy"
+        />
+        <motion.div
+          style={{
+            y:
+              windowWidth < 1200 ? textTranslateYMobile : textTranslateYDesktop,
+          }}
+          className={`absolute ${
+            windowWidth < 1200
+              ? windowHeight < 560
+                ? "-top-5"
+                : "top-[5vh]"
+              : "top-32"
+          } flex flex-col items-center z-10`}
+        >
+          <h1
+            className={`font-bold ${
+              windowWidth < 1100 ? "text-[5rem]" : "text-[8rem]"
+            } bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent`}
+          >
+            Projects
+          </h1>
+          <p className="">~ Scroll Down ~</p>
+        </motion.div>
         {windowWidth < 1200 && (
-          <div className="-mt-5 flex flex-col items-center">
+          <motion.div
+            style={{ y: textTranslateYMobile }}
+            className={`absolute flex flex-col items-center mt-3 ${
+              windowHeight < 650
+                ? windowHeight < 560
+                  ? "top-28"
+                  : "top-[28vh]"
+                : "top-[25vh]"
+            } ${scrollY < 5 ? "z-30" : "z-10"}`}
+          >
             <p className="text-sm">Disabled Videos</p>
             <p className="text-sm">For Better Experience</p>
             <motion.div
               onClick={() => setIsVideosActived(!isVideosActived)}
               className={`w-14 h-7 rounded-full border-2 ${
                 !isVideosActived ? "border-green-500" : "border-yellow-300"
-              } shadow-inner relative flex items-center mt-2 transition-all duration-500`}
+              } shadow-inner relative flex items-center mt-2 transition-all duration-500 ${
+                scrollY > 5 && "opacity-50"
+              }`}
             >
               <motion.div
                 initial={{ x: !isVideosActived ? 0 : 25 }}
@@ -265,13 +372,13 @@ export default function Projects() {
                   transition: { type: "spring", stiffness: 400, damping: 25 },
                 }}
                 onClick={() => setIsVideosActived(!isVideosActived)}
-                whileTap={{ width: "2rem", left: isVideosActived && -8 }}
+                whileTap={{ width: "1.7rem", left: !isVideosActived && -6 }}
                 className={`w-5 h-5 bg-white rounded-full shadow absolute left-1`}
               ></motion.div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {windowWidth > 1200 ? (
         <div
@@ -279,7 +386,19 @@ export default function Projects() {
           style={{ display: "flex" }}
           ref={containerDesktopRef}
         >
-          <div className="left w-2/3" id={`desk-left`}>
+          <motion.div
+            className="left w-2/3"
+            id={`desk-left`}
+            initial={{ opacity: 0, y: -100 }}
+            animate={{
+              opacity: isMainContentDesktopInView ? 1 : 0,
+              y: isMainContentDesktopInView ? 0 : -100,
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+            }}
+          >
             <div
               className={`h-[100dvh] px-10 flex flex-col gap-2 justify-center items-center ${
                 isInView1 ? "text-violet-600" : "text-gray-600"
@@ -385,14 +504,23 @@ export default function Projects() {
                 payment gateway
               </p>
             </div>
-          </div>
+          </motion.div>
 
           <div className="rightblock w-1/3 h-screen flex flex-col justify-center items-center">
-            <div
+            <motion.div
               className={`w-full h-full max-w-xl ${
                 windowWidth > 1811 ? "max-h-[21.5rem]" : "max-h-[19dvw]"
               } p-2 relative rounded-[32px] overflow-hidden`}
               id={`desk-right`}
+              initial={{ opacity: 0, y: -100 }}
+              animate={{
+                opacity: isMainContentDesktopInView ? 1 : 0,
+                y: isMainContentDesktopInView ? 0 : -100,
+              }}
+              transition={{
+                duration: 0.3,
+                ease: "easeInOut",
+              }}
             >
               {/* videos */}
               <motion.div
@@ -494,7 +622,7 @@ export default function Projects() {
                 </motion.div>
                 {/* end content */}
               </motion.div>
-            </div>
+            </motion.div>
           </div>
         </div>
       ) : (
