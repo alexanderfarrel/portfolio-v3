@@ -20,29 +20,79 @@ export default function Projects() {
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const t1 = gsap.timeline();
-      t1.from("#header", {
-        delay: 0,
+      t1.from("#header-title", {
+        y: "-=50",
         opacity: 0,
-        yPercent: -100,
         duration: 0.5,
         ease: "circ",
+        delay: 2,
       })
+        .from(
+          "#header-subtitle",
+          {
+            opacity: 0,
+            x: "-30",
+            duration: 0.4,
+            ease: "power3.inOut",
+          },
+          "-=0.4"
+        )
         .to("#roundedBlue", {
           scale: 1.5,
           duration: 0.4,
           ease: "easeOut",
-          delay: 0.1,
+          delay: 0.9,
         })
         .to("#roundedBlue", {
           scale: 0,
-          delay: 0.2,
+          delay: 0.1,
           duration: 0.4,
           ease: "easeIn",
         });
+      if (windowWidth < 1200) {
+        t1.from(
+          "#header-mobile-title",
+          {
+            x: "-40",
+            opacity: 0,
+            duration: 0.5,
+            ease: "circ",
+          },
+          "-=1.9"
+        )
+          .from(
+            "#header-mobile-subtitle",
+            {
+              opacity: 0,
+              x: -40,
+              duration: 0.5,
+              ease: "circ",
+            },
+            "-=1.75"
+          )
+          .from(
+            "#header-mobile-toggle",
+            {
+              opacity: 0,
+              x: -20,
+              duration: 0.5,
+              ease: "circ",
+            },
+            "-=1.6"
+          );
+      }
     });
     return () => ctx.revert();
   }, []);
 
+  const [initial, setInitial] = useState(true);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setInitial(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  });
   const headerRef = useRef(null);
   const headerScroll = useScroll({
     target: headerRef,
@@ -274,7 +324,7 @@ export default function Projects() {
       className="bg-gradient-to-b from-[#162635] from-20% to-black"
       ref={comp}
     >
-      <Navbar appear={true}></Navbar>
+      <Navbar></Navbar>
 
       {/* scroll to top */}
       <motion.div
@@ -295,6 +345,7 @@ export default function Projects() {
       {/* header */}
       <motion.div
         ref={headerRef}
+        id="header"
         className="min-h-[100vh] w-full relative overflow-hidden bg-[#162635] flex flex-col items-center"
       >
         <img
@@ -319,7 +370,7 @@ export default function Projects() {
           }}
           src="/images/layer1.png"
           alt=""
-          className={`absolute top-[27.2vh] min-w-[1000px] w-full h-full z-20`}
+          className={`absolute top-[45.5vh] min-w-[1000px] w-full h-full z-20`}
           loading="lazy"
         />
         <motion.div
@@ -332,21 +383,26 @@ export default function Projects() {
               ? windowHeight < 560
                 ? "-top-5"
                 : "top-[5vh]"
+              : windowHeight < 790
+              ? "top-10"
               : "top-32"
           } flex flex-col items-center z-10`}
         >
           <h1
+            id="header-title"
             className={`font-bold ${
-              windowWidth < 1100 ? "text-[5rem]" : "text-[8rem]"
+              windowWidth < 1200 ? "text-[5rem]" : "text-[8rem]"
             } bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent`}
           >
             Projects
           </h1>
-          <p className="">~ Scroll Down ~</p>
+          <p id="header-subtitle" className="">
+            ~ Scroll Down ~
+          </p>
         </motion.div>
         {windowWidth < 1200 && (
           <motion.div
-            style={{ y: textTranslateYMobile }}
+            style={{ y: textTranslateYMobile, opacity: initial ? 0 : 1 }}
             className={`absolute flex flex-col items-center mt-3 ${
               windowHeight < 650
                 ? windowHeight < 560
@@ -355,15 +411,23 @@ export default function Projects() {
                 : "top-[25vh]"
             } ${scrollY < 5 ? "z-30" : "z-10"}`}
           >
-            <p className="text-sm">Disabled Videos</p>
-            <p className="text-sm">For Better Experience</p>
+            <p id="header-mobile-title" className="text-sm">
+              Disabled Videos
+            </p>
+            <p id="header-mobile-subtitle" className="text-sm">
+              For Better Experience
+            </p>
             <motion.div
+              id="header-mobile-toggle"
               onClick={() => setIsVideosActived(!isVideosActived)}
+              style={{
+                opacity: scrollY < 10 ? 1 : 0.5,
+                x: scrollY > 1 && 0,
+                transition: "opacity 0.5s ease-out, x 0.5s ease-out",
+              }}
               className={`w-14 h-7 rounded-full border-2 ${
                 !isVideosActived ? "border-green-500" : "border-yellow-300"
-              } shadow-inner relative flex items-center mt-2 transition-all duration-500 ${
-                scrollY > 5 && "opacity-50"
-              }`}
+              } shadow-inner relative flex items-center mt-2`}
             >
               <motion.div
                 initial={{ x: !isVideosActived ? 0 : 25 }}
@@ -405,14 +469,15 @@ export default function Projects() {
               } transition-colors duration-700 text-center max-w-3xl mx-auto`}
             >
               <h1 className="text-5xl" ref={ref1}>
-                E-Commerce Concept 1
+                E-Commerce Concept
               </h1>
               <p
-                className={`text-3xl underline underline-offset- ${
+                className={`text-[1.8rem] underline cursor-pointer ${
                   isInView1
                     ? "decoration-violet-600 text-neutral-300"
                     : "text-gray-600"
                 } transition-colors duration-700`}
+                onClick={() => window.open("https://warungjujugan.vercel.app")}
               >
                 warungjujugan.vercel.app
               </p>
@@ -428,10 +493,9 @@ export default function Projects() {
                   isInView1 ? "text-neutral-300" : "text-gray-600"
                 } transition-colors duration-700`}
               >
-                Terdapat banyak feature didalamnya seperti checkout,
-                authentication, darkmode, animation menggunakan framer-motion,
-                redux, role, dan lain sebagainya, namun masih belum tersedia
-                payment gateway
+                There are many features in it such as checkout, authentication,
+                darkmode, animation using framer-motion, redux, roles, and so
+                on, but there is still no payment gateway available
               </p>
             </div>
             <div
@@ -440,33 +504,36 @@ export default function Projects() {
               } transition-colors duration-700 text-center max-w-3xl mx-auto`}
             >
               <h1 className="text-5xl" ref={ref2}>
-                E-Commerce Concept 2
+                Real Time Chat
               </h1>
               <p
-                className={`text-3xl underline underline-offset- ${
+                className={`text-[1.8rem] underline cursor-pointer ${
                   isInView2
                     ? "decoration-emerald-600 text-neutral-300"
                     : "text-gray-600"
                 } transition-colors duration-700`}
+                onClick={() =>
+                  window.open("https://messenger-alexz.vercel.app")
+                }
               >
-                warungjujugan.vercel.app
+                messenger-alexz.vercel.app
               </p>
               <p
                 className={`text-xl ${
                   isInView2 ? "text-neutral-300" : "text-gray-600"
                 } transition-colors duration-700`}
               >
-                Tech : NextJS, Firebase, Node
+                Tech : MongoDB, Express, React, Node
               </p>
               <p
                 className={`text-xl ${
                   isInView2 ? "text-neutral-300" : "text-gray-600"
                 } transition-colors duration-700`}
               >
-                Terdapat banyak feature didalamnya seperti checkout,
-                authentication, darkmode, animation menggunakan framer-motion,
-                redux, role, dan lain sebagainya, namun masih belum tersedia
-                payment gateway
+                Using Socket.io as a web socket, unfortunately there are
+                problems when hosting socket.io so that the website is not real
+                time after being deployed but works well locally, I made this
+                project just to learn how to make a real time application.
               </p>
             </div>
             <div
@@ -475,33 +542,34 @@ export default function Projects() {
               } transition-colors duration-700 text-center max-w-3xl mx-auto`}
             >
               <h1 className="text-5xl" ref={ref3}>
-                E-Commerce Concept 3
+                Portfolio Website V.1
               </h1>
               <p
-                className={`text-3xl underline underline-offset- ${
+                className={`text-[1.8rem] underline cursor-pointer ${
                   isInView3
                     ? "decoration-fuchsia-600 text-neutral-300"
                     : "text-gray-600"
                 } transition-colors duration-700`}
+                onClick={() => window.open("https://alexanderfarrel.github.io")}
               >
-                warungjujugan.vercel.app
+                alexanderfarrel.github.io
               </p>
               <p
                 className={`text-xl ${
                   isInView3 ? "text-neutral-300" : "text-gray-600"
                 } transition-colors duration-700`}
               >
-                Tech : NextJS, Firebase, Node
+                Tech : html, css, vanila javascript
               </p>
               <p
                 className={`text-xl ${
                   isInView3 ? "text-neutral-300" : "text-gray-600"
                 } transition-colors duration-700`}
               >
-                Terdapat banyak feature didalamnya seperti checkout,
-                authentication, darkmode, animation menggunakan framer-motion,
-                redux, role, dan lain sebagainya, namun masih belum tersedia
-                payment gateway
+                After learning html, css, and javascript I immediately learned
+                to make a personal portfolio, I made it using pure html, css,
+                and javascript, this website has a landing page concept, unlike
+                current portfolios that use several pages.
               </p>
             </div>
           </motion.div>
@@ -569,7 +637,7 @@ export default function Projects() {
                   initial={{
                     y: 0,
                   }}
-                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4"
+                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4 cursor-pointer"
                 >
                   <video
                     ref={video1}
@@ -579,6 +647,14 @@ export default function Projects() {
                     muted
                     className="object-cover"
                   ></video>
+                  <div
+                    className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
+                    onClick={() =>
+                      window.open("https://warungjujugan.vercel.app")
+                    }
+                  >
+                    Try Demo
+                  </div>
                 </motion.div>
                 <motion.div
                   animate={{
@@ -589,16 +665,24 @@ export default function Projects() {
                   initial={{
                     y: "200%",
                   }}
-                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4"
+                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4 cursor-pointer"
                 >
                   <video
                     ref={video2}
-                    src="/videos/warungjujugan.mp4"
+                    src="/videos/messenger.mp4"
                     autoPlay={isInView2}
                     loop={isInView2}
                     muted
                     className="object-cover"
                   ></video>
+                  <div
+                    className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
+                    onClick={() =>
+                      window.open("https://messenger-alexz.vercel.app")
+                    }
+                  >
+                    Try Demo
+                  </div>
                 </motion.div>
                 <motion.div
                   animate={{
@@ -609,7 +693,7 @@ export default function Projects() {
                   initial={{
                     y: "200%",
                   }}
-                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4"
+                  className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4 cursor-pointer"
                 >
                   <video
                     ref={video3}
@@ -619,6 +703,14 @@ export default function Projects() {
                     muted
                     className="object-cover"
                   ></video>
+                  <div
+                    className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
+                    onClick={() =>
+                      window.open("https://alexanderfarrel.github.io")
+                    }
+                  >
+                    Try Demo
+                  </div>
                 </motion.div>
                 {/* end content */}
               </motion.div>
@@ -634,7 +726,7 @@ export default function Projects() {
             {/* mobile videos parent */}
             <div
               id="mainContentMobile"
-              className="sticky top-40 w-full h-[80dvh] flex flex-col items-center"
+              className="sticky top-[10vh] w-full h-[80dvh] flex flex-col items-center"
             >
               <div
                 className={`max-w-[22rem] ${
@@ -702,7 +794,7 @@ export default function Projects() {
                     {isVideosActived ? (
                       <video
                         ref={video2}
-                        src="/videos/warungjujugan.mp4"
+                        src="/videos/messenger.mp4"
                         autoPlay={image == 2 && isVideosActived}
                         loop={image == 2}
                         muted
@@ -758,6 +850,9 @@ export default function Projects() {
                     variants={paragraphVariants}
                     custom={1}
                     className="font-bold underline decoration-2 decoration-violet-600"
+                    onClick={() =>
+                      window.open("https://warungjujugan.vercel.app")
+                    }
                   >
                     warungjujugan.vercel.app
                   </motion.p>
@@ -765,18 +860,20 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 0 : 2}
-                    className="mt-3 font-light"
+                    className="mt-1 font-light"
                   >
-                    <span className="text-yellow-500">Tech</span> &{" "}
-                    <span className="text-blue-400">Feature :</span>
-                    <span className="text-yellow-500">
-                      React.js, Next.js, Node
-                    </span>{" "}
-                    |{" "}
-                    <span className="text-blue-400">
-                      Role, Authentication Google Provider, Dark Mode, Redux,
-                      Animation with Framer Motion
-                    </span>
+                    Tech : NextJS, Firebase, Node
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 50 }}
+                    variants={paragraphVariants}
+                    custom={isHidden ? 0 : 3}
+                    className="mt-2 font-light"
+                  >
+                    There are many features in it such as checkout,
+                    authentication, darkmode, animation using framer-motion,
+                    redux, roles, and so on, but there is still no payment
+                    gateway available
                   </motion.p>
                 </motion.div>
 
@@ -793,32 +890,38 @@ export default function Projects() {
                     custom={isHidden ? 2 : 0}
                     className="text-3xl font-light"
                   >
-                    E-commerce Concept
+                    Real Time Chat
                   </motion.h1>
                   <motion.p
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={1}
                     className="font-bold underline decoration-2 decoration-violet-600"
+                    onClick={() =>
+                      window.open("https://messenger-alexz.vercel.app")
+                    }
                   >
-                    warungjujugan.vercel.app
+                    messenger-alexz.vercel.app
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 0 : 2}
-                    className="mt-3 font-light"
+                    className="mt-1 font-light"
                   >
-                    <span className="text-yellow-500">Tech</span> &{" "}
-                    <span className="text-blue-400">Feature :</span>
-                    <span className="text-yellow-500">
-                      React.js, Next.js, Node
-                    </span>{" "}
-                    |{" "}
-                    <span className="text-blue-400">
-                      Role, Authentication Google Provider, Dark Mode, Redux,
-                      Animation with Framer Motion
-                    </span>
+                    Tech : MongoDB, Express, React, Node
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 50 }}
+                    variants={paragraphVariants}
+                    custom={isHidden ? 0 : 3}
+                    className="mt-2 font-light"
+                  >
+                    Using Socket.io as a web socket, unfortunately there are
+                    problems when hosting socket.io so that the website is not
+                    real time after being deployed but works well locally, I
+                    made this project just to learn how to make a real time
+                    application.
                   </motion.p>
                 </motion.div>
 
@@ -833,32 +936,37 @@ export default function Projects() {
                     custom={isHidden ? 2 : 0}
                     className="text-3xl font-light"
                   >
-                    E-commerce Concept
+                    Portfolio Website V.1
                   </motion.h1>
                   <motion.p
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={1}
                     className="font-bold underline decoration-2 decoration-violet-600"
+                    onClick={() =>
+                      window.open("https://alexanderfarrel.github.io")
+                    }
                   >
-                    warungjujugan.vercel.app
+                    alexanderfarrel.github.io
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 0 : 2}
-                    className="mt-3 font-light"
+                    className="mt-1 font-light"
                   >
-                    <span className="text-yellow-500">Tech</span> &{" "}
-                    <span className="text-blue-400">Feature :</span>
-                    <span className="text-yellow-500">
-                      React.js, Next.js, Node
-                    </span>{" "}
-                    |{" "}
-                    <span className="text-blue-400">
-                      Role, Authentication Google Provider, Dark Mode, Redux,
-                      Animation with Framer Motion
-                    </span>
+                    Tech : html, css, vanila javascript
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 50 }}
+                    variants={paragraphVariants}
+                    custom={isHidden ? 0 : 2}
+                    className="mt-2 font-light"
+                  >
+                    After learning html, css, and javascript I immediately
+                    learned to make a personal portfolio, I made it using pure
+                    html, css, and javascript, this website has a landing page
+                    concept, unlike current portfolios that use several pages.
                   </motion.p>
                 </motion.div>
               </motion.section>

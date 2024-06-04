@@ -2,18 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Home from "../icons/navIcons/home";
 
-export default function Navbar({ appear }) {
-  const [appearing, setAppearing] = useState(appear);
-  useEffect(() => {
-    setAppearing(appear);
-
-    const timeout = setTimeout(() => {
-      setAppearing(false);
-    }, 3800);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
+export default function Navbar() {
   const url = window.location.pathname;
   const [open, setOpen] = useState(false); // for open navbar
   const [initial, setInitial] = useState(true); // animation initialization
@@ -29,17 +18,17 @@ export default function Navbar({ appear }) {
 
   useEffect(() => {
     if (url === "/") {
-      setDefaultYValue(42);
-      setYValue(42);
+      setDefaultYValue(40);
+      setYValue(40);
     } else if (url === "/achievements") {
-      setDefaultYValue(-85);
-      setYValue(-85);
+      setDefaultYValue(-80);
+      setYValue(-80);
     } else if (url === "/projects") {
-      setDefaultYValue(85);
-      setYValue(85);
+      setDefaultYValue(80);
+      setYValue(80);
     } else if (url === "/contact") {
-      setDefaultYValue(-42);
-      setYValue(-42);
+      setDefaultYValue(-40);
+      setYValue(-40);
     }
   }, []);
 
@@ -62,7 +51,7 @@ export default function Navbar({ appear }) {
         setInitial(false);
         setOptions({ isHidden: false, startCount: true });
       },
-      url != "/" ? 0 : 9600
+      url != "/" ? 3000 : 9600
     );
 
     return () => clearTimeout(time);
@@ -281,14 +270,12 @@ export default function Navbar({ appear }) {
   return (
     <motion.nav className="fixed right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden z-30">
       <motion.main
-        className="w-full h-full max-h-[14rem] max-w-[3rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
+        className="w-full h-full max-h-[13.5rem] max-w-[2.7rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
         id="parentNav"
         variants={mainVariants}
         animate={
           initial
             ? { scale: 0, x: "100%" }
-            : appearing
-            ? "hiddenFalse"
             : isHidden
             ? "hiddenTrue"
             : "hiddenFalse"
@@ -303,21 +290,21 @@ export default function Navbar({ appear }) {
         <motion.img
           src="/navIcons/certificate.png"
           alt="certificateIcon"
-          className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]"
+          className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove1" : "hiddenAbove1"}
-          onClick={() => handleNavClick(-85)}
-          onHoverStart={() => setYValue(-85)}
+          onClick={() => handleNavClick(-80)}
+          onHoverStart={() => setYValue(-80)}
           onHoverEnd={() => setYValue(defaultYValue)}
         />
         <motion.img
           src="/navIcons/contact.png"
           alt="contactIcon"
-          className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]"
+          className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove2" : "hiddenAbove2"}
-          onClick={() => handleNavClick(-42)}
-          onHoverStart={() => setYValue(-42)}
+          onClick={() => handleNavClick(-40)}
+          onHoverStart={() => setYValue(-40)}
           onHoverEnd={() => setYValue(defaultYValue)}
         />
 
@@ -346,11 +333,11 @@ export default function Navbar({ appear }) {
         </motion.div>
 
         <motion.span
-          className="max-w-8 min-w-8 text-white z-10 cursor-pointer py-[7px]"
+          className="max-w-7 min-w-7 text-white z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleBelow2" : "hiddenBelow2"}
-          onClick={() => handleNavClick(42, "/")}
-          onHoverStart={() => setYValue(42)}
+          onClick={() => handleNavClick(40, "/")}
+          onHoverStart={() => setYValue(40)}
           onHoverEnd={() => setYValue(defaultYValue)}
         >
           <Home />
@@ -358,22 +345,21 @@ export default function Navbar({ appear }) {
         <motion.img
           src="/navIcons/project-icon.png"
           alt="projectIcon"
-          className="max-w-8 min-w-8 z-10 cursor-pointer py-[7px]"
+          className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleBelow1" : "hiddenBelow1"}
-          onClick={() => handleNavClick(85, "/projects")}
-          onHoverStart={() => setYValue(85)}
+          onClick={() => handleNavClick(80, "/projects")}
+          onHoverStart={() => setYValue(80)}
           onHoverEnd={() => setYValue(defaultYValue)}
         />
       </motion.main>
 
       <motion.div
         id="roundedBlue"
-        className="w-full h-full absolute bg-blue-500 scale-[0] -z-10"
+        className="w-full h-full absolute bg-blue-500 scale-0 -z-10"
+        initial={{ scale: 0 }}
         animate={
-          appearing
-            ? " "
-            : open
+          open
             ? {
                 scale: 1,
                 y: yValue,
@@ -381,7 +367,7 @@ export default function Navbar({ appear }) {
               }
             : { scale: 0, y: 0 }
         }
-        style={{ clipPath: "circle(20px at 50% 50%)" }}
+        style={{ clipPath: "circle(18px at 50% 50%)" }}
       />
     </motion.nav>
   );

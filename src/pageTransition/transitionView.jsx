@@ -31,14 +31,14 @@ export default function Transition({ children, backgroundColor }) {
       t1.from("#title", {
         y: "+=50",
         opacity: 0,
-        delay: 0.3,
+        delay: 0.5,
         duration: 0.5,
         ease: "circ",
       })
         .to("#title", {
           opacity: 0,
           y: "-=50dvh",
-          delay: 0.5,
+          delay: 0.2,
           duration: 0.5,
           ease: "expo.in",
         })
@@ -57,21 +57,6 @@ export default function Transition({ children, backgroundColor }) {
       key={location.pathname}
     >
       <motion.div
-        initial={{ height: "0dvh" }}
-        animate={{
-          height: "120dvh",
-          display: "none",
-          transition: {
-            duration: 0.8,
-            display: { delay: 1 },
-            ease: [0.33, 1, 0.68, 1],
-          },
-        }}
-        className={`bg-gradient-to-br from-gray-700 to-gray-900 w-full fixed bottom-[-10dvh] ${
-          windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
-        } z-50`}
-      ></motion.div>
-      <motion.div
         initial={{ height: "120dvh" }}
         animate={{
           height: "0dvh",
@@ -83,9 +68,28 @@ export default function Transition({ children, backgroundColor }) {
             ease: [0.76, 0, 0.24, 1],
           },
         }}
+        exit={{ height: "120dvh" }}
         className={`w-full h-full fixed bg-gradient-to-tl from-gray-900 to-gray-700 top-[-10dvh] ${
           windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
         } hidden z-50`}
+      ></motion.div>
+      <motion.div
+        initial={{ height: "0dvh" }}
+        animate={{
+          height: "120dvh",
+          display: "none",
+          transition: {
+            duration: 0.8,
+            display: { delay: 1 },
+            ease: [0.76, 0, 0.24, 1],
+
+            // ease: [0.33, 1, 0.68, 1],
+          },
+        }}
+        exit={{ height: "0dvh" }}
+        className={`bg-gradient-to-br from-gray-700 to-gray-900 w-full h-0 fixed bottom-[-10dvh] ${
+          windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
+        } z-50`}
       ></motion.div>
       <div
         id="title"
