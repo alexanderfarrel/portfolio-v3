@@ -123,29 +123,24 @@ export default function Projects() {
   const [scrollY, setScrollY] = useState(0);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
       setScrollY(window.scrollY);
-    });
+    };
 
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       setWindowHeight(window.innerHeight);
-    });
+    };
 
-    if (window.innerHeight < 460) {
-      alert("Please use a larger screen");
-    }
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      window.removeEventListener("scroll", () => {
-        setScrollY(window.scrollY);
-      });
-
-      window.removeEventListener("resize", () => {
-        setWindowHeight(window.innerHeight);
-      });
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
   const windowWidth = useWindowWidth();
-  const [image, setImage] = useState(1);
+  const [video, setVideo] = useState(1);
   const containerDesktopRef = useRef(null);
   const ref1 = useRef(null);
   const ref2 = useRef(null);
@@ -161,17 +156,17 @@ export default function Projects() {
   useEffect(() => {
     if (!isInView1 && !isInView2 && !isInView3) {
       if (isVideosActived) {
-        if (image == 1) {
+        if (video == 1) {
           video1.current.play();
         } else {
           video1.current.pause();
         }
-        if (image == 2) {
+        if (video == 2) {
           video2.current.play();
         } else {
           video2.current.pause();
         }
-        if (image == 3) {
+        if (video == 3) {
           video3.current.play();
         } else {
           video3.current.pause();
@@ -180,26 +175,26 @@ export default function Projects() {
       return;
     }
     if (isInView1) {
-      setImage(1);
+      setVideo(1);
       video1.current.play();
     } else {
       video1.current.pause();
     }
 
     if (isInView2) {
-      setImage(2);
+      setVideo(2);
       video2.current.play();
     } else {
       video2.current.pause();
     }
 
     if (isInView3) {
-      setImage(3);
+      setVideo(3);
       video3.current.play();
     } else {
       video3.current.pause();
     }
-  }, [isInView1, isInView2, isInView3, image, isVideosActived]);
+  }, [isInView1, isInView2, isInView3, video, isVideosActived]);
 
   const isMainContentDesktopInView = useInView(containerDesktopRef, {
     margin: "0px 0px -400px 0px",
@@ -227,15 +222,19 @@ export default function Projects() {
 
     requestAnimationFrame(raf);
 
-    document.getElementById("scroll").addEventListener("click", () => {
+    const handleClick = () => {
       lenis.scrollTo(0);
-    });
+    };
+
+    const scrollElement = document.getElementById("scroll");
+    const scrollElement2 = document.getElementById("back-to-top");
+    scrollElement.addEventListener("click", handleClick);
+    scrollElement2.addEventListener("click", handleClick);
 
     // Cleanup event listener on unmount
     return () => {
-      document.getElementById("scroll").removeEventListener("click", () => {
-        lenis.scrollTo(0);
-      });
+      scrollElement.removeEventListener("click", handleClick);
+      scrollElement2.removeEventListener("click", handleClick);
     };
   }, []);
   // mobile
@@ -252,12 +251,12 @@ export default function Projects() {
   );
   const scaleXSide = useTransform(
     mobileScroll.scrollYProgress,
-    [0, 0.333333333334, 0.666666666667, 1],
+    [0, 0.32, 0.666666666667, 1],
     [0, 0, 1, 1]
   );
   const scaleXBottom = useTransform(
     mobileScroll.scrollYProgress,
-    [0, 0.333333333334, 0.666666666667, 1],
+    [0, 0.32, 0.65, 1],
     [0, 0, 0, 1]
   );
   useLayoutEffect(() => {
@@ -270,11 +269,11 @@ export default function Projects() {
           scrub: true,
           onUpdate: (e) => {
             if (e.progress > 0.33 && e.progress < 0.66) {
-              setImage(2);
+              setVideo(2);
             } else if (e.progress > 0.66 && e.progress <= 1) {
-              setImage(3);
+              setVideo(3);
             } else {
-              setImage(1);
+              setVideo(1);
             }
           },
           onEnter: () => {
@@ -321,7 +320,7 @@ export default function Projects() {
 
   return (
     <div
-      className="bg-gradient-to-b from-[#162635] from-20% to-black"
+      className="bg-gradient-to-b from-[#162635] from-20% to-neutral-950"
       ref={comp}
     >
       <Navbar></Navbar>
@@ -353,6 +352,8 @@ export default function Projects() {
           alt=""
           className=" absolute min-w-[1000px] w-full h-full"
           loading="lazy"
+          draggable="false"
+          onDragStart={(e) => e.preventDefault()}
         />
 
         <motion.img
@@ -363,6 +364,8 @@ export default function Projects() {
           alt=""
           className="absolute min-w-[1000px] w-full h-full z-20"
           loading="lazy"
+          draggable="false"
+          onDragStart={(e) => e.preventDefault()}
         />
         <motion.img
           style={{
@@ -370,7 +373,9 @@ export default function Projects() {
           }}
           src="/images/layer1.png"
           alt=""
-          className={`absolute top-[45.5vh] min-w-[1000px] w-full h-full z-20`}
+          className={`absolute top-[45.5vh] min-w-[1000px] w-full h-full z-20 `}
+          draggable="false"
+          onDragStart={(e) => e.preventDefault()}
           loading="lazy"
         />
         <motion.div
@@ -592,16 +597,16 @@ export default function Projects() {
             >
               {/* videos */}
               <motion.div
-                id="bg-image"
+                id="bg-video"
                 className={`w-full h-full max-w-xl flex flex-col justify-center items-center relative overflow-hidden rounded-3xl`}
               >
                 {/* background color */}
                 <motion.div
                   className="w-full h-full absolute bg-violet-600 blur-[200px]"
                   animate={{
-                    opacity: image == 1 ? 1 : 0,
+                    opacity: video == 1 ? 1 : 0,
                     transition: {
-                      duration: image == 1 ? 0.4 : 1,
+                      duration: video == 1 ? 0.4 : 1,
                       type: "tween",
                     },
                   }}
@@ -609,9 +614,9 @@ export default function Projects() {
                 <motion.div
                   className="w-full h-full absolute bg-emerald-600 blur-[200px]"
                   animate={{
-                    opacity: image == 2 ? 1 : 0,
+                    opacity: video == 2 ? 1 : 0,
                     transition: {
-                      duration: image == 2 ? 0.4 : 1,
+                      duration: video == 2 ? 0.4 : 1,
                       type: "tween",
                     },
                   }}
@@ -619,9 +624,9 @@ export default function Projects() {
                 <motion.div
                   className="w-full h-full absolute bg-fuchsia-600 blur-[200px]"
                   animate={{
-                    opacity: image == 3 ? 1 : 0,
+                    opacity: video == 3 ? 1 : 0,
                     transition: {
-                      duration: image == 3 ? 0.4 : 1,
+                      duration: video == 3 ? 0.4 : 1,
                       type: "tween",
                     },
                   }}
@@ -630,8 +635,8 @@ export default function Projects() {
                 {/* content */}
                 <motion.div
                   animate={{
-                    y: image == 1 ? 0 : "-400px",
-                    opacity: image == 1 ? 1 : 0,
+                    y: video == 1 ? 0 : "-400px",
+                    opacity: video == 1 ? 1 : 0,
                     transition: { type: "spring", stiffness: 150, damping: 20 },
                   }}
                   initial={{
@@ -658,8 +663,8 @@ export default function Projects() {
                 </motion.div>
                 <motion.div
                   animate={{
-                    y: image == 2 ? 0 : image == 3 ? "-400px" : "400px",
-                    opacity: image == 2 ? 1 : 0,
+                    y: video == 2 ? 0 : video == 3 ? "-400px" : "400px",
+                    opacity: video == 2 ? 1 : 0,
                     transition: { type: "spring", stiffness: 150, damping: 20 },
                   }}
                   initial={{
@@ -686,8 +691,8 @@ export default function Projects() {
                 </motion.div>
                 <motion.div
                   animate={{
-                    y: image == 3 ? 0 : "400px",
-                    opacity: image == 3 ? 1 : 0,
+                    y: video == 3 ? 0 : "400px",
+                    opacity: video == 3 ? 1 : 0,
                     transition: { type: "spring", stiffness: 150, damping: 20 },
                   }}
                   initial={{
@@ -731,7 +736,7 @@ export default function Projects() {
               <div
                 className={`max-w-[22rem] ${
                   windowWidth > 370 ? "max-h-[13rem]" : "max-h-[56dvw]"
-                } aspect-video w-full h-full p-2 rounded-2xl relative overflow-hidden`}
+                } aspect-video w-full h-full p-[8px] rounded-2xl relative overflow-hidden`}
               >
                 <motion.div
                   initial={{ scaleX: 0 }}
@@ -751,89 +756,112 @@ export default function Projects() {
                 <motion.div
                   initial={{ scaleXBttom: 0 }}
                   style={{ scaleX: scaleXBottom }}
-                  className="absolute bg-gray-700 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-left left-0 bottom-0"
+                  className="absolute bg-gray-700 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-left left-0 bottom-[1px]"
                 ></motion.div>
                 <motion.div
                   initial={{ scaleXBottom: 0 }}
                   style={{ scaleX: scaleXBottom }}
-                  className="absolute bg-gray-700 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-right right-0 bottom-0"
+                  className="absolute bg-gray-700 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-right right-0 bottom-[1px]"
                 ></motion.div>
                 {/* Mobile Videos content*/}
                 <div className="relative aspect-video rounded-xl overflow-hidden">
                   <motion.div
-                    initial={{ x: image == 1 ? "100%" : "0" }}
+                    initial={{ x: video == 1 ? "100%" : "0" }}
                     animate={{
-                      x: image == 1 ? "0" : "100%",
+                      x: video == 1 ? "0" : "100%",
                       transition: { type: "tween" },
                     }}
+                    onClick={() =>
+                      window.open("https://warungjujugan.vercel.app")
+                    }
                     className="w-full h-full absolute"
                   >
                     {isVideosActived ? (
                       <video
                         ref={video1}
                         src="/videos/warungjujugan.mp4"
-                        autoPlay={image == 1 && isVideosActived}
-                        loop={image == 1}
+                        autoPlay={video == 1 && isVideosActived}
+                        loop={video == 1}
                         muted
                         className="object-cover"
                       ></video>
                     ) : (
-                      <img src="/images/pause.jpg" alt="" />
+                      <img src="/images/warungjujugan_ss.jpg" alt="" />
                     )}
                   </motion.div>
                   <motion.div
                     initial={{
-                      x: image == 2 ? "0" : image == 1 ? "-100%" : "100%",
+                      x: video == 2 ? "0" : video == 1 ? "-100%" : "100%",
                     }}
                     animate={{
-                      x: image == 2 ? "0" : image == 1 ? "-100%" : "100%",
+                      x: video == 2 ? "0" : video == 1 ? "-100%" : "100%",
                       transition: { type: "tween" },
                     }}
                     className="w-full h-full absolute"
+                    onClick={() =>
+                      window.open("https://messenger-alexz.vercel.app")
+                    }
                   >
                     {isVideosActived ? (
                       <video
                         ref={video2}
                         src="/videos/messenger.mp4"
-                        autoPlay={image == 2 && isVideosActived}
-                        loop={image == 2}
+                        autoPlay={video == 2 && isVideosActived}
+                        loop={video == 2}
                         muted
                         className="object-cover"
                       ></video>
                     ) : (
-                      <img src="/images/pause.jpg" alt="" />
+                      <img src="/images/messenger_ss.jpg" alt="" />
                     )}
                   </motion.div>
                   <motion.div
                     initial={{
-                      x: image == 3 ? "0" : "-100%",
+                      x: video == 3 ? "0" : "-100%",
                     }}
                     animate={{
-                      x: image == 3 ? "0" : "-100%",
+                      x: video == 3 ? "0" : "-100%",
                       transition: { type: "tween" },
                     }}
                     className="w-full h-full bg-fuchsia-600 absolute"
+                    onClick={() =>
+                      window.open("https://alexanderfarrel.github.io")
+                    }
                   >
                     {isVideosActived ? (
                       <video
                         ref={video3}
                         src="/videos/portfolio_v2.mp4"
-                        autoPlay={image == 3 && isVideosActived}
-                        loop={image == 3}
+                        autoPlay={video == 3 && isVideosActived}
+                        loop={video == 3}
                         muted
                         className="object-cover"
                       ></video>
                     ) : (
-                      <img src="/images/pause.jpg" alt="" />
+                      <img src="/images/portfoliov1_ss.jpg" alt="" />
                     )}
                   </motion.div>
                 </div>
               </div>
-              <motion.section className="pt-10 w-[80dvw] max-w-[28rem] text-center relative">
+              <motion.section className="pt-10 w-[80dvw] max-w-[28rem] text-center flex justify-center relative">
+                <p
+                  className="absolute top-0 text-[12px] text-gray-400 opacity-50 font-extralight z-10"
+                  onClick={() => {
+                    if (video === 1) {
+                      window.open("https://warungjujugan.vercel.app");
+                    } else if (video === 2) {
+                      window.open("https://messenger-alexz.vercel.app");
+                    } else if (video === 3) {
+                      window.open("https://alexanderfarrel.github.io");
+                    }
+                  }}
+                >
+                  click to try demo
+                </p>
                 <motion.div
                   className="absolute w-full h-full"
                   animate={
-                    isHidden ? "initial" : image == 1 ? "visible" : "hidden"
+                    isHidden ? "initial" : video == 1 ? "visible" : "hidden"
                   }
                 >
                   {/* Mobile Description */}
@@ -841,7 +869,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 2 : 0}
-                    className="text-3xl font-light"
+                    className="text-3xl font-bold text-violet-600"
                   >
                     E-commerce Concept
                   </motion.h1>
@@ -849,7 +877,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={1}
-                    className="font-bold underline decoration-2 decoration-violet-600"
+                    className="font-semibold underline decoration-2 decoration-violet-600"
                     onClick={() =>
                       window.open("https://warungjujugan.vercel.app")
                     }
@@ -868,7 +896,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 0 : 3}
-                    className="mt-2 font-light"
+                    className="mt-2 font-light text-neutral-300"
                   >
                     There are many features in it such as checkout,
                     authentication, darkmode, animation using framer-motion,
@@ -880,7 +908,7 @@ export default function Projects() {
                 <motion.div
                   className="absolute w-full h-full"
                   animate={
-                    image == 1 ? "initial" : image == 2 ? "visible" : "hidden"
+                    video == 1 ? "initial" : video == 2 ? "visible" : "hidden"
                   }
                 >
                   {/* Mobile Description */}
@@ -888,7 +916,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 2 : 0}
-                    className="text-3xl font-light"
+                    className="text-3xl font-bold text-emerald-600"
                   >
                     Real Time Chat
                   </motion.h1>
@@ -896,7 +924,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={1}
-                    className="font-bold underline decoration-2 decoration-violet-600"
+                    className="font-semibold underline decoration-2 decoration-emerald-600"
                     onClick={() =>
                       window.open("https://messenger-alexz.vercel.app")
                     }
@@ -915,7 +943,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 0 : 3}
-                    className="mt-2 font-light"
+                    className="mt-2 font-light text-neutral-300"
                   >
                     Using Socket.io as a web socket, unfortunately there are
                     problems when hosting socket.io so that the website is not
@@ -927,14 +955,14 @@ export default function Projects() {
 
                 <motion.div
                   className="absolute w-full h-full"
-                  animate={image != 3 ? "initial" : "visible"}
+                  animate={video != 3 ? "initial" : "visible"}
                 >
                   {/* Mobile Description */}
                   <motion.h1
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 2 : 0}
-                    className="text-3xl font-light"
+                    className="text-3xl font-bold text-fuchsia-600"
                   >
                     Portfolio Website V.1
                   </motion.h1>
@@ -942,7 +970,7 @@ export default function Projects() {
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={1}
-                    className="font-bold underline decoration-2 decoration-violet-600"
+                    className="font-semibold underline decoration-2 decoration-fuchsia-600"
                     onClick={() =>
                       window.open("https://alexanderfarrel.github.io")
                     }
@@ -955,18 +983,22 @@ export default function Projects() {
                     custom={isHidden ? 0 : 2}
                     className="mt-1 font-light"
                   >
-                    Tech : html, css, vanila javascript
+                    Tech : <span className="text-orange-400">Html</span>,{" "}
+                    <span className="text-blue-400">Css</span>, Vanila{" "}
+                    <span className="text-yellow-400">Javascript</span>
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 50 }}
                     variants={paragraphVariants}
                     custom={isHidden ? 0 : 2}
-                    className="mt-2 font-light"
+                    className="mt-2 font-light text-neutral-300"
                   >
-                    After learning html, css, and javascript I immediately
-                    learned to make a personal portfolio, I made it using pure
-                    html, css, and javascript, this website has a landing page
-                    concept, unlike current portfolios that use several pages.
+                    After learning{" "}
+                    <span className="">html, css, and javascript</span> I
+                    immediately learned to make a personal portfolio, I made it
+                    using pure html, css, and javascript, this website has a
+                    landing page concept, unlike current portfolios that use
+                    several pages.
                   </motion.p>
                 </motion.div>
               </motion.section>
@@ -974,7 +1006,17 @@ export default function Projects() {
           </div>
         </>
       )}
-      <div className="h-screen"></div>
+      <footer className="h-[40vh] flex flex-col justify-center items-center">
+        <h1 className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+          END
+        </h1>
+        <p
+          className="text-xl font-thin cursor-pointer bg-gradient-to-b from-gray-200 to-gray-600 bg-clip-text text-transparent"
+          id="back-to-top"
+        >
+          Back to Top
+        </p>
+      </footer>
     </div>
   );
 }
