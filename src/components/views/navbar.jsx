@@ -293,7 +293,7 @@ export default function Navbar() {
           className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove1" : "hiddenAbove1"}
-          onClick={() => handleNavClick(-80)}
+          onClick={() => handleNavClick(-80, "/achievements")}
           onHoverStart={() => setYValue(-80)}
           onHoverEnd={() => setYValue(defaultYValue)}
         />

@@ -2,18 +2,11 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import { useEffect } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import {
-  motion,
-  stagger,
-  useInView,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import useWindowWidth from "../hooks/windowWidth";
 import Lenis from "lenis";
 import Navbar from "../components/views/navbar";
 import Span from "../components/ui/span";
-import Firebase from "../components/icons/skills/firebase";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 
@@ -1177,7 +1170,7 @@ export default function Projects() {
               count={400}
               factor={windowWidth < 1200 ? "5" : "3"}
               fade
-              speed={2}
+              speed={3}
             />
           </Canvas>
         </motion.div>

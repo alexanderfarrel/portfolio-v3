@@ -8,7 +8,7 @@ const routes = {
   "/": "Home",
   "/projects": "Projects",
   "/contact": "Contact",
-  "/awards": "Awards",
+  "/achievements": "Achievements",
 };
 
 // const anim = (variants) => {
@@ -70,7 +70,7 @@ export default function Transition({ children, backgroundColor }) {
         }}
         exit={{ height: "120dvh" }}
         className={`w-full h-full fixed bg-gradient-to-tl from-gray-900 to-gray-700 top-[-10dvh] ${
-          windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
+          windowWidth < 1000 ? "rounded-b-[50px]" : "rounded-b-[100px]"
         } hidden z-50`}
       ></motion.div>
       <motion.div
@@ -93,7 +93,7 @@ export default function Transition({ children, backgroundColor }) {
       ></motion.div>
       <div
         id="title"
-        className="w-full h-full fixed top-0 z-50 flex justify-center items-center text-7xl"
+        className="w-full h-full fixed top-0 z-50 flex justify-center items-center text-7xl sm:text-5xl"
       >
         {routes[location.pathname]}
       </div>
