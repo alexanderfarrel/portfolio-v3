@@ -1,9 +1,15 @@
 import { useTransform, motion, useScroll } from "framer-motion";
 import Lenis from "lenis";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import useWindowWidth from "../hooks/windowWidth";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
 export default function Achievements() {
+  const [XValue, setXValue] = useState(0);
+
+  const windowWidth = useWindowWidth();
+
   useEffect(() => {
     const lenis = new Lenis();
     function raf(time) {
@@ -28,16 +34,15 @@ export default function Achievements() {
     // };
 
     // window.addEventListener("scroll", handleScroll);
-    // window.addEventListener("resize", handleResize);
+    calculateX();
+    window.addEventListener("resize", calculateX());
     // Cleanup event listener on unmount
     return () => {
       // window.removeEventListener("scroll", handleScroll);
-      // window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", calculateX());
       scrollElement2.removeEventListener("click", handleClick);
     };
   }, []);
-
-  const windowWidth = useWindowWidth();
 
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -53,8 +58,8 @@ export default function Achievements() {
         : 3.2
       : 4.1;
   const scale1 = useTransform(scrollYProgress, [0, 1], [1, scale]);
-  const translateYUp = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const translateYDown = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const translateYUp = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const translateYDown = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const translateXRight = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const translateXLeft = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
@@ -86,6 +91,123 @@ export default function Achievements() {
   const BREAKPOINT3 = 686;
   const BREAKPOINT4 = 513;
   const BREAKPOINT5 = 410;
+
+  const picturesCarousel = [
+    {
+      src: "front_end_dicoding.png",
+    },
+    {
+      src: "alibaba.jpg",
+    },
+    {
+      src: "rise.png",
+    },
+    {
+      src: "restfull_express.png",
+    },
+    {
+      src: "oop.png",
+    },
+    {
+      src: "edspert.png",
+    },
+    {
+      src: "bright_champs.jpg",
+    },
+    {
+      src: "ajax.png",
+    },
+    {
+      src: "async.png",
+    },
+    {
+      src: "basic_web_dicoding.png",
+    },
+    {
+      src: "bootstrap.png",
+    },
+    {
+      src: "expressjs.png",
+    },
+    {
+      src: "javascript.png",
+    },
+    {
+      src: "javascript_dicoding.png",
+    },
+    {
+      src: "javascript_dom.png",
+    },
+    {
+      src: "mongodb_express.png",
+    },
+    {
+      src: "nodejs.png",
+    },
+    {
+      src: "talenta_ai.jpg",
+    },
+  ];
+
+  const carousel = useRef(null);
+  const [bg, setBg] = useState("bg-red-500");
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: carousel.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: (e) => {
+          let newBg =
+            e.progress > 0.33 && e.progress < 0.66
+              ? "bg-yellow-500"
+              : e.progress <= 0.33
+              ? "bg-orange-500"
+              : "bg-teal-500";
+
+          setBg(newBg);
+        },
+      });
+    });
+    return () => ctx.revert();
+  }, [bg]);
+
+  const { scrollYProgress: scrollYProgress2 } = useScroll({
+    target: carousel,
+    offset: ["start start", "end end"],
+  });
+  const carouselTranslateX = useTransform(
+    scrollYProgress2,
+    [0, 1],
+    ["1%", "-" + XValue + "%"]
+  );
+  const carouselTranslateXReverse = useTransform(
+    scrollYProgress2,
+    [0, 1],
+    ["-1%", "" + XValue + "%"]
+  );
+  const scaleXCarousel = useTransform(scrollYProgress2, [0, 1], [0, 1]);
+
+  function calculateX() {
+    const minScreenWidth = 400;
+    const maxScreenWidth = 1920;
+    const maxValue = 93.5;
+    const minValue = 75;
+
+    if (windowWidth <= minScreenWidth) {
+      setXValue(maxValue);
+    } else if (windowWidth >= maxScreenWidth) {
+      setXValue(minValue);
+    } else {
+      let result =
+        maxValue -
+        ((windowWidth - minScreenWidth) * (maxValue - minValue)) /
+          (maxScreenWidth - minScreenWidth);
+      setXValue(result);
+    }
+  }
+
   return (
     <>
       <header
@@ -102,6 +224,7 @@ export default function Achievements() {
           ~ Scroll Down ~
         </p>
       </header>
+      {/* images zoom */}
       <section ref={container} className={`min-h-[300vh] relative`}>
         <motion.div
           className={`h-screen sticky flex justify-center top-0 overflow-hidden`}
@@ -241,6 +364,39 @@ export default function Achievements() {
           </motion.div>
         </motion.div>
       </section>
+      {/* images carousel */}
+      <section ref={carousel} className="h-[450vh] relative">
+        <div
+          className={`sticky top-0 flex flex-col h-screen justify-center gap-10 overflow-hidden`}
+        >
+          {/* lines */}
+          <motion.div
+            style={{ scaleX: scaleXCarousel }}
+            className={`h-1 w-full absolute top-20 ${bg} origin-left transition-colors duration-1000`}
+          ></motion.div>
+          <motion.div
+            style={{ scaleX: scaleXCarousel }}
+            className={`h-1 w-full absolute bottom-20 ${bg} origin-right transition-colors duration-1000`}
+          ></motion.div>
+          {/* lines end */}
+          <motion.main
+            style={{ x: carouselTranslateX }}
+            className="flex self-start gap-5"
+          >
+            {picturesCarousel.map((item, index) => (
+              <Card key={index} srcName={item.src} id={index} />
+            ))}
+          </motion.main>
+          <motion.main
+            style={{ x: carouselTranslateXReverse }}
+            className="flex self-end gap-5 relative"
+          >
+            {picturesCarousel.map((item, index) => (
+              <Card key={index} srcName={item.src} id={index} />
+            ))}
+          </motion.main>
+        </div>
+      </section>
       <footer className="h-[40vh] flex flex-col justify-center items-center">
         <h1 className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
           END
@@ -255,3 +411,18 @@ export default function Achievements() {
     </>
   );
 }
+
+const Card = ({ srcName, id }) => {
+  return (
+    <div
+      id={id}
+      className="w-[40vh] h-[26.5vh] relative overflow-hidden aspect-video"
+    >
+      <img
+        src={`/images/certificate/${srcName}`}
+        alt=""
+        className="object-fill w-full h-full"
+      />
+    </div>
+  );
+};
