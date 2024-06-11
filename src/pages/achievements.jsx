@@ -340,10 +340,10 @@ export default function Achievements() {
   const swiperParentRef = useRef(null);
 
   const openSwiper = (idx) => {
+    setAnimateClose(false);
     const selection = window.getSelection();
     if (selection) selection.removeAllRanges();
     setImgIdx(idx);
-    setAnimateClose(false);
   };
 
   useEffect(() => {
@@ -637,15 +637,18 @@ export default function Achievements() {
             x: dragX,
           }}
           className="flex absolute top-0 left-0 w-full h-full items-center"
+          initial={{
+            opacity: 0,
+          }}
           animate={{
             translateX: `-${imgIdx * 100}%`,
-            opacity: animateClose ? 0 : 1,
+            opacity: animateClose || imgIdx == null ? 0 : 1,
           }}
           transition={{
             type: "tween",
             duration: 0.3,
             opacity: {
-              delay: animateClose ? 0 : 0.35,
+              delay: animateClose || imgIdx == null ? 0 : 0.35,
             },
           }}
           onDragEnd={onDragEnd}

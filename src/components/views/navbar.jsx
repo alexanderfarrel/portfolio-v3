@@ -289,17 +289,17 @@ export default function Navbar() {
           variants={variants}
           animate={open ? "open" : "close"}
         />
-
-        <motion.img
-          src="/navIcons/certificate.png"
-          alt="certificateIcon"
-          className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
+        <motion.span
+          className="max-w-7 min-w-7 text-white z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove1" : "hiddenAbove1"}
-          onClick={() => handleNavClick(-80, "/achievements")}
+          onClick={() => handleNavClick(-80, "/")}
           onHoverStart={() => setYValue(-80)}
           onHoverEnd={() => setYValue(defaultYValue)}
-        />
+        >
+          <Home />
+        </motion.span>
+
         <motion.img
           src="/navIcons/contact.png"
           alt="contactIcon"
@@ -334,17 +334,16 @@ export default function Navbar() {
             className="w-full h-[2px] bg-white rounded-xl"
           />
         </motion.div>
-
-        <motion.span
-          className="max-w-7 min-w-7 text-white z-10 cursor-pointer py-[7px]"
+        <motion.img
+          src="/navIcons/certificate.png"
+          alt="certificateIcon"
+          className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleBelow2" : "hiddenBelow2"}
-          onClick={() => handleNavClick(40, "/")}
+          onClick={() => handleNavClick(40, "/achievements")}
           onHoverStart={() => setYValue(40)}
           onHoverEnd={() => setYValue(defaultYValue)}
-        >
-          <Home />
-        </motion.span>
+        />
         <motion.img
           src="/navIcons/project-icon.png"
           alt="projectIcon"
