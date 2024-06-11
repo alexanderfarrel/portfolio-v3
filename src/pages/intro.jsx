@@ -127,7 +127,7 @@ export default function Intro() {
         .to(
           "#roundedBlue",
           {
-            scale: 1.5,
+            scale: 1.2,
             duration: 0.4,
             ease: "easeOut",
             delay: 0.1,

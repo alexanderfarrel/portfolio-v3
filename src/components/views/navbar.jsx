@@ -105,7 +105,7 @@ export default function Navbar() {
     hiddenTrue: {
       scale: 1,
       opacity: 1,
-      x: "80%",
+      x: "50%",
       transition: {
         type: "spring",
         stiffness: 250,
@@ -268,9 +268,12 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav className="fixed right-0 top-0 bottom-0 w-20 flex justify-center items-center overflow-hidden z-30">
+    <motion.nav
+      className="fixed right-0 top-1/2 -translate-y-1/2 max-h-[18rem] w-12 flex justify-center items-center overflow-hidden z-30"
+      animate={{ right: isHidden ? 0 : 10 }}
+    >
       <motion.main
-        className="w-full h-full max-h-[13.5rem] max-w-[2.7rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
+        className="w-full h-full min-h-[2.8rem] max-h-[13.5rem] max-w-[2.7rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
         id="parentNav"
         variants={mainVariants}
         animate={
@@ -282,7 +285,7 @@ export default function Navbar() {
         }
       >
         <motion.div
-          className="w-full h-full absolute bg-gray-700/70 blur-xl z-10 scale-0"
+          className="w-full h-full absolute border-4 bg-gray-700/70 blur-xl z-10 scale-0"
           variants={variants}
           animate={open ? "open" : "close"}
         />

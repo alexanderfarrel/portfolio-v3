@@ -64,6 +64,115 @@ const picturesCarousel = [
 ];
 
 export default function Achievements() {
+  const comp = useRef(null);
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      const t1 = gsap.timeline();
+      t1.from("#header-title", {
+        opacity: 0,
+        y: "-=50",
+        duration: 0.5,
+        ease: "circ",
+        delay: 2,
+      })
+        .from(
+          "#header-subtitle",
+          {
+            opacity: 0,
+            x: "-30",
+            duration: 0.4,
+            ease: "power3.inOut",
+          },
+          "-=0.4"
+        )
+        .to("#roundedBlue", {
+          scale: 1.2,
+          duration: 0.4,
+          ease: "easeOut",
+          delay: 0.9,
+        })
+        .to("#roundedBlue", {
+          scale: 0,
+          delay: 0.1,
+          duration: 0.4,
+          ease: "easeIn",
+        })
+        .from(
+          "#bright_champs",
+          {
+            opacity: 0,
+            y: "-=50",
+            duration: 1.3,
+            ease: "ease",
+          },
+          "-=1.5"
+        )
+        .from(
+          "#rise",
+          {
+            opacity: 0,
+            y: "-=50",
+            x: "-=50",
+            duration: 1.3,
+            ease: "ease",
+          },
+          "<"
+        )
+        .from(
+          "#edspert",
+          {
+            opacity: 0,
+            y: "-=50",
+            x: "+=50",
+            duration: 1.3,
+            ease: "ease",
+          },
+          "<"
+        )
+        .from(
+          "#oop",
+          {
+            opacity: 0,
+            duration: 1.3,
+            ease: "ease",
+          },
+          "<"
+        )
+        .from(
+          "#alibaba",
+          {
+            opacity: 0,
+            x: "-=50",
+            y: "+=50",
+            duration: 1.3,
+            ease: "ease",
+          },
+          "<"
+        )
+        .from(
+          "#front_end_dicoding",
+          {
+            opacity: 0,
+            x: "+=50",
+            y: "+=50",
+            duration: 1.3,
+          },
+          "<"
+        )
+        .from(
+          "#talenta_ai",
+          {
+            opacity: 0,
+            y: "+=50",
+            duration: 1.3,
+          },
+          "<"
+        );
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   const [XValue, setXValue] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const windowWidth = useWindowWidth();
@@ -95,11 +204,16 @@ export default function Achievements() {
 
     window.addEventListener("scroll", handleScroll);
     calculateX();
-    window.addEventListener("resize", calculateX());
+    carouselWidth();
+    window.addEventListener("resize", () => {
+      calculateX(), carouselWidth();
+    });
     // Cleanup event listener on unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", calculateX());
+      window.removeEventListener("resize", () => {
+        calculateX(), carouselWidth();
+      });
       scrollElement.removeEventListener("click", handleClick);
       scrollElement2.removeEventListener("click", handleClick);
     };
@@ -124,29 +238,6 @@ export default function Achievements() {
   const translateXRight = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const translateXLeft = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
-  const pictures = [
-    {
-      src: "oop.png",
-    },
-    {
-      src: "alibaba.jpg",
-    },
-    {
-      src: "rise.png",
-    },
-    {
-      src: "talenta_ai.jpg",
-    },
-    {
-      src: "front_end_dicoding.png",
-    },
-    {
-      src: "edspert.png",
-    },
-    {
-      src: "bright_champs.jpg",
-    },
-  ];
   const BREAKPOINT1 = 1671;
   const BREAKPOINT2 = 1047;
   const BREAKPOINT3 = 686;
@@ -214,7 +305,26 @@ export default function Achievements() {
 
   const dragX = useMotionValue(0);
   const [imgIdx, setImgIdx] = useState(null);
-  const DRAG_BUFFER = 50;
+  const DRAG_BUFFER = windowWidth < 1200 ? 20 : 50;
+  const [swiperWidth, setSwiperWidth] = useState(63);
+  function carouselWidth() {
+    const minScreenWidth = 400;
+    const maxScreenWidth = 1920;
+    const maxValue = 98;
+    const minValue = 63;
+
+    if (windowWidth <= minScreenWidth) {
+      setSwiperWidth(maxValue);
+    } else if (windowWidth >= maxScreenWidth) {
+      setSwiperWidth(minValue);
+    } else {
+      let result =
+        maxValue -
+        ((windowWidth - minScreenWidth) * (maxValue - minValue)) /
+          (maxScreenWidth - minScreenWidth);
+      setSwiperWidth(Math.floor(result));
+    }
+  }
 
   const onDragEnd = () => {
     const x = dragX.get();
@@ -226,23 +336,55 @@ export default function Achievements() {
     }
   };
 
+  const [animateClose, setAnimateClose] = useState(false);
+  const swiperParentRef = useRef(null);
+
+  const openSwiper = (idx) => {
+    const selection = window.getSelection();
+    if (selection) selection.removeAllRanges();
+    setImgIdx(idx);
+    setAnimateClose(false);
+  };
+
+  useEffect(() => {
+    const handleClose = (e) => {
+      if (
+        swiperParentRef.current &&
+        swiperParentRef.current.id !== e.target.id
+      ) {
+        setAnimateClose(true);
+        setTimeout(() => {
+          setImgIdx(null);
+        }, 300);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClose);
+    return () => {
+      document.removeEventListener("mousedown", handleClose);
+    };
+  }, []);
+
   return (
     <>
+      <Navbar></Navbar>
       <header
-        className={`min-h-[50vh] flex flex-col justify-center items-center bg-gradient-to-b from-gray-800 to-black gap-3`}
+        ref={comp}
+        className={`min-h-[50vh] flex flex-col justify-center items-center bg-gradient-to-b from-gray-800 to-black gap-5`}
       >
         <h1
+          id="header-title"
           className={`text-7xl font-bold bg-gradient-to-b from-white to-gray-600 bg-clip-text text-transparent`}
         >
           Certificate
         </h1>
         <p
+          id="header-subtitle"
           className={`bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent`}
         >
           ~ Scroll Down ~
         </p>
       </header>
-      <Navbar></Navbar>
       <motion.div
         id="scroll"
         initial={{
@@ -268,12 +410,14 @@ export default function Achievements() {
             style={{ scale: scale1 }}
           >
             <div
+              id="oop"
               className={`aspect-video max-w-[30vh] relative top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] cursor-pointer`}
               onClick={() => {
-                setImgIdx(4);
+                openSwiper(4);
               }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/oop.png`}
                 draggable="false"
                 alt={"oop"}
@@ -281,6 +425,7 @@ export default function Achievements() {
               />
             </div>
             <motion.div
+              id="alibaba"
               className={`aspect-video max-w-[30vh] relative cursor-pointer ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT2
@@ -295,11 +440,12 @@ export default function Achievements() {
                   : "left-[18vw] top-[34vh]"
               }`}
               onClick={() => {
-                setImgIdx(1);
+                openSwiper(1);
               }}
               style={{ x: translateXLeft }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/alibaba.jpg`}
                 draggable="false"
                 alt={"alibaba"}
@@ -307,6 +453,7 @@ export default function Achievements() {
               />
             </motion.div>
             <motion.div
+              id="rise"
               className={`aspect-video max-w-[30vh] relative top-[-16vh] cursor-pointer ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT2
@@ -321,11 +468,12 @@ export default function Achievements() {
                   : "left-[22vw]"
               }`}
               onClick={() => {
-                setImgIdx(2);
+                openSwiper(2);
               }}
               style={{ x: translateXLeft }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/rise.png`}
                 draggable="false"
                 alt={"rise"}
@@ -333,6 +481,7 @@ export default function Achievements() {
               />
             </motion.div>
             <motion.div
+              id="talenta_ai"
               className={`aspect-video max-w-[30vh] relative cursor-pointer ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT3
@@ -345,11 +494,12 @@ export default function Achievements() {
                   : "top-[4vh] left-[40vw]"
               }`}
               onClick={() => {
-                setImgIdx(17);
+                openSwiper(17);
               }}
               style={{ y: translateYDown }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/talenta_ai.jpg`}
                 draggable="false"
                 alt={"talenta_ai"}
@@ -357,6 +507,7 @@ export default function Achievements() {
               />
             </motion.div>
             <motion.div
+              id="front_end_dicoding"
               className={`aspect-video max-w-[30vh] relative top-[-22vh] cursor-pointer ${
                 windowWidth < BREAKPOINT2
                   ? windowWidth < BREAKPOINT3
@@ -365,11 +516,12 @@ export default function Achievements() {
                   : "left-[63vw]"
               }`}
               onClick={() => {
-                setImgIdx(0);
+                openSwiper(0);
               }}
               style={{ x: translateXRight }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/front_end_dicoding.png`}
                 draggable="false"
                 alt={"front_end_dicoding"}
@@ -377,6 +529,7 @@ export default function Achievements() {
               />
             </motion.div>
             <motion.div
+              id="edspert"
               className={`aspect-video max-w-[30vh] relative cursor-pointer ${
                 windowWidth < BREAKPOINT2
                   ? windowWidth < BREAKPOINT3
@@ -389,11 +542,12 @@ export default function Achievements() {
                   : "left-[67vw] top-[-74vh]"
               }`}
               onClick={() => {
-                setImgIdx(5);
+                openSwiper(5);
               }}
               style={{ x: translateXRight }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/edspert.png`}
                 draggable="false"
                 alt={"edspert"}
@@ -401,6 +555,7 @@ export default function Achievements() {
               />
             </motion.div>
             <motion.div
+              id="bright_champs"
               className={`aspect-video max-w-[30vh] relative top-[-110vh] cursor-pointer ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT2
@@ -411,11 +566,12 @@ export default function Achievements() {
                   : " left-[44vw]"
               }`}
               onClick={() => {
-                setImgIdx(6);
+                openSwiper(6);
               }}
               style={{ y: translateYUp }}
             >
               <img
+                id="doNotClose"
                 src={`/images/certificate/bright_champs.jpg`}
                 draggable="false"
                 alt={"bright_champs"}
@@ -449,7 +605,7 @@ export default function Achievements() {
                 key={index}
                 srcName={item.src}
                 id={index}
-                setImgIdx={setImgIdx}
+                setImgIdx={openSwiper}
               />
             ))}
           </motion.main>
@@ -462,7 +618,7 @@ export default function Achievements() {
                 key={index}
                 srcName={item.src}
                 id={index}
-                setImgIdx={setImgIdx}
+                setImgIdx={openSwiper}
               />
             ))}
           </motion.main>
@@ -474,32 +630,32 @@ export default function Achievements() {
           imgIdx !== null ? "" : "hidden"
         }`}
       >
-        <div
-          className="w-8 h-8 z-30 text-2xl bg-gray-700 absolute top-10 right-10 rounded-full flex justify-center items-center cursor-pointer"
-          onClick={() => setImgIdx(null)}
-        >
-          <span className="-translate-y-1">x</span>
-        </div>
         <motion.div
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           style={{
             x: dragX,
           }}
-          className="flex absolute top-0 left-0 w-full h-full items-center cursor-grab active:cursor-grabbing"
-          animate={{ translateX: `-${imgIdx * 100}%` }}
+          className="flex absolute top-0 left-0 w-full h-full items-center"
+          animate={{
+            translateX: `-${imgIdx * 100}%`,
+            opacity: animateClose ? 0 : 1,
+          }}
           transition={{
-            type: "spring",
-            stiffness: 250,
-            damping: 30,
-            restDelta: 0.001,
-            restSpeed: 0.001,
+            type: "tween",
+            duration: 0.3,
+            opacity: {
+              delay: animateClose ? 0 : 0.35,
+            },
           }}
           onDragEnd={onDragEnd}
         >
-          <SwipeCarousel />
+          <SwiperCarousel
+            swiperParentRef={swiperParentRef}
+            swiperWidth={swiperWidth}
+          />
         </motion.div>
-        <Dots imgIdx={imgIdx} setImgIdx={setImgIdx} />
+        <Dots imgIdx={imgIdx} setImgIdx={openSwiper} />
       </section>
       <footer className="h-[40vh] flex flex-col justify-center items-center">
         <h1 className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
@@ -526,6 +682,7 @@ const Card = ({ srcName, id, setImgIdx }) => {
       }}
     >
       <img
+        id="doNotClose"
         src={`/images/certificate/${srcName}`}
         draggable="false"
         alt=""
@@ -535,22 +692,24 @@ const Card = ({ srcName, id, setImgIdx }) => {
   );
 };
 
-const SwipeCarousel = () => {
+const SwiperCarousel = ({ swiperParentRef, swiperWidth }) => {
   return (
     <>
       {picturesCarousel.map((item, index) => (
-        <div
-          key={index}
-          className="w-screen flex justify-center h-[90vh] aspect-video shrink-0"
-        >
-          <div className="w-full h-full max-w-[65vw]">
+        <div key={index} className="w-full h-full flex justify-center shrink-0">
+          <motion.div
+            style={{ width: `${swiperWidth}vw` }}
+            className={`flex items-center`}
+          >
             <img
+              ref={swiperParentRef}
+              id="doNotClose"
               src={`/images/certificate/${item.src}`}
               alt=""
               draggable="false"
-              className="object-contain w-full h-full"
+              className="object-contain w-full cursor-grab active:cursor-grabbing"
             />
-          </div>
+          </motion.div>
         </div>
       ))}
     </>
@@ -560,10 +719,14 @@ const SwipeCarousel = () => {
 const Dots = ({ imgIdx, setImgIdx }) => {
   return (
     <div className="mt-4 flex w-full justify-center bottom-4 absolute z-30">
-      <div className="flex gap-1 items-center max-w-[80px] overflow-hidden">
+      <div
+        className="flex gap-1 items-center max-w-[80px] overflow-hidden"
+        id="doNotClose"
+      >
         {picturesCarousel.map((_, idx) => {
           return (
             <motion.button
+              id="doNotClose"
               key={idx}
               onClick={() => setImgIdx(idx)}
               style={{

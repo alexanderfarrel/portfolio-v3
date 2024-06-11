@@ -35,7 +35,7 @@ export default function Projects() {
           "-=0.4"
         )
         .to("#roundedBlue", {
-          scale: 1.5,
+          scale: 1.2,
           duration: 0.4,
           ease: "easeOut",
           delay: 0.9,
@@ -312,12 +312,11 @@ export default function Projects() {
 
   return (
     <>
+      <Navbar></Navbar>
       <div
         className="bg-gradient-to-b from-[#162635] from-20% to-neutral-950 relative"
         ref={comp}
       >
-        <Navbar></Navbar>
-
         {/* scroll to top */}
         <motion.div
           id="scroll"
