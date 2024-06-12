@@ -30,7 +30,7 @@ export default function Home() {
         opacity: 0,
         duration: 0.8,
         xPercent: "-100",
-        delay: 2,
+        delay: 0,
       })
         .from(
           "#skill-below",
@@ -129,9 +129,107 @@ export default function Home() {
       ease: "easeInOut",
     });
   }, []);
+
+  // Cursor
+  const [mousePotition, setMousePosition] = useState({ x: null, y: null });
+  const [cursorVariant, setCursorVariant] = useState("default");
+  const [isMouseEnter, setIsMouseEnter] = useState(false);
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleMouseEnter = () => {
+      setIsMouseEnter(true);
+    };
+    const handleMouseLeave = () => {
+      setIsMouseEnter(false);
+    };
+    document.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
+  const trailer = useRef(null);
+  const trailerOffset = trailer?.current?.offsetWidth / 2;
+
+  const mouseVariants = {
+    default: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 1,
+    },
+    navbar: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 1,
+    },
+    text: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 4,
+      transition: { duration: 0.2 },
+    },
+  };
+  const textEnter = () => setCursorVariant("text");
+  const textLeave = () => setCursorVariant("default");
+  const navbarEnter = () => setCursorVariant("navbar");
+  const navbarLeave = () => setCursorVariant("default");
+
+  // view-intro
+  const viewIntro = useRef(null);
+  const [isViewIntro, setIsViewIntro] = useState(false);
+  useEffect(() => {
+    viewIntro.current.addEventListener("mouseenter", () =>
+      setIsViewIntro(true)
+    );
+    viewIntro.current.addEventListener("mouseleave", () =>
+      setIsViewIntro(false)
+    );
+    return () => {
+      viewIntro?.current?.removeEventListener("mouseenter", () =>
+        setIsViewIntro(true)
+      );
+      viewIntro?.current?.removeEventListener("mouseleave", () =>
+        setIsViewIntro(false)
+      );
+    };
+  }, []);
   return (
     <>
-      <Navbar />
+      <motion.div
+        ref={trailer}
+        animate={{
+          scale:
+            mousePotition.x == null
+              ? 0
+              : cursorVariant != "default"
+              ? cursorVariant == "navbar"
+                ? 0
+                : 3
+              : !isMouseEnter
+              ? 0
+              : 1.5,
+        }}
+        style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
+        className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full ${
+          cursorVariant != "default" ? "mix-blend-difference" : ""
+        }`}
+      />
+      <Navbar navbarEnter={navbarEnter} navbarLeave={navbarLeave} />
       <div className="relative overflow-x-hidden" ref={comp}>
         <motion.div className="relative h-[100dvh] flex flex-col items-center justify-between py-3">
           <motion.div
@@ -142,20 +240,37 @@ export default function Home() {
             style={{ backgroundImage }}
           ></motion.div>
           <SkillsBar id={"skill-upper"} />
-          <MainContent color={color} />
+          <MainContent
+            color={color}
+            textEnter={textEnter}
+            textLeave={textLeave}
+          />
           <SkillsBar id={"skill-below"} />
         </motion.div>
 
         <div
-          className="absolute bottom-20 right-[4vw] border border-white/50 rounded-full px-3 py-1 cursor-pointer"
+          className="absolute bottom-20 right-[4vw] border border-white/50 rounded-full px-3 py-1 cursor-pointer flex gap-2 items-center justify-center"
+          onMouseEnter={textEnter}
+          onMouseLeave={textLeave}
           onClick={() => (window.location.href = "/")}
           id="view-intro"
+          ref={viewIntro}
         >
-          <div
+          <motion.div
             className="bg-white/50 rounded-full w-full h-full absolute inset-0"
-            style={{ clipPath: "circle(0px at 50% 50%)" }}
-          ></div>
-          View Intro
+            initial={{ clipPath: "circle(0px at 50% 50%)" }}
+            animate={{
+              clipPath: isViewIntro
+                ? "circle(150px at 50% 50%)"
+                : "circle(0px at 50% 50%)",
+            }}
+          ></motion.div>
+          <img
+            src="/icons/arrow-border.png"
+            alt=""
+            className="max-w-[30px] -mx-1"
+          />
+          <p>View Intro</p>
         </div>
       </div>
       <motion.div

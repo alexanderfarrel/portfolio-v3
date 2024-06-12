@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Home from "../icons/navIcons/home";
 
-export default function Navbar() {
+export default function Navbar({ navbarEnter, navbarLeave }) {
   const url = window.location.pathname;
   const [open, setOpen] = useState(false); // for open navbar
   const [initial, setInitial] = useState(true); // animation initialization
@@ -273,6 +273,8 @@ export default function Navbar() {
       animate={{ right: isHidden ? 0 : 10 }}
     >
       <motion.main
+        onMouseEnter={navbarEnter}
+        onMouseLeave={navbarLeave}
         className="w-full h-full min-h-[2.8rem] max-h-[13.5rem] max-w-[2.7rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
         id="parentNav"
         variants={mainVariants}
@@ -365,7 +367,7 @@ export default function Navbar() {
             ? {
                 scale: 1,
                 y: yValue,
-                transition: { type: "spring", bounce: 0.2, duration: 0.6 },
+                transition: { type: "spring", bounce: 0.2, duration: 0.35 },
               }
             : { scale: 0, y: 0 }
         }

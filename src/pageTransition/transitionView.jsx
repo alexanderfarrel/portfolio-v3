@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React, { useLayoutEffect } from "react";
+import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
 import useWindowWidth from "../hooks/windowWidth";

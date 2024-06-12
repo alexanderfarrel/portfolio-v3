@@ -9,10 +9,14 @@ export default function Button({
   intro = false,
   color = null,
   onClick = () => {},
+  textEnter = () => {},
+  textLeave = () => {},
 }) {
   const tes = "rgba(150,240,138,1)";
   return (
     <motion.button
+      onMouseEnter={textEnter}
+      onMouseLeave={textLeave}
       onClick={onClick}
       className={`px-6 py-2 rounded-md relative ${
         !intro ? "radial-gradient sm:text-[13px]" : "cursor-default sm:text-6xl"
