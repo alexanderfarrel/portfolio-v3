@@ -51,7 +51,7 @@ export default function Navbar() {
         setInitial(false);
         setOptions({ isHidden: false, startCount: true });
       },
-      url != "/" ? 3000 : 9600
+      url != "/" ? (url != "/home" ? 3000 : 3200) : 9000
     );
 
     return () => clearTimeout(time);
@@ -269,7 +269,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="fixed right-0 top-1/2 -translate-y-1/2 max-h-[18rem] w-12 flex justify-center items-center overflow-hidden z-30"
+      className="fixed right-0 top-1/2 -translate-y-1/2 min-h-[3.2rem] max-h-[18rem] w-12 flex justify-center items-center overflow-hidden z-30"
       animate={{ right: isHidden ? 0 : 10 }}
     >
       <motion.main
@@ -285,7 +285,7 @@ export default function Navbar() {
         }
       >
         <motion.div
-          className="w-full h-full absolute border-4 bg-gray-700/70 blur-xl z-10 scale-0"
+          className="w-full h-full absolute bg-gray-700/70 blur-xl z-10 scale-0"
           variants={variants}
           animate={open ? "open" : "close"}
         />
@@ -293,7 +293,7 @@ export default function Navbar() {
           className="max-w-7 min-w-7 text-white z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove1" : "hiddenAbove1"}
-          onClick={() => handleNavClick(-80, "/")}
+          onClick={() => handleNavClick(-80, "/home")}
           onHoverStart={() => setYValue(-80)}
           onHoverEnd={() => setYValue(defaultYValue)}
         >
@@ -358,7 +358,7 @@ export default function Navbar() {
 
       <motion.div
         id="roundedBlue"
-        className="w-full h-full absolute bg-blue-500 scale-0 -z-10"
+        className="w-10 h-10 rounded-full absolute bg-blue-500 scale-0 -z-10"
         initial={{ scale: 0 }}
         animate={
           open
@@ -369,7 +369,7 @@ export default function Navbar() {
               }
             : { scale: 0, y: 0 }
         }
-        style={{ clipPath: "circle(18px at 50% 50%)" }}
+        style={{ clipPath: "circle(20px at 50% 50%)" }}
       />
     </motion.nav>
   );

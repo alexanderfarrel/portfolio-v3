@@ -645,8 +645,9 @@ export default function Achievements() {
             opacity: animateClose || imgIdx == null ? 0 : 1,
           }}
           transition={{
-            type: "tween",
-            duration: 0.3,
+            type: "spring",
+            stiffness: 250,
+            damping: 30,
             opacity: {
               delay: animateClose || imgIdx == null ? 0 : 0.35,
             },

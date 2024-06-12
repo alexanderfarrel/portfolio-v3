@@ -6,6 +6,7 @@ import useWindowWidth from "../hooks/windowWidth";
 
 const routes = {
   "/": "Home",
+  "/home": "Home",
   "/projects": "Projects",
   "/contact": "Contact",
   "/achievements": "Achievements",

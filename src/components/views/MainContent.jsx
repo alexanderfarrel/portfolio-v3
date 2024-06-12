@@ -2,9 +2,9 @@ import Button from "../ui/button";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import propTypes from "prop-types";
 
-export default function MainContent({color}) {
+export default function MainContent({ color }) {
   const [text] = useTypewriter({
-    words: ["Web Developer", "Fullstack Developer", "Software Engineer"],
+    words: ["Web Developer", "Fullstack Developer"],
     loop: true,
     delaySpeed: 1500,
   });
@@ -31,32 +31,46 @@ export default function MainContent({color}) {
             id="typing"
             className="text-4xl lg:text-3xl md:text-2xl sm:text-xl font-medium"
           >
-            <span style={{ backgroundImage : `linear-gradient(to bottom, ${color.current} 0%, rgb(156 163 175) 100%)` }} className={`text-transparent bg-clip-text`}>{text}</span>{" "}
+            <span
+              style={{
+                backgroundImage: `linear-gradient(to bottom, ${color.current} 0%, rgb(156 163 175) 100%)`,
+              }}
+              className={`text-transparent bg-clip-text`}
+            >
+              {text}
+            </span>{" "}
             <span className="-ml-2">
               <Cursor></Cursor>
             </span>
           </p>
 
           <div className="flex gap-4 mt-2">
-            <span
-              id="button-cv"
+            <span id="button-cv">
+              <Button
+                onClick={() => alert("Contact Developer Untuk Mendapatkan CV")}
+                className={`text-sm`}
+                color={color}
               >
-            <Button
-              onClick={() =>
-                alert("Contact Developer Untuk Mendapatkan CV")
-              }
-              className={`text-sm`}
-              color={color}
+                Download CV
+              </Button>
+            </span>
+            <span id="button-contact">
+              <Button
+                className={`text-sm`}
+                delay={4.4}
+                onClick={() =>
+                  window.open(
+                    window.open(
+                      "https://www.instagram.com/al_ael.18/",
+                      "_blank"
+                    )
+                  )
+                }
+                color={color}
               >
-              Download CV
-            </Button>
-              </span>
-              <span id="button-contact">
-            <Button className={`text-sm`}  delay={4.4} onClick={() => window.open(window.open("https://www.instagram.com/al_ael.18/", "_blank"))}
-            color={color}>
-              Contact Me
-            </Button>
-              </span>
+                Contact Me
+              </Button>
+            </span>
           </div>
         </section>
         <div
