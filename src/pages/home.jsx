@@ -192,22 +192,30 @@ export default function Home() {
   // view-intro
   const viewIntro = useRef(null);
   const [isViewIntro, setIsViewIntro] = useState(false);
+  const [viewIntroMousePotition, setViewIntroMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
   useEffect(() => {
-    viewIntro.current.addEventListener(
-      "mouseenter",
-      (e) => console.log(e.clientX),
-      setIsViewIntro(true)
-    );
-    viewIntro.current.addEventListener("mouseleave", () =>
-      setIsViewIntro(false)
-    );
+    const handleMouseEnter = (e) => {
+      const x = e.clientX - viewIntro.current.offsetLeft;
+      const y = e.clientY - viewIntro.current.offsetTop;
+      setViewIntroMousePosition({ x, y });
+      setIsViewIntro(true);
+    };
+
+    const handleMouseLeave = (e) => {
+      const x = e.clientX - viewIntro.current.offsetLeft;
+      const y = e.clientY - viewIntro.current.offsetTop;
+      setViewIntroMousePosition({ x, y });
+      setIsViewIntro(false);
+    };
+
+    viewIntro.current.addEventListener("mouseenter", handleMouseEnter);
+    viewIntro.current.addEventListener("mouseleave", handleMouseLeave);
     return () => {
-      viewIntro?.current?.removeEventListener("mouseenter", () =>
-        setIsViewIntro(true)
-      );
-      viewIntro?.current?.removeEventListener("mouseleave", () =>
-        setIsViewIntro(false)
-      );
+      viewIntro?.current?.removeEventListener("mouseenter", handleMouseEnter);
+      viewIntro?.current?.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
   return (
@@ -260,11 +268,13 @@ export default function Home() {
         >
           <motion.div
             className="bg-white/50 rounded-full w-full h-full absolute inset-0"
-            initial={{ clipPath: "circle(0px at 50% 50%)" }}
+            initial={{
+              clipPath: `circle(0px at ${viewIntroMousePotition.x}px ${viewIntroMousePotition.y}px)`,
+            }}
             animate={{
               clipPath: isViewIntro
-                ? "circle(150px at 50% 50%)"
-                : "circle(0px at 50% 50%)",
+                ? `circle(150px at ${viewIntroMousePotition.x}px ${viewIntroMousePotition.y}px)`
+                : `circle(0px at ${viewIntroMousePotition.x}px ${viewIntroMousePotition.y}px)`,
             }}
           ></motion.div>
           <img
