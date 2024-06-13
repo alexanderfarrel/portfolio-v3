@@ -30,7 +30,7 @@ export default function Home() {
         opacity: 0,
         duration: 0.8,
         xPercent: "-100",
-        delay: 0,
+        delay: 2,
       })
         .from(
           "#skill-below",
@@ -193,7 +193,9 @@ export default function Home() {
   const viewIntro = useRef(null);
   const [isViewIntro, setIsViewIntro] = useState(false);
   useEffect(() => {
-    viewIntro.current.addEventListener("mouseenter", () =>
+    viewIntro.current.addEventListener(
+      "mouseenter",
+      (e) => console.log(e.clientX),
       setIsViewIntro(true)
     );
     viewIntro.current.addEventListener("mouseleave", () =>
@@ -227,7 +229,7 @@ export default function Home() {
         style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
         className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full ${
           cursorVariant != "default" ? "mix-blend-difference" : ""
-        }`}
+        } ${windowWidth < 1200 ? "hidden" : ""}`}
       />
       <Navbar navbarEnter={navbarEnter} navbarLeave={navbarLeave} />
       <div className="relative overflow-x-hidden" ref={comp}>

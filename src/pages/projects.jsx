@@ -108,7 +108,7 @@ export default function Projects() {
   const textTranslateYMobile = useTransform(
     headerScroll.scrollYProgress,
     [0, 1],
-    [0, 250]
+    [0, 500]
   );
   const textTranslateYDesktop = useTransform(
     headerScroll.scrollYProgress,
@@ -848,7 +848,7 @@ export default function Projects() {
         ) : (
           <>
             <div
-              className="relative flex flex-col items-center min-h-[300dvh] px-2 mt-20"
+              className="relative flex flex-col items-center min-h-[400dvh] px-2 mt-20"
               ref={refContainerMobile}
             >
               {/* mobile videos parent */}
@@ -864,27 +864,27 @@ export default function Projects() {
                   <motion.div
                     initial={{ scaleX: 0 }}
                     style={{ scaleX: scaleXTop }}
-                    className={`absolute w-full scale-0 h-[12px] left-0 top-0 bg-gray-700 blur-[3px]`}
+                    className={`absolute w-full scale-0 h-[12px] left-0 top-0 bg-gray-600 blur-[3px]`}
                   ></motion.div>
                   <motion.div
                     initial={{ scaleY: 0 }}
                     style={{ scaleY: scaleXSide }}
-                    className={`absolute  w-[12px] h-full origin-top scale-0 right-0 top-0 bg-gray-700 blur-[3px]`}
+                    className={`absolute  w-[12px] h-full origin-top scale-0 right-0 top-0 bg-gray-600 blur-[3px]`}
                   ></motion.div>
                   <motion.div
                     initial={{ scaleY: 0 }}
                     style={{ scaleY: scaleXSide }}
-                    className="absolute bg-gray-700 blur-[3px] w-[12px] h-full origin-top scale-0 left-0 top-0"
+                    className="absolute bg-gray-600 blur-[3px] w-[12px] h-full origin-top scale-0 left-0 top-0"
                   ></motion.div>
                   <motion.div
                     initial={{ scaleXBttom: 0 }}
                     style={{ scaleX: scaleXBottom }}
-                    className="absolute bg-gray-700 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-left left-0 bottom-[1px]"
+                    className="absolute bg-gray-600 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-left left-0 bottom-[1px]"
                   ></motion.div>
                   <motion.div
                     initial={{ scaleXBottom: 0 }}
                     style={{ scaleX: scaleXBottom }}
-                    className="absolute bg-gray-700 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-right right-0 bottom-[1px]"
+                    className="absolute bg-gray-600 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-right right-0 bottom-[1px]"
                   ></motion.div>
                   {/* Mobile Videos content*/}
                   <div className="relative aspect-video rounded-xl overflow-hidden">

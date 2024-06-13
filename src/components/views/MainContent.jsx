@@ -6,7 +6,7 @@ export default function MainContent({ color, textEnter, textLeave }) {
   const [text] = useTypewriter({
     words: ["Web Developer", "Fullstack Developer"],
     loop: true,
-    delaySpeed: 1500,
+    delaySpeed: 1000,
   });
   return (
     <>
