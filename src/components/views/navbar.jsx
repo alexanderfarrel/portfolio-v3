@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Home from "../icons/navIcons/home";
+import { useStoreGlobal } from "../../services/zustand/store";
 
-export default function Navbar({ navbarEnter, navbarLeave }) {
+export default function Navbar() {
   const url = window.location.pathname;
   const [open, setOpen] = useState(false); // for open navbar
   const [initial, setInitial] = useState(true); // animation initialization
@@ -270,6 +271,13 @@ export default function Navbar({ navbarEnter, navbarLeave }) {
     return () => clearTimeout(time);
   };
 
+  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const navbarEnter = () => {
+    changeCursorVariant("navbar");
+  };
+  const navbarLeave = () => {
+    changeCursorVariant("default");
+  };
   return (
     <motion.nav
       className="fixed right-0 top-1/2 -translate-y-1/2 min-h-[3.2rem] max-h-[18rem] w-12 flex justify-center items-center overflow-hidden z-30"

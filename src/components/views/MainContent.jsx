@@ -1,13 +1,18 @@
 import Button from "../ui/button";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import propTypes from "prop-types";
+import { useStoreGlobal } from "../../services/zustand/store";
 
-export default function MainContent({ color, textEnter, textLeave }) {
+export default function MainContent({ color }) {
   const [text] = useTypewriter({
     words: ["Web Developer", "Fullstack Developer"],
     loop: true,
     delaySpeed: 1000,
   });
+
+  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const textEnter = () => changeCursorVariant("text");
+  const textLeave = () => changeCursorVariant("default");
   return (
     <>
       <main

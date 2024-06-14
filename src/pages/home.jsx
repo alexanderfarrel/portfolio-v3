@@ -7,12 +7,12 @@ import {
 import useWindowWidth from "../hooks/windowWidth";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Navbar from "../components/views/navbar";
-import Button from "../components/ui/button";
 import MainContent from "../components/views/MainContent";
 import SkillsBar from "../components/views/skillsBar";
 import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
+import { useStoreGlobal } from "../services/zustand/store";
 
 export default function Home() {
   const windowWidth = useWindowWidth();
@@ -130,116 +130,42 @@ export default function Home() {
     });
   }, []);
 
-  // Cursor
-  const [mousePotition, setMousePosition] = useState({ x: null, y: null });
-  const [cursorVariant, setCursorVariant] = useState("default");
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleMouseEnter = () => {
-      setIsMouseEnter(true);
-    };
-    const handleMouseLeave = () => {
-      setIsMouseEnter(false);
-    };
-    document.addEventListener("mouseenter", handleMouseEnter);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      document.removeEventListener("mouseenter", handleMouseEnter);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  const trailer = useRef(null);
-  const trailerOffset = trailer?.current?.offsetWidth / 2;
-
-  const mouseVariants = {
-    default: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1,
-    },
-    navbar: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1,
-    },
-    text: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 4,
-      transition: { duration: 0.2 },
-    },
-  };
-  const textEnter = () => setCursorVariant("text");
-  const textLeave = () => setCursorVariant("default");
-  const navbarEnter = () => setCursorVariant("navbar");
-  const navbarLeave = () => setCursorVariant("default");
-
   // view-intro
   const viewIntro = useRef(null);
-  const [isViewIntro, setIsViewIntro] = useState(false);
-  const [viewIntroMousePotition, setViewIntroMousePosition] = useState({
-    x: 0,
-    y: 0,
-  });
   useEffect(() => {
-    const handleMouseEnter = (e) => {
+    const handleMouseMove = (e) => {
       const x = e.clientX - viewIntro.current.offsetLeft;
       const y = e.clientY - viewIntro.current.offsetTop;
-      setViewIntroMousePosition({ x, y });
-      setIsViewIntro(true);
+      viewIntro.current.style.setProperty("--x", `${x}px`);
+      viewIntro.current.style.setProperty("--y", `${y}px`);
     };
 
-    const handleMouseLeave = (e) => {
-      const x = e.clientX - viewIntro.current.offsetLeft;
-      const y = e.clientY - viewIntro.current.offsetTop;
-      setViewIntroMousePosition({ x, y });
-      setIsViewIntro(false);
-    };
-
-    viewIntro.current.addEventListener("mouseenter", handleMouseEnter);
-    viewIntro.current.addEventListener("mouseleave", handleMouseLeave);
+    viewIntro.current.addEventListener("mousemove", handleMouseMove);
     return () => {
-      viewIntro?.current?.removeEventListener("mouseenter", handleMouseEnter);
-      viewIntro?.current?.removeEventListener("mouseleave", handleMouseLeave);
+      viewIntro?.current?.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+  const handleViewIntroClick = (e) => {
+    let x = e.clientX - viewIntro.current.offsetLeft;
+    let y = e.clientY - viewIntro.current.offsetTop;
+
+    let ripples = document.createElement("span");
+    ripples.classList.add("btn-ripple-span");
+    ripples.style.left = `${x}px`;
+    ripples.style.top = `${y}px`;
+    viewIntro.current.appendChild(ripples);
+    setTimeout(() => {
+      ripples.remove();
+      window.location.href = "/";
+    }, 500);
+  };
+
+  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const textEnter = () => changeCursorVariant("text");
+  const textLeave = () => changeCursorVariant("default");
   return (
     <>
-      <motion.div
-        ref={trailer}
-        animate={{
-          scale:
-            mousePotition.x == null
-              ? 0
-              : cursorVariant != "default"
-              ? cursorVariant == "navbar"
-                ? 0
-                : 3
-              : !isMouseEnter
-              ? 0
-              : 1.5,
-        }}
-        style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
-        className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full ${
-          cursorVariant != "default" ? "mix-blend-difference" : ""
-        } ${windowWidth < 1200 ? "hidden" : ""}`}
-      />
-      <Navbar navbarEnter={navbarEnter} navbarLeave={navbarLeave} />
+      <Navbar />
       <div className="relative overflow-x-hidden" ref={comp}>
         <motion.div className="relative h-[100dvh] flex flex-col items-center justify-between py-3">
           <motion.div
@@ -250,37 +176,22 @@ export default function Home() {
             style={{ backgroundImage }}
           ></motion.div>
           <SkillsBar id={"skill-upper"} />
-          <MainContent
-            color={color}
-            textEnter={textEnter}
-            textLeave={textLeave}
-          />
+          <MainContent color={color} />
           <SkillsBar id={"skill-below"} />
         </motion.div>
 
         <div
-          className="absolute bottom-20 right-[4vw] border border-white/50 rounded-full px-3 py-1 cursor-pointer flex gap-2 items-center justify-center"
-          onMouseEnter={textEnter}
-          onMouseLeave={textLeave}
-          onClick={() => (window.location.href = "/")}
+          className="absolute bottom-20 right-[4vw] rounded-full px-3 py-1 cursor-pointer flex gap-2 items-center justify-center overflow-hidden btn-ripple"
           id="view-intro"
           ref={viewIntro}
+          onClick={handleViewIntroClick}
+          onMouseEnter={textEnter}
+          onMouseLeave={textLeave}
         >
-          <motion.div
-            className="bg-white/50 rounded-full w-full h-full absolute inset-0"
-            initial={{
-              clipPath: `circle(0px at ${viewIntroMousePotition.x}px ${viewIntroMousePotition.y}px)`,
-            }}
-            animate={{
-              clipPath: isViewIntro
-                ? `circle(150px at ${viewIntroMousePotition.x}px ${viewIntroMousePotition.y}px)`
-                : `circle(0px at ${viewIntroMousePotition.x}px ${viewIntroMousePotition.y}px)`,
-            }}
-          ></motion.div>
           <img
             src="/icons/arrow-border.png"
             alt=""
-            className="max-w-[30px] -mx-1"
+            className="max-w-[25px] -mx-1"
           />
           <p>View Intro</p>
         </div>
