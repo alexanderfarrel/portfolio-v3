@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import gsap from "gsap";
 import useWindowWidth from "../hooks/windowWidth";
 import { useStoreGlobal } from "../services/zustand/store";
+import CursorTrailer from "../components/views/cursorTrailer";
 
 const routes = {
   "/": "Home",
@@ -52,75 +53,11 @@ export default function Transition({ children, backgroundColor }) {
     return () => ctx.revert();
   }, []);
 
-  // Cursor
   const cursorVariantsGlobal = useStoreGlobal((state) => state.cursorVariant);
-  const [mousePotition, setMousePosition] = useState({ x: null, y: null });
-  const [cursorVariant, setCursorVariant] = useState("default");
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
-  useEffect(() => {
-    setCursorVariant(cursorVariantsGlobal);
-  }, [cursorVariantsGlobal]);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      e.preventDefault();
-      setIsMouseEnter(true);
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleMouseEnter = () => {
-      setIsMouseEnter(true);
-    };
-    const handleMouseLeave = () => {
-      setIsMouseEnter(false);
-    };
-    document.addEventListener("mouseenter", handleMouseEnter);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      document.removeEventListener("mouseenter", handleMouseEnter);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  const trailer = useRef(null);
-  const trailerOffset = trailer?.current?.offsetWidth / 2;
-
-  const mouseVariants = {
-    default: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1,
-    },
-    navbar: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1,
-    },
-    text: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 4,
-      transition: { duration: 0.2 },
-    },
-  };
-  // const textEnter = () => setCursorVariant("text");
-  // const textLeave = () => setCursorVariant("default");
-  // const navbarEnter = () => setCursorVariant("navbar");
-  // const navbarLeave = () => setCursorVariant("default");
 
   return (
     <motion.div
-      className=""
+      className={`${cursorVariantsGlobal != "default" && "cursor-none"}`}
       style={{ backgroundColor }}
       key={location.pathname}
     >
@@ -165,25 +102,7 @@ export default function Transition({ children, backgroundColor }) {
       >
         {routes[location.pathname]}
       </div>
-      <motion.div
-        ref={trailer}
-        animate={{
-          scale:
-            mousePotition.x == null
-              ? 0
-              : cursorVariant != "default"
-              ? cursorVariant == "navbar"
-                ? 0
-                : 3
-              : !isMouseEnter
-              ? 0
-              : 1.5,
-        }}
-        style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
-        className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full ${
-          cursorVariant != "default" ? "mix-blend-difference" : ""
-        } ${windowWidth < 1200 ? "hidden" : ""}`}
-      />
+      {location.pathname == "/" ? "" : <CursorTrailer />}
       {children}
     </motion.div>
   );

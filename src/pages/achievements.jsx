@@ -5,6 +5,8 @@ import useWindowWidth from "../hooks/windowWidth";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import Navbar from "../components/views/navbar";
+import { useStoreGlobal } from "../services/zustand/store";
+import FooterEndContent from "../components/views/footer";
 
 const picturesCarousel = [
   {
@@ -365,6 +367,10 @@ export default function Achievements() {
     };
   }, []);
 
+  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const textEnter = () => changeCursorVariant("text");
+  const textLeave = () => changeCursorVariant("default");
+
   return (
     <>
       <Navbar></Navbar>
@@ -661,17 +667,7 @@ export default function Achievements() {
         </motion.div>
         <Dots imgIdx={imgIdx} setImgIdx={openSwiper} />
       </section>
-      <footer className="h-[40vh] flex flex-col justify-center items-center">
-        <h1 className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-          END
-        </h1>
-        <p
-          className="text-xl font-thin cursor-pointer bg-gradient-to-b from-gray-200 to-gray-600 bg-clip-text text-transparent z-20"
-          id="back-to-top"
-        >
-          Back to Top
-        </p>
-      </footer>
+      <FooterEndContent textEnter={textEnter} textLeave={textLeave} />
     </>
   );
 }

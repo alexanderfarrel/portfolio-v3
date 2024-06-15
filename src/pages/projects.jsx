@@ -9,6 +9,8 @@ import Navbar from "../components/views/navbar";
 import Span from "../components/ui/span";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
+import { useStoreGlobal } from "../services/zustand/store";
+import FooterEndContent from "../components/views/footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -310,6 +312,10 @@ export default function Projects() {
     }),
   };
 
+  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const textEnter = () => changeCursorVariant("text");
+  const textLeave = () => changeCursorVariant("default");
+
   return (
     <>
       <Navbar></Navbar>
@@ -395,9 +401,7 @@ export default function Projects() {
             >
               Projects
             </h1>
-            <p id="header-subtitle" className="">
-              ~ Scroll Down ~
-            </p>
+            <p id="header-subtitle">~ Scroll Down ~</p>
           </motion.div>
           {windowWidth < 1200 && (
             <motion.div
@@ -449,12 +453,6 @@ export default function Projects() {
             style={{ display: "flex" }}
             ref={containerDesktopRef}
           >
-            {/* <div className="w-full h-screen absolute z-10">
-            <div className="absolute left-[10%] opacity-60 top-[70%] max-w-[100px] max-h-[100px] p-2 flex justify-center items-center">
-              <Firebase className={"w-full h-full"}></Firebase>
-              <div className="bg-white opacity-10 w-full h-full -z-10 absolute top-0 rounded-xl"></div>
-            </div>
-          </div> */}
             {/* desktop description start */}
             <motion.div
               className="left w-2/3 z-20"
@@ -474,7 +472,12 @@ export default function Projects() {
                   isInView1 ? "text-violet-600" : "text-gray-600"
                 } transition-colors duration-700 text-center max-w-3xl mx-auto`}
               >
-                <h1 className="text-5xl" ref={ref1}>
+                <h1
+                  className="text-5xl"
+                  ref={ref1}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
+                >
                   E-Commerce Concept
                 </h1>
                 <p
@@ -486,6 +489,8 @@ export default function Projects() {
                   onClick={() =>
                     window.open("https://warungjujugan.vercel.app")
                   }
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   warungjujugan.vercel.app
                 </p>
@@ -493,6 +498,8 @@ export default function Projects() {
                   className={`text-xl ${
                     isInView1 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   Tech :{" "}
                   <Span isInView={isInView1} className="text-gray-200">
@@ -508,6 +515,8 @@ export default function Projects() {
                   </Span>
                 </p>
                 <p
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                   className={`text-xl ${
                     isInView1 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
@@ -548,7 +557,12 @@ export default function Projects() {
                   isInView2 ? "text-emerald-600" : "text-gray-600"
                 } transition-colors duration-700 text-center max-w-3xl mx-auto`}
               >
-                <h1 className="text-5xl" ref={ref2}>
+                <h1
+                  className="text-5xl"
+                  ref={ref2}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
+                >
                   Real Time Chat
                 </h1>
                 <p
@@ -560,6 +574,8 @@ export default function Projects() {
                   onClick={() =>
                     window.open("https://messenger-alexz.vercel.app")
                   }
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   messenger-alexz.vercel.app
                 </p>
@@ -567,6 +583,8 @@ export default function Projects() {
                   className={`text-xl ${
                     isInView2 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   Tech :{" "}
                   <Span isInView={isInView2} className="text-emerald-400">
@@ -589,6 +607,8 @@ export default function Projects() {
                   className={`text-xl ${
                     isInView2 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   Using{" "}
                   <Span isInView={isInView2} className="text-orange-400">
@@ -615,7 +635,12 @@ export default function Projects() {
                   isInView3 ? "text-teal-600" : "text-gray-600"
                 } transition-colors duration-700 text-center max-w-3xl mx-auto`}
               >
-                <h1 className="text-5xl" ref={ref3}>
+                <h1
+                  className="text-5xl"
+                  ref={ref3}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
+                >
                   Portfolio Website V.1
                 </h1>
                 <p
@@ -627,6 +652,8 @@ export default function Projects() {
                   onClick={() =>
                     window.open("https://alexanderfarrel.github.io")
                   }
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   alexanderfarrel.github.io
                 </p>
@@ -634,6 +661,8 @@ export default function Projects() {
                   className={`text-xl ${
                     isInView3 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   Tech :{" "}
                   <Span isInView={isInView3} className="text-orange-400">
@@ -652,6 +681,8 @@ export default function Projects() {
                   className={`text-xl ${
                     isInView3 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
+                  onMouseEnter={textEnter}
+                  onMouseLeave={textLeave}
                 >
                   After learning{" "}
                   <Span isInView={isInView3} className="text-orange-400">
@@ -1151,18 +1182,8 @@ export default function Projects() {
             </div>
           </>
         )}
-        <footer className="h-[40vh] flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-            END
-          </h1>
-          <p
-            className="text-xl font-thin cursor-pointer bg-gradient-to-b from-gray-200 to-gray-600 bg-clip-text text-transparent z-20"
-            id="back-to-top"
-          >
-            Back to Top
-          </p>
-        </footer>
-        <motion.div className="absolute left-0 bottom-0 h-[150vh] w-full z-10">
+        <FooterEndContent textEnter={textEnter} textLeave={textLeave} />
+        <motion.div className="absolute left-0 bottom-0 h-[150vh] w-full">
           <Canvas>
             <Stars
               radius={windowWidth < 1200 ? 20 : 50}

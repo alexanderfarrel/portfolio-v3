@@ -9,17 +9,22 @@ export default function Button({
   intro = false,
   color = null,
   onClick = () => {},
-  textEnter = () => {},
-  textLeave = () => {},
+  linkEnter = () => {},
+  cursorDefault = () => {},
+  customCursor = () => {},
+  resetCustomCursor = () => {},
 }) {
-  const tes = "rgba(150,240,138,1)";
   return (
     <motion.button
-      onMouseEnter={textEnter}
-      onMouseLeave={textLeave}
+      onMouseEnter={() => {
+        linkEnter(), customCursor();
+      }}
+      onMouseLeave={() => {
+        cursorDefault(), resetCustomCursor();
+      }}
       onClick={onClick}
-      className={`px-6 py-2 rounded-md relative ${
-        !intro ? "radial-gradient sm:text-[13px]" : "cursor-default sm:text-6xl"
+      className={`px-6 py-2 rounded-md relative cursor-none ${
+        !intro ? "radial-gradient sm:text-[13px]" : " sm:text-6xl"
       } ${className} sm:px-4 sm:py-[6px]`}
       initial={{ "--x": "100%", scale: 1 }}
       animate={{ "--x": "-100%" }}

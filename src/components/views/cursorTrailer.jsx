@@ -1,0 +1,110 @@
+import { useEffect, useRef, useState } from "react";
+import { useStoreGlobal } from "../../services/zustand/store";
+import { motion } from "framer-motion";
+import useWindowWidth from "../../hooks/windowWidth";
+export default function CursorTrailer() {
+  const windowWidth = useWindowWidth();
+  // Cursor
+  const cursorVariantsGlobal = useStoreGlobal((state) => state.cursorVariant);
+  const customCursor = useStoreGlobal((state) => state.customCursor);
+  const [mousePotition, setMousePosition] = useState({ x: null, y: null });
+  const [cursorVariant, setCursorVariant] = useState("default");
+  const [isMouseEnter, setIsMouseEnter] = useState(false);
+
+  useEffect(() => {
+    setCursorVariant(cursorVariantsGlobal);
+  }, [cursorVariantsGlobal]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      e.preventDefault();
+      setIsMouseEnter(true);
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleMouseEnter = () => {
+      setIsMouseEnter(true);
+    };
+    const handleMouseLeave = () => {
+      setIsMouseEnter(false);
+    };
+    document.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
+  const trailer = useRef(null);
+  const trailerOffset = trailer?.current?.offsetWidth / 2;
+
+  const mouseVariants = {
+    default: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 1.5,
+    },
+    navbar: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 1.5,
+    },
+    text: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 3,
+      transition: { duration: 0.2 },
+    },
+    link: {
+      x: mousePotition.x - trailerOffset,
+      y: mousePotition.y - trailerOffset,
+      scale: 2.5,
+      transition: { duration: 0.2 },
+    },
+  };
+  return (
+    <motion.div
+      ref={trailer}
+      initial={{ scale: 0 }}
+      animate={{
+        scale:
+          mousePotition.x == null
+            ? 0
+            : cursorVariant == "navbar"
+            ? 0
+            : cursorVariant == "default"
+            ? !isMouseEnter
+              ? 0
+              : 1.5
+            : cursorVariant == "link"
+            ? 2.5
+            : 3,
+      }}
+      style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
+      className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full flex justify-center items-center ${
+        cursorVariant == "default" || cursorVariant == "link"
+          ? ""
+          : "mix-blend-difference"
+      } ${windowWidth < 1200 ? "hidden" : ""}`}
+    >
+      {customCursor == "link" && (
+        <img
+          src="/icons/arrow.png"
+          alt=""
+          className="w-[12px] h-[12px] rotate-[135deg]"
+        />
+      )}
+    </motion.div>
+  );
+}

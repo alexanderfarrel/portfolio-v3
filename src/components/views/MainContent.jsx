@@ -10,9 +10,13 @@ export default function MainContent({ color }) {
     delaySpeed: 1000,
   });
 
-  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
-  const textEnter = () => changeCursorVariant("text");
-  const textLeave = () => changeCursorVariant("default");
+  const setCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const textEnter = () => setCursorVariant("text");
+  const linkEnter = () => setCursorVariant("link");
+  const cursorDefault = () => setCursorVariant("default");
+  const setCustomCursor = useStoreGlobal((state) => state.setCustomCursor);
+  const cursorLink = () => setCustomCursor("link");
+  const resetCustomCursor = () => setCustomCursor("default");
   return (
     <>
       <main
@@ -22,7 +26,7 @@ export default function MainContent({ color }) {
         <section className="flex flex-col gap-2 lg:text-4xl md:text-4xl md:gap-0 sm:text-3xl sm:gap-0">
           <h2
             onMouseEnter={textEnter}
-            onMouseLeave={textLeave}
+            onMouseLeave={cursorDefault}
             id="greeting"
             className="text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-light bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent"
           >
@@ -30,7 +34,7 @@ export default function MainContent({ color }) {
           </h2>
           <h2
             onMouseEnter={textEnter}
-            onMouseLeave={textLeave}
+            onMouseLeave={cursorDefault}
             id="name"
             className="text-6xl lg:text-5xl md:text-4xl sm:text-3xl font-light bg-gradient-to-br from-white to-gray-500 bg-clip-text text-transparent"
           >
@@ -38,7 +42,7 @@ export default function MainContent({ color }) {
           </h2>
           <p
             onMouseEnter={textEnter}
-            onMouseLeave={textLeave}
+            onMouseLeave={cursorDefault}
             id="typing"
             className="text-4xl lg:text-3xl md:text-2xl sm:text-xl font-medium"
           >
@@ -58,8 +62,10 @@ export default function MainContent({ color }) {
           <div className="flex gap-4 mt-2">
             <span id="button-cv">
               <Button
-                textEnter={textEnter}
-                textLeave={textLeave}
+                linkEnter={linkEnter}
+                cursorDefault={cursorDefault}
+                customCursor={cursorLink}
+                resetCustomCursor={resetCustomCursor}
                 onClick={() => alert("Contact Developer Untuk Mendapatkan CV")}
                 className={`text-sm`}
                 color={color}
@@ -69,8 +75,10 @@ export default function MainContent({ color }) {
             </span>
             <span id="button-contact">
               <Button
-                textEnter={textEnter}
-                textLeave={textLeave}
+                linkEnter={linkEnter}
+                cursorDefault={cursorDefault}
+                customCursor={cursorLink}
+                resetCustomCursor={resetCustomCursor}
                 className={`text-sm`}
                 delay={4.4}
                 onClick={() =>

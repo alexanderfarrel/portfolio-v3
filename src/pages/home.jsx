@@ -161,8 +161,11 @@ export default function Home() {
   };
 
   const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
-  const textEnter = () => changeCursorVariant("text");
-  const textLeave = () => changeCursorVariant("default");
+  const linkEnter = () => changeCursorVariant("link");
+  const cursorDefault = () => changeCursorVariant("default");
+  const setCustomCursor = useStoreGlobal((state) => state.setCustomCursor);
+  const cursorLink = () => setCustomCursor("link");
+  const resetCursorCustom = () => setCustomCursor("default");
   return (
     <>
       <Navbar />
@@ -181,12 +184,16 @@ export default function Home() {
         </motion.div>
 
         <div
-          className="absolute bottom-20 right-[4vw] rounded-full px-3 py-1 cursor-pointer flex gap-2 items-center justify-center overflow-hidden btn-ripple"
+          className="absolute bottom-20 right-[4vw] rounded-full px-3 py-1 flex gap-2 items-center justify-center overflow-hidden btn-ripple"
           id="view-intro"
           ref={viewIntro}
           onClick={handleViewIntroClick}
-          onMouseEnter={textEnter}
-          onMouseLeave={textLeave}
+          onMouseEnter={() => {
+            linkEnter(), cursorLink();
+          }}
+          onMouseLeave={() => {
+            cursorDefault(), resetCursorCustom();
+          }}
         >
           <img
             src="/icons/arrow-border.png"
