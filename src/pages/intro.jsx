@@ -6,27 +6,25 @@ import {
   useMotionTemplate,
   useMotionValue,
 } from "framer-motion";
-import MainContent from "../components/views/MainContent";
+import MainContent from "../templates/components/MainContent";
 import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import useWindowWidth from "../hooks/windowWidth";
+import useWindowWidth from "../services/hooks/windowWidth";
 
-import SkillsBar from "../components/views/skillsBar";
-import Button from "../components/ui/button";
-import Navbar from "../components/views/navbar";
+import SkillsBar from "../templates/components/skillsBar";
+
+import Button from "../templates/ui/button";
+import Navbar from "../templates/components/navbar";
+
 import { useStoreGlobal } from "../services/zustand/store";
+import CursorTrailer from "../templates/views/cursorTrailer";
 
 export default function Intro() {
-  const [colors, setColors] = useState([
-    "#13FFAA",
-    "#1E67C6",
-    "#CE84CF",
-    "#DD335C",
-  ]);
+  const [colors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
   const comp = useRef(null);
   const windowWidth = useWindowWidth();
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const t1 = gsap.timeline();
       t1.from("#intro-slider", {
         xPercent: "-100",
@@ -157,97 +155,25 @@ export default function Intro() {
     });
   }, []);
 
-  // Cursor
   const cursorVariantsGlobal = useStoreGlobal((state) => state.cursorVariant);
-  const [mousePotition, setMousePosition] = useState({ x: null, y: null });
-  const [cursorVariant, setCursorVariant] = useState("default");
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
-  useEffect(() => {
-    setCursorVariant(cursorVariantsGlobal);
-  }, [cursorVariantsGlobal]);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      e.preventDefault();
-      setIsMouseEnter(true);
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleMouseEnter = () => {
-      setIsMouseEnter(true);
-    };
-    const handleMouseLeave = () => {
-      setIsMouseEnter(false);
-    };
-    document.addEventListener("mouseenter", handleMouseEnter);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      document.removeEventListener("mouseenter", handleMouseEnter);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  const trailer = useRef(null);
-  const trailerOffset = trailer?.current?.offsetWidth / 2;
-
-  const mouseVariants = {
-    default: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1,
-    },
-    navbar: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1,
-    },
-    text: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 4,
-      transition: { duration: 0.2 },
-    },
-  };
   return (
-    <>
-      <motion.div
-        ref={trailer}
-        animate={{
-          scale:
-            mousePotition.x == null
-              ? 0
-              : cursorVariant != "default"
-              ? cursorVariant == "navbar"
-                ? 0
-                : 3
-              : !isMouseEnter
-              ? 0
-              : 1.5,
-        }}
-        style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
-        className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full ${
-          cursorVariant != "default" ? "mix-blend-difference" : ""
-        } ${windowWidth < 1200 ? "hidden" : ""}`}
-      />
+    <div className={`${cursorVariantsGlobal != "default" && "cursor-none"}`}>
+      <CursorTrailer />
       <div className="relative overflow-x-hidden" ref={comp}>
         <div
           id="intro-slider"
           className="h-[100vh] p-10 bg-gray-50 absolute top-0 left-0 z-10 w-full flex flex-col justify-center gap-10 tracking-tight md:gap-5 sm:gap-5 text-black"
         >
-          <h1 className="text-9xl md:text-8xl sm:text-6xl" id="title-1">
+          <h1
+            className="text-9xl md:text-8xl sm:text-6xl cursor-none"
+            id="title-1"
+          >
             Welcome
           </h1>
-          <h1 className="text-9xl md:text-8xl sm:text-6xl" id="title-2">
+          <h1
+            className="text-9xl md:text-8xl sm:text-6xl cursor-none"
+            id="title-2"
+          >
             To
           </h1>
         </div>
@@ -259,7 +185,7 @@ export default function Intro() {
             transition={{ delay: 5.5, duration: 5 }}
             className="absolute top-0 left-0 right-0 bottom-0 -z-20 opacity-0"
             style={{ backgroundImage }}
-          ></motion.div>
+          />
           <Navbar />
           <SkillsBar id={"skill-upper"} />
           <Button id={"welcome"} intro className={"text-[5rem]"}>
@@ -285,6 +211,6 @@ export default function Intro() {
           />
         </Canvas>
       </motion.div>
-    </>
+    </div>
   );
 }

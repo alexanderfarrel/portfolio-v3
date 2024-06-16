@@ -3,14 +3,15 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import useWindowWidth from "../hooks/windowWidth";
+import useWindowWidth from "../services/hooks/windowWidth";
 import Lenis from "lenis";
-import Navbar from "../components/views/navbar";
-import Span from "../components/ui/span";
+import Navbar from "../templates/components/navbar";
+import Span from "../templates/ui/span";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import { useStoreGlobal } from "../services/zustand/store";
-import FooterEndContent from "../components/views/footer";
+import FooterEndContent from "../templates/components/footer";
+import ScrollToTop from "../templates/components/scrollToTop";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -255,7 +256,7 @@ export default function Projects() {
   );
   useLayoutEffect(() => {
     if (windowWidth < 1200) {
-      let ctx = gsap.context(() => {
+      const ctx = gsap.context(() => {
         ScrollTrigger.create({
           trigger: refContainerMobile.current,
           start: "top 15%",
@@ -312,32 +313,32 @@ export default function Projects() {
     }),
   };
 
-  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
-  const textEnter = () => changeCursorVariant("text");
-  const textLeave = () => changeCursorVariant("default");
+  const setCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const cursorDefault = () => setCursorVariant("default");
+  const textEnter = () => setCursorVariant("text");
+  const linkEnter = () => setCursorVariant("link");
+  const setCustomCursor = useStoreGlobal((state) => state.setCustomCursor);
+  const resetCustomCursor = () => setCustomCursor("default");
+  const cursorLink = () => setCustomCursor("link");
+  const cursorBackToTop = () => setCustomCursor("backToTop");
 
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar />
       <div
         className="bg-gradient-to-b from-[#162635] from-20% to-neutral-950 relative"
         ref={comp}
       >
         {/* scroll to top */}
-        <motion.div
-          id="scroll"
-          initial={{
-            opacity: scrollY > 0 ? 1 : 0,
-            y: scrollY > 0 ? 20 : 0,
+        <ScrollToTop
+          scrollY={scrollY}
+          mouseEnter={() => {
+            linkEnter(), cursorBackToTop();
           }}
-          animate={{
-            opacity: scrollY > 0 ? 1 : 0,
-            y: scrollY > 0 ? 0 : 20,
+          mouseLeave={() => {
+            cursorDefault(), resetCustomCursor();
           }}
-          className={`w-8 h-8 bg-gray-700 rounded-full fixed bottom-6 right-4 flex justify-center items-center cursor-pointer z-30`}
-        >
-          <span className="text-3xl -translate-x-1 -rotate-90">›</span>
-        </motion.div>
+        />
 
         {/* header */}
         <motion.div
@@ -429,25 +430,25 @@ export default function Projects() {
                   transition: "opacity 0.5s ease-out, x 0.5s ease-out",
                 }}
                 className={`w-14 h-7 rounded-full border-2 ${
-                  !isVideosActived ? "border-green-500" : "border-yellow-300"
+                  isVideosActived ? "border-yellow-300" : "border-green-500"
                 } shadow-inner relative flex items-center mt-2`}
               >
                 <motion.div
                   initial={{ x: !isVideosActived ? 0 : 25 }}
                   animate={{
-                    x: !isVideosActived ? 25 : 0,
+                    x: isVideosActived ? 0 : 25,
                     transition: { type: "spring", stiffness: 400, damping: 25 },
                   }}
                   onClick={() => setIsVideosActived(!isVideosActived)}
                   whileTap={{ width: "1.7rem", left: !isVideosActived && -6 }}
                   className={`w-5 h-5 bg-white rounded-full shadow absolute left-1`}
-                ></motion.div>
+                />
               </motion.div>
             </motion.div>
           )}
         </motion.div>
 
-        {windowWidth > 1200 ? (
+        {windowWidth >= 1200 ? (
           <div
             className="gallery flex justify-around px-10 relative"
             style={{ display: "flex" }}
@@ -476,7 +477,7 @@ export default function Projects() {
                   className="text-5xl"
                   ref={ref1}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   E-Commerce Concept
                 </h1>
@@ -489,8 +490,12 @@ export default function Projects() {
                   onClick={() =>
                     window.open("https://warungjujugan.vercel.app")
                   }
-                  onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseEnter={() => {
+                    linkEnter(), cursorLink();
+                  }}
+                  onMouseLeave={() => {
+                    cursorDefault(), resetCustomCursor();
+                  }}
                 >
                   warungjujugan.vercel.app
                 </p>
@@ -499,7 +504,7 @@ export default function Projects() {
                     isInView1 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   Tech :{" "}
                   <Span isInView={isInView1} className="text-gray-200">
@@ -516,7 +521,7 @@ export default function Projects() {
                 </p>
                 <p
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                   className={`text-xl ${
                     isInView1 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
@@ -561,7 +566,7 @@ export default function Projects() {
                   className="text-5xl"
                   ref={ref2}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   Real Time Chat
                 </h1>
@@ -574,8 +579,12 @@ export default function Projects() {
                   onClick={() =>
                     window.open("https://messenger-alexz.vercel.app")
                   }
-                  onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseEnter={() => {
+                    linkEnter(), cursorLink();
+                  }}
+                  onMouseLeave={() => {
+                    cursorDefault(), resetCustomCursor();
+                  }}
                 >
                   messenger-alexz.vercel.app
                 </p>
@@ -584,7 +593,7 @@ export default function Projects() {
                     isInView2 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   Tech :{" "}
                   <Span isInView={isInView2} className="text-emerald-400">
@@ -608,7 +617,7 @@ export default function Projects() {
                     isInView2 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   Using{" "}
                   <Span isInView={isInView2} className="text-orange-400">
@@ -639,7 +648,7 @@ export default function Projects() {
                   className="text-5xl"
                   ref={ref3}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   Portfolio Website V.1
                 </h1>
@@ -652,8 +661,12 @@ export default function Projects() {
                   onClick={() =>
                     window.open("https://alexanderfarrel.github.io")
                   }
-                  onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseEnter={() => {
+                    linkEnter(), cursorLink();
+                  }}
+                  onMouseLeave={() => {
+                    cursorDefault(), resetCustomCursor();
+                  }}
                 >
                   alexanderfarrel.github.io
                 </p>
@@ -662,7 +675,7 @@ export default function Projects() {
                     isInView3 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   Tech :{" "}
                   <Span isInView={isInView3} className="text-orange-400">
@@ -682,7 +695,7 @@ export default function Projects() {
                     isInView3 ? "text-neutral-300" : "text-gray-600"
                   } transition-colors duration-700`}
                   onMouseEnter={textEnter}
-                  onMouseLeave={textLeave}
+                  onMouseLeave={cursorDefault}
                 >
                   After learning{" "}
                   <Span isInView={isInView3} className="text-orange-400">
@@ -752,7 +765,7 @@ export default function Projects() {
                         type: "tween",
                       },
                     }}
-                  ></motion.div>
+                  />
                   <motion.div
                     className="w-full h-full absolute bg-emerald-600 blur-[200px]"
                     animate={{
@@ -762,7 +775,7 @@ export default function Projects() {
                         type: "tween",
                       },
                     }}
-                  ></motion.div>
+                  />
                   <motion.div
                     className="w-full h-full absolute bg-fuchsia-600 blur-[200px]"
                     animate={{
@@ -772,7 +785,7 @@ export default function Projects() {
                         type: "tween",
                       },
                     }}
-                  ></motion.div>
+                  />
                   {/* end background color */}
                   {/* content */}
                   <motion.div
@@ -789,6 +802,12 @@ export default function Projects() {
                       y: 0,
                     }}
                     className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4 cursor-pointer"
+                    onMouseEnter={() => {
+                      linkEnter(), cursorLink();
+                    }}
+                    onMouseLeave={() => {
+                      cursorDefault(), resetCustomCursor();
+                    }}
                   >
                     <video
                       ref={video1}
@@ -797,7 +816,7 @@ export default function Projects() {
                       loop={isInView1}
                       muted
                       className="object-cover"
-                    ></video>
+                    />
                     <div
                       className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
                       onClick={() =>
@@ -821,6 +840,12 @@ export default function Projects() {
                       y: "200%",
                     }}
                     className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4 cursor-pointer"
+                    onMouseEnter={() => {
+                      linkEnter(), cursorLink();
+                    }}
+                    onMouseLeave={() => {
+                      cursorDefault(), resetCustomCursor();
+                    }}
                   >
                     <video
                       ref={video2}
@@ -829,7 +854,7 @@ export default function Projects() {
                       loop={isInView2}
                       muted
                       className="object-cover"
-                    ></video>
+                    />
                     <div
                       className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
                       onClick={() =>
@@ -853,6 +878,12 @@ export default function Projects() {
                       y: "200%",
                     }}
                     className="max-w-[40rem] absolute aspect-video rounded-xl overflow-hidden mx-4 cursor-pointer"
+                    onMouseEnter={() => {
+                      linkEnter(), cursorLink();
+                    }}
+                    onMouseLeave={() => {
+                      cursorDefault(), resetCustomCursor();
+                    }}
                   >
                     <video
                       ref={video3}
@@ -861,7 +892,7 @@ export default function Projects() {
                       loop={isInView3}
                       muted
                       className="object-cover"
-                    ></video>
+                    />
                     <div
                       className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
                       onClick={() =>
@@ -1182,7 +1213,13 @@ export default function Projects() {
             </div>
           </>
         )}
-        <FooterEndContent textEnter={textEnter} textLeave={textLeave} />
+        <FooterEndContent
+          mouseEnter={textEnter}
+          mouseLeave={() => {
+            cursorDefault(), resetCustomCursor();
+          }}
+          customSubtitle={cursorBackToTop}
+        />
         <motion.div className="absolute left-0 bottom-0 h-[150vh] w-full">
           <Canvas>
             <Stars

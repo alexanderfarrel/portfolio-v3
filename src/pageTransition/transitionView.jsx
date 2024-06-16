@@ -1,10 +1,10 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
-import useWindowWidth from "../hooks/windowWidth";
+import useWindowWidth from "../services/hooks/windowWidth";
 import { useStoreGlobal } from "../services/zustand/store";
-import CursorTrailer from "../components/views/cursorTrailer";
+import CursorTrailer from "../templates/views/cursorTrailer";
 
 const routes = {
   "/": "Home",
@@ -15,7 +15,6 @@ const routes = {
 };
 
 // const anim = (variants) => {
-//   console.log({ variants, initial: "initial", animate: "enter", exit: "exit" });
 //   return {
 //     variants,
 //     initial: "initial",
@@ -29,7 +28,7 @@ export default function Transition({ children, backgroundColor }) {
   const windowWidth = useWindowWidth();
 
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const t1 = gsap.timeline();
       t1.from("#title", {
         y: "+=50",
@@ -77,7 +76,7 @@ export default function Transition({ children, backgroundColor }) {
         className={`w-full h-full fixed bg-gradient-to-tl from-gray-900 to-gray-700 top-[-10dvh] ${
           windowWidth < 1000 ? "rounded-b-[50px]" : "rounded-b-[100px]"
         } hidden z-50`}
-      ></motion.div>
+      />
       <motion.div
         initial={{ height: "0dvh" }}
         animate={{
@@ -87,15 +86,13 @@ export default function Transition({ children, backgroundColor }) {
             duration: 0.8,
             display: { delay: 1 },
             ease: [0.76, 0, 0.24, 1],
-
-            // ease: [0.33, 1, 0.68, 1],
           },
         }}
         exit={{ height: "0dvh" }}
         className={`bg-gradient-to-br from-gray-700 to-gray-900 w-full h-0 fixed bottom-[-10dvh] ${
           windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
         } z-50`}
-      ></motion.div>
+      />
       <div
         id="title"
         className="w-full h-full fixed top-0 z-50 flex justify-center items-center text-7xl sm:text-5xl"

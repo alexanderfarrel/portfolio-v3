@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useStoreGlobal } from "../../services/zustand/store";
 import { motion } from "framer-motion";
-import useWindowWidth from "../../hooks/windowWidth";
+import useWindowWidth from "../../services/hooks/windowWidth";
 export default function CursorTrailer() {
   const windowWidth = useWindowWidth();
   // Cursor
@@ -55,24 +55,8 @@ export default function CursorTrailer() {
       y: mousePotition.y - trailerOffset,
       scale: 1.5,
     },
-    navbar: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 1.5,
-    },
-    text: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 3,
-      transition: { duration: 0.2 },
-    },
-    link: {
-      x: mousePotition.x - trailerOffset,
-      y: mousePotition.y - trailerOffset,
-      scale: 2.5,
-      transition: { duration: 0.2 },
-    },
   };
+
   return (
     <motion.div
       ref={trailer}
@@ -84,27 +68,72 @@ export default function CursorTrailer() {
             : cursorVariant == "navbar"
             ? 0
             : cursorVariant == "default"
-            ? !isMouseEnter
-              ? 0
-              : 1.5
+            ? isMouseEnter
+              ? 1.5
+              : 0
             : cursorVariant == "link"
-            ? 2.5
+            ? customCursor == "slide"
+              ? 3.5
+              : 2.5
             : 3,
       }}
-      style={mousePotition.x == null ? {} : mouseVariants[cursorVariant]}
+      style={mousePotition.x == null ? {} : mouseVariants["default"]}
       className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full flex justify-center items-center ${
         cursorVariant == "default" || cursorVariant == "link"
           ? ""
           : "mix-blend-difference"
       } ${windowWidth < 1200 ? "hidden" : ""}`}
     >
-      {customCursor == "link" && (
-        <img
-          src="/icons/arrow.png"
-          alt=""
-          className="w-[12px] h-[12px] rotate-[135deg]"
-        />
-      )}
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "link" ? 1 : 0,
+          display: customCursor == "link" ? "block" : "none",
+        }}
+        src="/icons/arrow.png"
+        alt=""
+        className="w-[12px] h-[12px] rotate-[135deg] absolute"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "backToTop" ? 1 : 0,
+          display: customCursor == "backToTop" ? "block" : "none",
+        }}
+        src="/icons/arrow.png"
+        alt=""
+        className="w-[12px] h-[12px] rotate-[135deg] absolute"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "download" ? 1 : 0,
+          display: customCursor == "download" ? "block" : "none",
+        }}
+        src="/icons/download.png"
+        alt=""
+        className="w-[12px] h-[12px] absolute"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "slide" ? 1 : 0,
+          display: customCursor == "slide" ? "block" : "none",
+        }}
+        src="/icons/slide.png"
+        alt=""
+        className="w-[12px] h-[12px] absolute"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "close" ? 1 : 0,
+          display: customCursor == "close" ? "block" : "none",
+        }}
+        src="/icons/close.png"
+        alt=""
+        className="w-[12px] h-[12px] absolute"
+      />
     </motion.div>
   );
 }

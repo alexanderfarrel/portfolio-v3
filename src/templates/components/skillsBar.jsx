@@ -1,14 +1,14 @@
-import Javascript from "../icons/skills/javascript";
-import Html from "../icons/skills/html";
-import Css from "../icons/skills/css";
-import Bootstrap from "../icons/skills/bootstrap";
-import ReactIcon from "../icons/skills/react";
-import Github from "../icons/skills/github";
-import Firebase from "../icons/skills/firebase";
+import Javascript from "../../assets/icons/skills/javascript";
+import Html from "../../assets/icons/skills/html";
+import Css from "../../assets/icons/skills/css";
+import Bootstrap from "../../assets/icons/skills/bootstrap";
+import ReactIcon from "../../assets/icons/skills/react";
+import Github from "../../assets/icons/skills/github";
+import Firebase from "../../assets/icons/skills/firebase";
 import PropTypes from "prop-types";
-import Nodejs from "../icons/skills/node";
-import Npm from "../icons/skills/npm";
-import GsapIcon from "../icons/skills/gsapIcon";
+import Nodejs from "../../assets/icons/skills/node";
+import Npm from "../../assets/icons/skills/npm";
+import GsapIcon from "../../assets/icons/skills/gsapIcon";
 import { useEffect } from "react";
 
 export default function SkillsBar({ id }) {

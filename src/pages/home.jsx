@@ -4,11 +4,13 @@ import {
   useMotionValue,
   motion,
 } from "framer-motion";
-import useWindowWidth from "../hooks/windowWidth";
+import useWindowWidth from "../services/hooks/windowWidth";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Navbar from "../components/views/navbar";
-import MainContent from "../components/views/MainContent";
-import SkillsBar from "../components/views/skillsBar";
+import Navbar from "../templates/components/navbar";
+
+import MainContent from "../templates/components/MainContent";
+import SkillsBar from "../templates/components/skillsBar";
 import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
@@ -16,12 +18,7 @@ import { useStoreGlobal } from "../services/zustand/store";
 
 export default function Home() {
   const windowWidth = useWindowWidth();
-  const [colors, setColors] = useState([
-    "#13FFAA",
-    "#1E67C6",
-    "#CE84CF",
-    "#DD335C",
-  ]);
+  const [colors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
   const comp = useRef(null);
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -146,10 +143,10 @@ export default function Home() {
     };
   }, []);
   const handleViewIntroClick = (e) => {
-    let x = e.clientX - viewIntro.current.offsetLeft;
-    let y = e.clientY - viewIntro.current.offsetTop;
+    const x = e.clientX - viewIntro.current.offsetLeft;
+    const y = e.clientY - viewIntro.current.offsetTop;
 
-    let ripples = document.createElement("span");
+    const ripples = document.createElement("span");
     ripples.classList.add("btn-ripple-span");
     ripples.style.left = `${x}px`;
     ripples.style.top = `${y}px`;
@@ -177,7 +174,7 @@ export default function Home() {
             transition={{ delay: 2, duration: 5 }}
             className="absolute top-0 left-0 right-0 bottom-0 -z-20 opacity-0"
             style={{ backgroundImage }}
-          ></motion.div>
+          />
           <SkillsBar id={"skill-upper"} />
           <MainContent color={color} />
           <SkillsBar id={"skill-below"} />

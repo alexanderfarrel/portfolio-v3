@@ -1,12 +1,13 @@
 import { useTransform, motion, useScroll, useMotionValue } from "framer-motion";
 import Lenis from "lenis";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import useWindowWidth from "../hooks/windowWidth";
+import useWindowWidth from "../services/hooks/windowWidth";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import Navbar from "../components/views/navbar";
+import Navbar from "../templates/components/navbar";
 import { useStoreGlobal } from "../services/zustand/store";
-import FooterEndContent from "../components/views/footer";
+import FooterEndContent from "../templates/components/footer";
+import ScrollToTop from "../templates/components/scrollToTop";
 
 const picturesCarousel = [
   {
@@ -68,7 +69,7 @@ const picturesCarousel = [
 export default function Achievements() {
   const comp = useRef(null);
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const t1 = gsap.timeline();
       t1.from("#header-title", {
         opacity: 0,
@@ -320,7 +321,7 @@ export default function Achievements() {
     } else if (windowWidth >= maxScreenWidth) {
       setSwiperWidth(minValue);
     } else {
-      let result =
+      const result =
         maxValue -
         ((windowWidth - minScreenWidth) * (maxValue - minValue)) /
           (maxScreenWidth - minScreenWidth);
@@ -347,33 +348,60 @@ export default function Achievements() {
     if (selection) selection.removeAllRanges();
     setImgIdx(idx);
   };
+  const setCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
+  const textEnter = () => setCursorVariant("text");
+  const linkEnter = () => setCursorVariant("link");
+  const cursorDefault = () => setCursorVariant("default");
+  const setCustomCursor = useStoreGlobal((state) => state.setCustomCursor);
+  const cursorSlide = () => setCustomCursor("slide");
+  const cursorBackToTop = () => setCustomCursor("backToTop");
+  const cursorClose = () => setCustomCursor("close");
+  const resetCustomCursor = () => setCustomCursor("default");
 
   useEffect(() => {
     const handleClose = (e) => {
       if (
+        !(swiperParentRef.current && swiperParentRef.current.id !== e.target.id)
+      ) {
+        return;
+      }
+      if (e.target.id == "hamburger" || e.target.id == "navbar") {
+        return;
+      }
+      setAnimateClose(true);
+      cursorDefault();
+      resetCustomCursor();
+      setTimeout(() => {
+        setImgIdx(null);
+      }, 300);
+    };
+
+    const handleMouseMove = (e) => {
+      if (imgIdx == null) {
+        return;
+      }
+      if (
         swiperParentRef.current &&
         swiperParentRef.current.id !== e.target.id
       ) {
-        setAnimateClose(true);
-        setTimeout(() => {
-          setImgIdx(null);
-        }, 300);
+        cursorClose();
+        linkEnter();
+        return;
       }
+      cursorDefault();
+      resetCustomCursor();
     };
-
     document.addEventListener("mousedown", handleClose);
+    document.addEventListener("mousemove", handleMouseMove);
     return () => {
       document.removeEventListener("mousedown", handleClose);
+      document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
-
-  const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
-  const textEnter = () => changeCursorVariant("text");
-  const textLeave = () => changeCursorVariant("default");
+  }, [imgIdx]);
 
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar />
       <header
         ref={comp}
         className={`min-h-[50vh] flex flex-col justify-center items-center bg-gradient-to-b from-gray-800 to-black gap-5`}
@@ -391,20 +419,15 @@ export default function Achievements() {
           ~ Scroll Down ~
         </p>
       </header>
-      <motion.div
-        id="scroll"
-        initial={{
-          opacity: scrollY > 0 ? 1 : 0,
-          y: scrollY > 0 ? 20 : 0,
+      <ScrollToTop
+        scrollY={scrollY}
+        mouseEnter={() => {
+          linkEnter(), cursorBackToTop();
         }}
-        animate={{
-          opacity: scrollY > 0 ? 1 : 0,
-          y: scrollY > 0 ? 0 : 20,
+        mouseLeave={() => {
+          cursorDefault(), resetCustomCursor();
         }}
-        className={`w-8 h-8 bg-gray-700 rounded-full fixed bottom-6 right-4 flex justify-center items-center cursor-pointer z-30`}
-      >
-        <span className="text-3xl -translate-x-1 -rotate-90">›</span>
-      </motion.div>
+      />
       {/* images zoom */}
       <section ref={container} className={`min-h-[300vh] relative`}>
         <motion.div
@@ -417,9 +440,16 @@ export default function Achievements() {
           >
             <div
               id="oop"
-              className={`aspect-video max-w-[30vh] relative top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] cursor-pointer`}
+              className={`aspect-video max-w-[30vh] relative top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%]`}
               onClick={() => {
-                openSwiper(4);
+                openSwiper(4), cursorDefault();
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
             >
               <img
@@ -432,7 +462,7 @@ export default function Achievements() {
             </div>
             <motion.div
               id="alibaba"
-              className={`aspect-video max-w-[30vh] relative cursor-pointer ${
+              className={`aspect-video max-w-[30vh] relative ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT2
                     ? windowWidth < BREAKPOINT3
@@ -447,6 +477,13 @@ export default function Achievements() {
               }`}
               onClick={() => {
                 openSwiper(1);
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
               style={{ x: translateXLeft }}
             >
@@ -460,7 +497,7 @@ export default function Achievements() {
             </motion.div>
             <motion.div
               id="rise"
-              className={`aspect-video max-w-[30vh] relative top-[-16vh] cursor-pointer ${
+              className={`aspect-video max-w-[30vh] relative top-[-16vh] ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT2
                     ? windowWidth < BREAKPOINT3
@@ -475,6 +512,13 @@ export default function Achievements() {
               }`}
               onClick={() => {
                 openSwiper(2);
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
               style={{ x: translateXLeft }}
             >
@@ -488,7 +532,7 @@ export default function Achievements() {
             </motion.div>
             <motion.div
               id="talenta_ai"
-              className={`aspect-video max-w-[30vh] relative cursor-pointer ${
+              className={`aspect-video max-w-[30vh] relative ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT3
                     ? windowWidth < BREAKPOINT4
@@ -501,6 +545,13 @@ export default function Achievements() {
               }`}
               onClick={() => {
                 openSwiper(17);
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
               style={{ y: translateYDown }}
             >
@@ -514,7 +565,7 @@ export default function Achievements() {
             </motion.div>
             <motion.div
               id="front_end_dicoding"
-              className={`aspect-video max-w-[30vh] relative top-[-22vh] cursor-pointer ${
+              className={`aspect-video max-w-[30vh] relative top-[-22vh] ${
                 windowWidth < BREAKPOINT2
                   ? windowWidth < BREAKPOINT3
                     ? "left-[64vw]"
@@ -523,6 +574,13 @@ export default function Achievements() {
               }`}
               onClick={() => {
                 openSwiper(0);
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
               style={{ x: translateXRight }}
             >
@@ -536,7 +594,7 @@ export default function Achievements() {
             </motion.div>
             <motion.div
               id="edspert"
-              className={`aspect-video max-w-[30vh] relative cursor-pointer ${
+              className={`aspect-video max-w-[30vh] relative ${
                 windowWidth < BREAKPOINT2
                   ? windowWidth < BREAKPOINT3
                     ? windowWidth < BREAKPOINT4
@@ -549,6 +607,13 @@ export default function Achievements() {
               }`}
               onClick={() => {
                 openSwiper(5);
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
               style={{ x: translateXRight }}
             >
@@ -562,7 +627,7 @@ export default function Achievements() {
             </motion.div>
             <motion.div
               id="bright_champs"
-              className={`aspect-video max-w-[30vh] relative top-[-110vh] cursor-pointer ${
+              className={`aspect-video max-w-[30vh] relative top-[-110vh] ${
                 windowWidth < BREAKPOINT1
                   ? windowWidth < BREAKPOINT2
                     ? windowWidth < BREAKPOINT3
@@ -573,6 +638,13 @@ export default function Achievements() {
               }`}
               onClick={() => {
                 openSwiper(6);
+                resetCustomCursor();
+              }}
+              onMouseEnter={() => {
+                linkEnter(), cursorSlide();
+              }}
+              onMouseLeave={() => {
+                cursorDefault(), resetCustomCursor();
               }}
               style={{ y: translateYUp }}
             >
@@ -596,11 +668,11 @@ export default function Achievements() {
           <motion.div
             style={{ scaleX: scaleXCarousel }}
             className={`h-1 w-full absolute top-20 ${bg} origin-left transition-colors duration-1000`}
-          ></motion.div>
+          />
           <motion.div
             style={{ scaleX: scaleXCarousel }}
             className={`h-1 w-full absolute bottom-20 ${bg} origin-right transition-colors duration-1000`}
-          ></motion.div>
+          />
           {/* lines end */}
           <motion.main
             style={{ x: carouselTranslateX }}
@@ -612,6 +684,15 @@ export default function Achievements() {
                 srcName={item.src}
                 id={index}
                 setImgIdx={openSwiper}
+                mouseEnter={() => {
+                  linkEnter(), cursorSlide();
+                }}
+                mouseLeave={() => {
+                  resetCustomCursor(), cursorDefault();
+                }}
+                mouseClick={() => {
+                  resetCustomCursor();
+                }}
               />
             ))}
           </motion.main>
@@ -625,6 +706,15 @@ export default function Achievements() {
                 srcName={item.src}
                 id={index}
                 setImgIdx={openSwiper}
+                mouseEnter={() => {
+                  linkEnter(), cursorSlide();
+                }}
+                mouseLeave={() => {
+                  resetCustomCursor(), cursorDefault();
+                }}
+                mouseClick={() => {
+                  resetCustomCursor();
+                }}
               />
             ))}
           </motion.main>
@@ -661,25 +751,48 @@ export default function Achievements() {
           onDragEnd={onDragEnd}
         >
           <SwiperCarousel
+            mouseEnter={() => {
+              cursorClose(), linkEnter();
+            }}
+            mouseLeave={() => {
+              resetCustomCursor(), cursorDefault();
+            }}
+            resetCustomCursor={resetCustomCursor}
             swiperParentRef={swiperParentRef}
             swiperWidth={swiperWidth}
           />
         </motion.div>
         <Dots imgIdx={imgIdx} setImgIdx={openSwiper} />
       </section>
-      <FooterEndContent textEnter={textEnter} textLeave={textLeave} />
+      <FooterEndContent
+        mouseEnter={textEnter}
+        mouseLeave={() => {
+          cursorDefault(), resetCustomCursor();
+        }}
+        customSubtitle={cursorBackToTop}
+      />
     </>
   );
 }
 
-const Card = ({ srcName, id, setImgIdx }) => {
+const Card = ({
+  srcName,
+  id,
+  setImgIdx,
+  mouseEnter,
+  mouseLeave,
+  mouseClick,
+}) => {
   return (
     <div
       id={id}
-      className="w-[40vh] h-[26.5vh] relative overflow-hidden aspect-video cursor-pointer"
+      className="w-[40vh] h-[26.5vh] relative overflow-hidden aspect-video"
       onClick={() => {
         setImgIdx(id);
+        mouseClick();
       }}
+      onMouseEnter={mouseEnter}
+      onMouseLeave={mouseLeave}
     >
       <img
         id="doNotClose"
@@ -692,7 +805,12 @@ const Card = ({ srcName, id, setImgIdx }) => {
   );
 };
 
-const SwiperCarousel = ({ swiperParentRef, swiperWidth }) => {
+const SwiperCarousel = ({
+  swiperParentRef,
+  swiperWidth,
+  mouseEnter,
+  mouseLeave,
+}) => {
   return (
     <>
       {picturesCarousel.map((item, index) => (

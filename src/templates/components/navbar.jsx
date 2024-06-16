@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Home from "../icons/navIcons/home";
+import Home from "../../assets/icons/navIcons/home";
 import { useStoreGlobal } from "../../services/zustand/store";
 
 export default function Navbar() {
@@ -37,16 +37,17 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (startCount) {
-      const id = setTimeout(() => {
-        if (!open) {
-          setOptions({ isHidden: true, startCount: false });
-        }
-      }, 3000);
-      setTimeoutId(id);
-
-      return () => clearTimeout(id);
+    if (!startCount) {
+      return;
     }
+    const id = setTimeout(() => {
+      if (!open) {
+        setOptions({ isHidden: true, startCount: false });
+      }
+    }, 3000);
+    setTimeoutId(id);
+
+    return () => clearTimeout(id);
   }, [startCount, open]);
 
   useEffect(() => {
@@ -67,17 +68,15 @@ export default function Navbar() {
       setTimeout(() => {
         setOpen(true);
       }, 100);
+    } else if (open) {
+      setOpen(false);
+      setOptions({ startCount: true });
     } else {
-      if (!open) {
-        setOpen(true);
-        setOptions({ startCount: false });
+      setOpen(true);
+      setOptions({ startCount: false });
 
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-      } else {
-        setOpen(false);
-        setOptions({ startCount: true });
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
     }
   };
@@ -275,17 +274,17 @@ export default function Navbar() {
   const navbarEnter = () => {
     changeCursorVariant("navbar");
   };
-  const navbarLeave = () => {
+  const cursorDefault = () => {
     changeCursorVariant("default");
   };
   return (
     <motion.nav
-      className="fixed right-0 top-1/2 -translate-y-1/2 min-h-[3.2rem] max-h-[18rem] w-12 flex justify-center items-center overflow-hidden z-30"
+      className="fixed right-0 top-1/2 -translate-y-1/2 min-h-[3.2rem] max-h-[18rem] w-12 flex justify-center items-center overflow-hidden z-30 cursor-auto"
       animate={{ right: isHidden ? 0 : 10 }}
     >
       <motion.main
         onMouseEnter={navbarEnter}
-        onMouseLeave={navbarLeave}
+        onMouseLeave={cursorDefault}
         className="w-full h-full min-h-[2.8rem] max-h-[13.5rem] max-w-[2.7rem] flex flex-col items-center justify-center relative rounded-full overflow-hidden scale-0 opacity-0"
         id="parentNav"
         variants={mainVariants}
@@ -303,6 +302,7 @@ export default function Navbar() {
           animate={open ? "open" : "close"}
         />
         <motion.span
+          id="navbar"
           className="max-w-7 min-w-7 text-white z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove1" : "hiddenAbove1"}
@@ -314,6 +314,7 @@ export default function Navbar() {
         </motion.span>
 
         <motion.img
+          id="navbar"
           src="/navIcons/contact.png"
           alt="contactIcon"
           className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
@@ -332,22 +333,26 @@ export default function Navbar() {
           onHoverEnd={() => setYValue(defaultYValue)}
         >
           <motion.span
+            id="navbar"
             variants={hamburgerVariants}
             animate={open ? "lineFirstOpen" : "lineFirstClose"}
             className="w-full h-[2px] bg-white rounded-xl"
           />
           <motion.span
+            id="navbar"
             variants={hamburgerVariants}
             animate={open ? "lineSecondOpen" : "lineSecondClose"}
             className="w-full h-[2px] bg-white rounded-xl"
           />
           <motion.span
+            id="navbar"
             variants={hamburgerVariants}
             animate={open ? "lineThirdOpen" : "lineThirdClose"}
             className="w-full h-[2px] bg-white rounded-xl"
           />
         </motion.div>
         <motion.img
+          id="navbar"
           src="/navIcons/certificate.png"
           alt="certificateIcon"
           className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
@@ -358,6 +363,7 @@ export default function Navbar() {
           onHoverEnd={() => setYValue(defaultYValue)}
         />
         <motion.img
+          id="navbar"
           src="/navIcons/project-icon.png"
           alt="projectIcon"
           className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
