@@ -927,27 +927,27 @@ export default function Projects() {
                     initial={{ scaleX: 0 }}
                     style={{ scaleX: scaleXTop }}
                     className={`absolute w-full scale-0 h-[12px] left-0 top-0 bg-gray-600 blur-[3px]`}
-                  ></motion.div>
+                  />
                   <motion.div
                     initial={{ scaleY: 0 }}
                     style={{ scaleY: scaleXSide }}
                     className={`absolute  w-[12px] h-full origin-top scale-0 right-0 top-0 bg-gray-600 blur-[3px]`}
-                  ></motion.div>
+                  />
                   <motion.div
                     initial={{ scaleY: 0 }}
                     style={{ scaleY: scaleXSide }}
                     className="absolute bg-gray-600 blur-[3px] w-[12px] h-full origin-top scale-0 left-0 top-0"
-                  ></motion.div>
+                  />
                   <motion.div
                     initial={{ scaleXBttom: 0 }}
                     style={{ scaleX: scaleXBottom }}
                     className="absolute bg-gray-600 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-left left-0 bottom-[1px]"
-                  ></motion.div>
+                  />
                   <motion.div
                     initial={{ scaleXBottom: 0 }}
                     style={{ scaleX: scaleXBottom }}
                     className="absolute bg-gray-600 blur-[3px] w-[50.5%] scale-0 h-[12px] origin-right right-0 bottom-[1px]"
-                  ></motion.div>
+                  />
                   {/* Mobile Videos content*/}
                   <div className="relative aspect-video rounded-xl overflow-hidden">
                     <motion.div
@@ -969,7 +969,7 @@ export default function Projects() {
                           loop={video == 1}
                           muted
                           className="object-cover"
-                        ></video>
+                        />
                       ) : (
                         <img src="/images/warungjujugan_ss.jpg" alt="" />
                       )}
@@ -995,7 +995,7 @@ export default function Projects() {
                           loop={video == 2}
                           muted
                           className="object-cover"
-                        ></video>
+                        />
                       ) : (
                         <img src="/images/messenger_ss.jpg" alt="" />
                       )}
@@ -1008,7 +1008,7 @@ export default function Projects() {
                         x: video == 3 ? "0" : "-100%",
                         transition: { type: "tween" },
                       }}
-                      className="w-full h-full bg-fuchsia-600 absolute"
+                      className="w-full h-full absolute"
                       onClick={() =>
                         window.open("https://alexanderfarrel.github.io")
                       }
@@ -1021,7 +1021,7 @@ export default function Projects() {
                           loop={video == 3}
                           muted
                           className="object-cover"
-                        ></video>
+                        />
                       ) : (
                         <img src="/images/portfoliov1_ss.jpg" alt="" />
                       )}

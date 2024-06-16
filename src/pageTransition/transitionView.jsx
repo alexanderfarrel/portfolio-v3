@@ -33,14 +33,14 @@ export default function Transition({ children, backgroundColor }) {
       t1.from("#title", {
         y: "+=50",
         opacity: 0,
-        delay: 0.5,
+        delay: 0.75,
         duration: 0.5,
         ease: "circ",
       })
         .to("#title", {
           opacity: 0,
           y: "-=50dvh",
-          delay: 0.2,
+          delay: 0,
           duration: 0.5,
           ease: "expo.in",
         })
