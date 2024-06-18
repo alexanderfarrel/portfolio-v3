@@ -176,7 +176,13 @@ body {
   perspective: 1000px;
 }
 
+.border-spin {
+  background: conic-gradient(transparent 270deg, rgb(21 94 117) 350deg);
+  @apply w-[150%] h-[150%] left-[-25%] top-[-25%] absolute content-[""] animate-border-spin;
+}
+
 .flip-card-inner {
+  position: absolute;
   transform-style: preserve-3d;
 }
 

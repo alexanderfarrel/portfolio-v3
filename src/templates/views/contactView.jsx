@@ -1,6 +1,6 @@
 import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { motion } from "framer-motion";
+import { animate, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function ContactView({ windowWidth }) {
@@ -25,7 +25,6 @@ export default function ContactView({ windowWidth }) {
       }, 1500);
     }
   }, [isAnimating]);
-
   const handleFlip = () => {
     if (isDisabled) return;
     setIsDisabled(true);
@@ -61,16 +60,41 @@ export default function ContactView({ windowWidth }) {
 
   const height = windowWidth <= 316 ? "max-h-[29rem]" : "max-h-[28rem]";
 
+  useEffect(() => {
+    animate(
+      ".flip-card",
+      {
+        opacity: 1,
+      },
+      {
+        delay: 2.2,
+      }
+    );
+  }, []);
+
   return (
     <>
       <div className="w-full h-screen flex justify-center items-center">
         <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { delay: 2 } }}
-          className={`max-w-[25rem] ${height} h-full w-full ${
+          initial={{ opacity: 0, overflow: "hidden" }}
+          animate={
+            isFlipped
+              ? { overflow: "visible" }
+              : { overflow: "hidden", transition: { delay: 1 } }
+          }
+          className={`max-w-[25rem] relative ${height} h-full w-full ${
             windowWidth < 400 ? "mx-5" : "mx-10"
-          } flip-card`}
+          } flip-card rounded-lg`}
         >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={
+              isAnimating
+                ? { opacity: 0, display: "none" }
+                : { opacity: 1, display: "block", transition: { delay: 1.5 } }
+            }
+            className="border-spin"
+          />
           <motion.main
             initial={false}
             animate={{ rotateY: isFlipped ? 180 : 360 }}
@@ -78,7 +102,7 @@ export default function ContactView({ windowWidth }) {
               ease: "easeInOut",
               duration: 0.6,
             }}
-            className="flip-card-inner w-full h-full"
+            className="flip-card-inner w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px]"
           >
             <main
               className={`flip-card-front flex flex-col items-center rounded-lg py-5 ${
