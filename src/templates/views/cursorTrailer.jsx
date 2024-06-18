@@ -90,7 +90,7 @@ export default function CursorTrailer() {
           scale: customCursor == "link" ? 1 : 0,
           display: customCursor == "link" ? "block" : "none",
         }}
-        src="/icons/arrow.png"
+        src="/icons/link-arrow.png"
         alt=""
         className="w-[12px] h-[12px] rotate-[135deg] absolute"
       />
@@ -100,7 +100,7 @@ export default function CursorTrailer() {
           scale: customCursor == "backToTop" ? 1 : 0,
           display: customCursor == "backToTop" ? "block" : "none",
         }}
-        src="/icons/arrow.png"
+        src="/icons/up-arrow.png"
         alt=""
         className="w-[12px] h-[12px] rotate-[135deg] absolute"
       />

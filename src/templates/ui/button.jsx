@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 export default function Button({
   children,
-  className,
+  className = "",
   id,
-  delay,
+  delay = 0,
   intro = false,
   color = null,
   onClick = () => {},
@@ -91,7 +91,7 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   id: PropTypes.string,
-  delay: PropTypes.bool,
+  delay: PropTypes.number,
   intro: PropTypes.bool,
   onClick: PropTypes.func,
   color: PropTypes.object,

@@ -320,7 +320,7 @@ export default function Navbar() {
           className="max-w-7 min-w-7 z-10 cursor-pointer py-[7px]"
           variants={navListVariants}
           animate={open ? "visibleAbove2" : "hiddenAbove2"}
-          onClick={() => handleNavClick(-40)}
+          onClick={() => handleNavClick(-40, "/contact")}
           onHoverStart={() => setYValue(-40)}
           onHoverEnd={() => setYValue(defaultYValue)}
         />

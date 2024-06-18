@@ -5,6 +5,7 @@ import Transition from "./transitionView";
 import Projects from "../pages/projects";
 import Achievements from "../pages/achievements";
 import Home from "../pages/home";
+import ContactPage from "../pages/contact";
 export default function AnimateRoutes() {
   const location = useLocation();
   return (
@@ -18,7 +19,7 @@ export default function AnimateRoutes() {
               <Home />
             </Transition>
           }
-        ></Route>
+        />
         <Route
           path="/achievements"
           element={
@@ -26,7 +27,7 @@ export default function AnimateRoutes() {
               <Achievements />
             </Transition>
           }
-        ></Route>
+        />
         <Route
           path="/projects"
           element={
@@ -34,15 +35,15 @@ export default function AnimateRoutes() {
               <Projects />
             </Transition>
           }
-        ></Route>
+        />
         <Route
           path="/contact"
           element={
             <Transition>
-              <Intro />
+              <ContactPage />
             </Transition>
           }
-        ></Route>
+        />
       </Routes>
     </AnimatePresence>
   );
