@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { animate, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useStoreGlobal } from "../../services/zustand/store";
+import Swal from "sweetalert2";
 
 export default function ContactView({ windowWidth }) {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -96,13 +97,25 @@ export default function ContactView({ windowWidth }) {
     })
       .then(async (response) => {
         if (response.status == 200) {
-          alert("Thank you for your submission!");
+          Swal.fire({
+            title: "Sended!",
+            text: "Your email was successfully sent",
+            icon: "success",
+          });
         } else {
-          alert("Oops! Something went wrong");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
         }
       })
       .catch((error) => {
-        alert("Oops! Something went wrong");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       })
       .then(() => {
         setIsDisabled(false);
