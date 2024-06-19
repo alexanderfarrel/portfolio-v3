@@ -197,3 +197,19 @@ body {
 .flip-card-back {
   transform: rotateY(180deg);
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-internal-autofill-selected,
+input:-internal-autofill-previewed {
+  background-color: rgb(225 225 225) !important;
+  -webkit-box-shadow: 0 0 0 0px rgb(225 225 225) inset !important;
+  box-shadow: 0 0 0 0px rgb(225 225 225) inset !important;
+  color: rgb(255 255 255) !important;
+  caret-color: rgb(255 255 255) !important;
+  -webkit-text-fill-color: rgb(255 255 255) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+  -webkit-transition: background-color 5000s ease-in-out 0s !important;
+}

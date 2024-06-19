@@ -56,7 +56,9 @@ export default function Transition({ children, backgroundColor }) {
 
   return (
     <motion.div
-      className={`${cursorVariantsGlobal != "default" && "cursor-none"}`}
+      className={`${
+        windowWidth < 1200 && cursorVariantsGlobal != "default" && "cursor-none"
+      }`}
       style={{ backgroundColor }}
       key={location.pathname}
     >

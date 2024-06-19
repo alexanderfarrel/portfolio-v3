@@ -2,13 +2,20 @@ import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { animate, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useStoreGlobal } from "../../services/zustand/store";
 
 export default function ContactView({ windowWidth }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isOverflow, setIsOverflow] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [yImg, setYImg] = useState(0);
+  useEffect(() => {
+    if (isDisabled) {
+      cursorDefault(), resetCustomCursor();
+    }
+  }, [isDisabled]);
   useEffect(() => {
     if (isFlipped) {
       setYImg(10);
@@ -72,6 +79,51 @@ export default function ContactView({ windowWidth }) {
     );
   }, []);
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+    setIsDisabled(true);
+    setIsLoading(true);
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: json,
+    })
+      .then(async (response) => {
+        if (response.status == 200) {
+          alert("Thank you for your submission!");
+        } else {
+          alert("Oops! Something went wrong");
+        }
+      })
+      .catch((error) => {
+        alert("Oops! Something went wrong");
+      })
+      .then(() => {
+        setIsDisabled(false);
+        setIsLoading(false);
+        e.target.reset();
+      });
+  };
+
+  const setCursorVariant = (cursorVariant) => {
+    useStoreGlobal.setState({ cursorVariant });
+  };
+  const cursorHidden = () => setCursorVariant("hidden");
+  const textEnter = () => !isDisabled && setCursorVariant("text");
+  const linkEnter = () => !isDisabled && setCursorVariant("link");
+  const cursorDefault = () => setCursorVariant("default");
+  const setCustomCursor = (customCursor) => {
+    useStoreGlobal.setState({ customCursor });
+  };
+  const cursorSend = () => !isDisabled && setCustomCursor("send");
+  const cursorCircular = () => !isDisabled && setCustomCursor("circular");
+  const resetCustomCursor = () => setCustomCursor("default");
   return (
     <>
       <div className="w-full h-screen flex justify-center items-center">
@@ -115,12 +167,26 @@ export default function ContactView({ windowWidth }) {
                     ? { opacity: 0, x: -30, transition: { delay: 0.3 } }
                     : { opacity: 1, x: 0, transition: { delay: 1 } }
                 }
-                className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent"
+                onMouseMove={textEnter}
+                onMouseLeave={cursorDefault}
+                className={`text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent ${
+                  windowWidth < 1200 ? "cursor-text" : "cursor-none"
+                }`}
               >
                 Contact Me
               </motion.h1>
-              <div className="flex flex-col gap-3 w-full">
+              <form
+                className="flex flex-col gap-3 w-full"
+                onSubmit={handleFormSubmit}
+              >
+                <input
+                  type="hidden"
+                  name="access_key"
+                  value={import.meta.env.VITE_ACCESS_KEY}
+                />
                 <motion.input
+                  onMouseMove={cursorHidden}
+                  onMouseLeave={cursorDefault}
                   animate={
                     isAnimating
                       ? { width: "0%", opacity: 0, transition: { delay: 0.25 } }
@@ -131,11 +197,14 @@ export default function ContactView({ windowWidth }) {
                         }
                   }
                   type="email"
+                  name="email"
                   placeholder="youremail@example.com"
                   required
-                  className="rounded-lg p-1 px-3 outline-none bg-gray-100/5 placeholder:text-white/50"
+                  className={`rounded-lg p-1 px-3 outline-none bg-gray-100/5 placeholder:text-white/50`}
                 />
                 <motion.textarea
+                  onMouseMove={cursorHidden}
+                  onMouseLeave={cursorDefault}
                   animate={
                     isAnimating
                       ? { height: "0%", opacity: 0, transition: { delay: 0.1 } }
@@ -154,46 +223,68 @@ export default function ContactView({ windowWidth }) {
                   required
                   className="resize-none rounded-lg p-1 px-3 outline-none bg-gray-100/5 hidden-scrollbar placeholder:text-white/50"
                 />
-              </div>
-              <div className="flex gap-3 w-full">
-                <motion.div
-                  animate={
-                    isAnimating
-                      ? { opacity: 0, x: -20, transition: { delay: 0 } }
-                      : {
-                          opacity: 1,
-                          x: 0,
-                          transition: { delay: 1.35 },
-                        }
-                  }
-                  onClick={handleFlip}
-                  className="flex gap-2 justify-center items-center shrink-0 bg-gray-700 p-1 pr-3 pl-2 rounded-lg"
-                >
-                  <img
-                    src="icons/profile.png"
-                    alt=""
-                    className="max-w-[18px] w-full"
-                  />
+                <div className="flex gap-3 w-full mt-3">
+                  <motion.div
+                    whileTap={{ scale: 0.9 }}
+                    animate={
+                      isAnimating
+                        ? { opacity: 0, x: -20, transition: { delay: 0 } }
+                        : {
+                            opacity: 1,
+                            x: 0,
+                            transition: { delay: 1.35 },
+                          }
+                    }
+                    onClick={handleFlip}
+                    className="flex gap-2 justify-center items-center shrink-0 bg-gray-700 p-1 pr-3 pl-2 rounded-lg disabled:bg-gray-700/50 disabled:cursor-not-allowed outline-none"
+                  >
+                    <img
+                      src="icons/profile.png"
+                      alt=""
+                      className="max-w-[18px] w-full"
+                    />
 
-                  <p className="text-[15px]" onClick={handleFlip}>
-                    About Me
-                  </p>
-                </motion.div>
-                <motion.button
-                  animate={
-                    isAnimating
-                      ? { opacity: 0, x: 20, transition: { delay: 0 } }
-                      : {
-                          opacity: 1,
-                          x: 0,
-                          transition: { delay: 1.4 },
-                        }
-                  }
-                  className="w-full bg-sky-600 rounded-lg p-1 font-medium"
-                >
-                  Send
-                </motion.button>
-              </div>
+                    <p
+                      onMouseMove={() => {
+                        cursorCircular(), linkEnter();
+                      }}
+                      onMouseLeave={() => {
+                        cursorDefault(), resetCustomCursor();
+                      }}
+                      className={`text-[15px] ${
+                        windowWidth < 1200 ? "cursor-pointer" : "cursor-none"
+                      }`}
+                      onClick={handleFlip}
+                    >
+                      About Me
+                    </p>
+                  </motion.div>
+                  <motion.button
+                    type="submit"
+                    whileTap={{ scale: 0.9 }}
+                    onMouseMove={() => {
+                      cursorSend(), linkEnter();
+                    }}
+                    onMouseLeave={() => {
+                      cursorDefault(), resetCustomCursor();
+                    }}
+                    animate={
+                      isAnimating
+                        ? { opacity: 0, x: 20, transition: { delay: 0 } }
+                        : {
+                            opacity: 1,
+                            x: 0,
+                            transition: { delay: 1.4 },
+                          }
+                    }
+                    className={`w-full bg-sky-600 rounded-lg p-1 font-medium ${
+                      windowWidth < 1200 ? "cursor-pointer" : "cursor-none"
+                    } disabled:bg-sky-600/50 outline-none`}
+                  >
+                    {isLoading ? "Sending..." : "Send"}
+                  </motion.button>
+                </div>
+              </form>
             </main>
             <main
               className={`flip-card-back flex flex-col items-center rounded-lg py-5 px-8 gap-5 bg-gradient-to-b from-zinc-700 from-30% to-zinc-900 ${
@@ -224,7 +315,7 @@ export default function ContactView({ windowWidth }) {
                   windowWidth <= 374 ? "px-3" : "px-5"
                 } text-center`}
               >
-                <header>
+                <header className="flex flex-col">
                   <motion.h1
                     initial={{ opacity: 0, x: -10 }}
                     animate={
@@ -240,7 +331,11 @@ export default function ContactView({ windowWidth }) {
                             transition: { delay: 0.2 },
                           }
                     }
-                    className="text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent"
+                    onMouseMove={textEnter}
+                    onMouseLeave={cursorDefault}
+                    className={`text-3xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent self-center ${
+                      windowWidth < 1200 ? "cursor-text" : "cursor-none"
+                    }`}
                   >
                     Alexander
                   </motion.h1>
@@ -259,7 +354,11 @@ export default function ContactView({ windowWidth }) {
                             transition: { delay: 0.15 },
                           }
                     }
-                    className="text-sm text-gray-400 font-light"
+                    onMouseMove={textEnter}
+                    onMouseLeave={cursorDefault}
+                    className={`text-sm text-gray-400 font-light self-center ${
+                      windowWidth < 1200 ? "cursor-text" : "cursor-none"
+                    }`}
                   >
                     Full-Stack Developer
                   </motion.p>
@@ -284,6 +383,11 @@ export default function ContactView({ windowWidth }) {
                             transition: { delay: 0.1 },
                           }
                     }
+                    onMouseMove={textEnter}
+                    onMouseLeave={cursorDefault}
+                    className={`${
+                      windowWidth < 1200 ? "cursor-text" : "cursor-none"
+                    }`}
                   >
                     Experienced full-stack developer with a passion for
                     continuous learning and growth. Proficient in MERN stack,
@@ -306,7 +410,11 @@ export default function ContactView({ windowWidth }) {
                             transition: { delay: 0.05 },
                           }
                     }
-                    className="mt-3"
+                    onMouseMove={textEnter}
+                    onMouseLeave={cursorDefault}
+                    className={`mt-3 ${
+                      windowWidth < 1200 ? "cursor-text" : "cursor-none"
+                    }`}
                   >
                     Feel free to customize it as needed!
                   </motion.p>
@@ -325,8 +433,17 @@ export default function ContactView({ windowWidth }) {
                           x: -10,
                         }
                   }
+                  whileTap={{ scale: 0.9 }}
                   onClick={handleFlip}
-                  className="self-center mt-2 py-[6px] px-[14px] rounded-full bg-sky-600 text-sm"
+                  onMouseMove={() => {
+                    linkEnter(), cursorCircular();
+                  }}
+                  onMouseLeave={() => {
+                    cursorDefault(), resetCustomCursor();
+                  }}
+                  className={`self-center mt-2 py-[6px] px-[14px] rounded-full bg-sky-600 text-sm ${
+                    windowWidth < 1200 ? "cursor-pointer" : "cursor-none"
+                  }`}
                 >
                   Contact Me
                 </motion.button>

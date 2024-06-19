@@ -55,6 +55,18 @@ export default function CursorTrailer() {
       y: mousePotition.y - trailerOffset,
       scale: 1.5,
     },
+    hidden: {
+      scale: 0,
+    },
+    link: {
+      scale: 2.5,
+    },
+    slide: {
+      scale: 3.5,
+    },
+    text: {
+      scale: 3,
+    },
   };
 
   return (
@@ -65,7 +77,7 @@ export default function CursorTrailer() {
         scale:
           mousePotition.x == null
             ? 0
-            : cursorVariant == "navbar"
+            : cursorVariant == "hidden"
             ? 0
             : cursorVariant == "default"
             ? isMouseEnter
@@ -131,6 +143,26 @@ export default function CursorTrailer() {
           display: customCursor == "close" ? "block" : "none",
         }}
         src="/icons/close.png"
+        alt=""
+        className="w-[12px] h-[12px] absolute"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "circular" ? 1 : 0,
+          display: customCursor == "circular" ? "block" : "none",
+        }}
+        src="/icons/circular.png"
+        alt=""
+        className="w-[12px] h-[12px] absolute"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{
+          scale: customCursor == "send" ? 1 : 0,
+          display: customCursor == "send" ? "block" : "none",
+        }}
+        src="/icons/send.png"
         alt=""
         className="w-[12px] h-[12px] absolute"
       />

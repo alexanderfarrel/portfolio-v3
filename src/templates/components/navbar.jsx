@@ -272,7 +272,7 @@ export default function Navbar() {
 
   const changeCursorVariant = useStoreGlobal((state) => state.setCursorVariant);
   const navbarEnter = () => {
-    changeCursorVariant("navbar");
+    changeCursorVariant("hidden");
   };
   const cursorDefault = () => {
     changeCursorVariant("default");
