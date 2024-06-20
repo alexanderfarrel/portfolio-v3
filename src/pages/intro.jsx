@@ -18,6 +18,7 @@ import Navbar from "../templates/components/navbar";
 
 import { useStoreGlobal } from "../services/zustand/store";
 import CursorTrailer from "../templates/views/cursorTrailer";
+import BgStars from "../templates/components/stars";
 
 export default function Intro() {
   const [colors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
@@ -195,22 +196,7 @@ export default function Intro() {
           <SkillsBar id={"skill-below"} />
         </motion.div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 5.5, duration: 5 }}
-        className="absolute inset-0 -z-20"
-      >
-        <Canvas>
-          <Stars
-            radius={50}
-            count={1000}
-            factor={windowWidth < 1000 ? "5" : "3"}
-            fade
-            speed={2}
-          />
-        </Canvas>
-      </motion.div>
+      <BgStars factor={windowWidth < 1000 ? "5" : "3"} delay={5.5} />
     </div>
   );
 }

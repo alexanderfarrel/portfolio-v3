@@ -147,12 +147,20 @@ body {
 }
 
 .btn-ripple-span {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 1);
   position: absolute;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   pointer-events: none;
   animation: ripple 0.5s linear infinite;
+}
+
+.bg-ripple {
+  /* width: 700px;
+  height: 200px;
+  left: 10px;
+  top: 10px;
+  transform: translate(-50%, -50%); */
 }
 
 @keyframes ripple {
@@ -162,8 +170,8 @@ body {
     opacity: 1;
   }
   to {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     opacity: 0;
   }
 }

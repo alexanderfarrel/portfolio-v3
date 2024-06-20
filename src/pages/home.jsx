@@ -15,13 +15,14 @@ import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
 import { useStoreGlobal } from "../services/zustand/store";
+import BgStars from "../templates/components/stars";
 
 export default function Home() {
   const windowWidth = useWindowWidth();
   const [colors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
   const comp = useRef(null);
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const t1 = gsap.timeline();
       t1.from("#skill-upper", {
         opacity: 0,
@@ -200,22 +201,7 @@ export default function Home() {
           <p>View Intro</p>
         </div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 5 }}
-        className="absolute inset-0 -z-20"
-      >
-        <Canvas>
-          <Stars
-            radius={50}
-            count={1000}
-            factor={windowWidth < 1000 ? "5" : "3"}
-            fade
-            speed={2}
-          />
-        </Canvas>
-      </motion.div>
+      <BgStars factor={windowWidth < 1000 ? "5" : "3"} delay={2} />
     </>
   );
 }

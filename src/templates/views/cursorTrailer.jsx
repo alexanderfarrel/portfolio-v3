@@ -65,7 +65,7 @@ export default function CursorTrailer() {
       scale: 3.5,
     },
     text: {
-      scale: 3,
+      scale: 4,
     },
   };
 
@@ -87,7 +87,7 @@ export default function CursorTrailer() {
             ? customCursor == "slide"
               ? 3.5
               : 2.5
-            : 3,
+            : 4,
       }}
       style={mousePotition.x == null ? {} : mouseVariants["default"]}
       className={`w-5 h-5 bg-white fixed z-[999999] pointer-events-none rounded-full flex justify-center items-center ${
