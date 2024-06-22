@@ -101,7 +101,8 @@ export default function Transition({ children, backgroundColor }) {
       >
         {routes[location.pathname]}
       </div>
-      {location.pathname == "/" ? "" : <CursorTrailer />}
+      <CursorTrailer />
+      {/* {location.pathname == "/" ? "" : <CursorTrailer />} */}
       {children}
     </motion.div>
   );

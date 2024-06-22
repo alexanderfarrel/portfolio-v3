@@ -138,7 +138,7 @@ body {
   background: rgba(255, 255, 255, 0.3);
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  transition: width 0.5s, height 0.5s;
+  transition: width 0.6s, height 0.6s;
 }
 
 .btn-ripple:hover::before {
@@ -153,14 +153,6 @@ body {
   border-radius: 50%;
   pointer-events: none;
   animation: ripple 0.5s linear infinite;
-}
-
-.bg-ripple {
-  /* width: 700px;
-  height: 200px;
-  left: 10px;
-  top: 10px;
-  transform: translate(-50%, -50%); */
 }
 
 @keyframes ripple {

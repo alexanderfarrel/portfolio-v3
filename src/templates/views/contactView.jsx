@@ -1,49 +1,35 @@
-import { animate, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { cursorDefault } from "../../services/hooks/handleCursorTrailer";
 import BgStars from "../components/stars";
 import FrontCard from "../components/contact/frontCard";
 import BackCard from "../components/contact/backCard";
+import contactAnimation from "../components/contact/hooks/contactAnimation";
+import handleFlipFnc from "../components/contact/hooks/handleFlip";
 
 export default function ContactView({ windowWidth }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isOverflow, setIsOverflow] = useState(false);
+  contactAnimation();
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleFlip = () =>
+    handleFlipFnc({
+      isDisabled,
+      setIsDisabled,
+      isAnimating,
+      setIsAnimating,
+      isFlipped,
+      setIsFlipped,
+    });
+
   useEffect(() => {
     if (isDisabled) {
       cursorDefault();
     }
   }, [isDisabled]);
-
-  const handleFlip = () => {
-    if (isDisabled) return;
-    setIsDisabled(true);
-    setIsAnimating(!isAnimating);
-    setTimeout(() => {
-      setIsFlipped(!isFlipped);
-    }, 500);
-    setTimeout(
-      () => {
-        setIsDisabled(false);
-      },
-      isFlipped ? 1500 : 2200
-    );
-  };
-
-  useEffect(() => {
-    animate(
-      ".flip-card",
-      {
-        opacity: 1,
-      },
-      {
-        delay: 2.2,
-      }
-    );
-  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -66,12 +52,18 @@ export default function ContactView({ windowWidth }) {
             title: "Sended!",
             text: "Your email was successfully sent",
             icon: "success",
+            background: "rgb(31 41 55)",
+            color: "white",
+            confirmButtonColor: "rgb(22 163 74)",
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Something went wrong!",
+            background: "rgb(31 41 55)",
+            color: "white",
+            confirmButtonColor: "rgb(22 163 74)",
           });
         }
       })
@@ -80,6 +72,9 @@ export default function ContactView({ windowWidth }) {
           icon: "error",
           title: "Oops...",
           text: "Something went wrong!",
+          background: "rgb(31 41 55)",
+          color: "white",
+          confirmButtonColor: "rgb(22 163 74)",
         });
       })
       .then(() => {
@@ -93,7 +88,7 @@ export default function ContactView({ windowWidth }) {
     <>
       <div className="w-full h-screen flex justify-center items-center">
         <motion.section
-          initial={{ opacity: 0, overflow: "hidden" }}
+          initial={{ overflow: "hidden" }}
           animate={
             isFlipped
               ? { overflow: "visible" }
@@ -132,13 +127,11 @@ export default function ContactView({ windowWidth }) {
               handleFlip={handleFlip}
             />
             <BackCard
-              isOverflow={isOverflow}
               isAnimating={isAnimating}
               windowWidth={windowWidth}
               isDisabled={isDisabled}
               handleFlip={handleFlip}
               isFlipped={isFlipped}
-              setIsOverflow={setIsOverflow}
             />
           </motion.main>
         </motion.section>

@@ -1,15 +1,16 @@
-import Javascript from "../../assets/icons/skills/javascript";
-import Html from "../../assets/icons/skills/html";
-import Css from "../../assets/icons/skills/css";
-import Bootstrap from "../../assets/icons/skills/bootstrap";
-import ReactIcon from "../../assets/icons/skills/react";
-import Github from "../../assets/icons/skills/github";
-import Firebase from "../../assets/icons/skills/firebase";
-import PropTypes from "prop-types";
-import Nodejs from "../../assets/icons/skills/node";
-import Npm from "../../assets/icons/skills/npm";
-import GsapIcon from "../../assets/icons/skills/gsapIcon";
 import { useEffect } from "react";
+import {
+  Javascript,
+  Html,
+  Css,
+  Bootstrap,
+  ReactIcon,
+  Github,
+  Firebase,
+  Nodejs,
+  Npm,
+  GsapIcon,
+} from "../../../assets/icons/skillsIcons";
 
 export default function SkillsBar({ id }) {
   useEffect(() => {
@@ -76,12 +77,8 @@ export default function SkillsBar({ id }) {
         <img src="/icons/tailwind.png" className="max-w-10" alt="tailwind" />
         <GsapIcon className={"w-full h-full min-w-8 max-w-8"} />
         <img src="/icons/jwt.png" className="max-w-9" alt="jwt" />
-        <img src="/icons/golang.png" className="max-w-9" alt="golang" />
+        <img src="/icons/typescript.png" className="max-w-9" alt="Typescript" />
       </div>
     </div>
   );
 }
-
-SkillsBar.propTypes = {
-  id: PropTypes.string,
-};

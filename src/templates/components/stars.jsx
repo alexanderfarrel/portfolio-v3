@@ -9,13 +9,14 @@ export default function BgStars({
   fade = true,
   speed = 2,
   delay = 0,
+  className = "absolute inset-0 -z-20",
 }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 2 }}
-      className="absolute inset-0 -z-20"
+      className={className}
     >
       <Canvas>
         <Stars

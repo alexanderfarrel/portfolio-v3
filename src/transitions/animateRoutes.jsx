@@ -11,7 +11,14 @@ export default function AnimateRoutes() {
   return (
     <AnimatePresence key={location.pathname} mode="wait">
       <Routes key={location.pathname} location={location}>
-        <Route path="/" element={<Intro />} />
+        <Route
+          path="/"
+          element={
+            <Transition>
+              <Intro />
+            </Transition>
+          }
+        />
         <Route
           path="/home"
           element={

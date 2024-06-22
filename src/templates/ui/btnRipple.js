@@ -1,6 +1,6 @@
 export default function BtnRipple({ e, parent, parentRect, path = "" }) {
-  const x = e.clientX - parentRect.left;
-  const y = e.clientY - parentRect.top;
+  const x = e.clientX - parentRect?.x;
+  const y = e.clientY - parentRect?.y;
 
   const ripples = document.createElement("span");
   ripples.classList.add("btn-ripple-span");

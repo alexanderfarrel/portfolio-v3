@@ -10,7 +10,6 @@ export default function CursorTrailer() {
   const [mousePotition, setMousePosition] = useState({ x: null, y: null });
   const [cursorVariant, setCursorVariant] = useState("default");
   const [isMouseEnter, setIsMouseEnter] = useState(false);
-
   useEffect(() => {
     setCursorVariant(cursorVariantsGlobal);
   }, [cursorVariantsGlobal]);

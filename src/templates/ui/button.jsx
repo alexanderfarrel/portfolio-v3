@@ -1,30 +1,33 @@
 import { motion } from "framer-motion";
-import PropTypes from "prop-types";
+import { cursorDefault } from "../../services/hooks/handleCursorTrailer";
+import useWindowWidth from "../../services/hooks/windowWidth";
 
 export default function Button({
   children,
   className = "",
-  id,
   delay = 0,
   intro = false,
   color = null,
+  id = null,
+  cursorAuto = false,
+  mouseEnter = () => {},
   onClick = () => {},
-  linkEnter = () => {},
-  cursorDefault = () => {},
-  customCursor = () => {},
-  resetCustomCursor = () => {},
 }) {
+  const windowWidth = useWindowWidth();
   return (
     <motion.button
-      onMouseEnter={() => {
-        linkEnter(), customCursor();
-      }}
-      onMouseLeave={() => {
-        cursorDefault(), resetCustomCursor();
-      }}
+      id={id}
+      onMouseEnter={mouseEnter}
+      onMouseLeave={cursorDefault}
       onClick={onClick}
-      className={`px-6 py-2 rounded-md relative cursor-none ${
-        !intro ? "radial-gradient sm:text-[13px]" : " sm:text-6xl"
+      className={`px-6 py-2 rounded-md relative ${
+        cursorAuto
+          ? "cursor-auto"
+          : windowWidth < 1200
+          ? "cursor-pointer"
+          : "cursor-none"
+      } ${
+        intro ? " sm:text-6xl" : "radial-gradient sm:text-[13px]"
       } ${className} sm:px-4 sm:py-[6px]`}
       initial={{ "--x": "100%", scale: 1 }}
       animate={{ "--x": "-100%" }}
@@ -47,10 +50,9 @@ export default function Button({
           : "225,225,225",
       }}
       whileTap={!intro && { scale: 0.97, transition: { duration: 0.1 } }}
-      id={id}
       transition={
         intro
-          ? { duration: 3.6, delay: 3.9, type: "tween" }
+          ? { duration: 3.6, delay: 5.9, type: "tween" }
           : {
               repeat: Infinity,
               repeatType: "loop",
@@ -86,13 +88,3 @@ export default function Button({
     </motion.button>
   );
 }
-
-Button.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  id: PropTypes.string,
-  delay: PropTypes.number,
-  intro: PropTypes.bool,
-  onClick: PropTypes.func,
-  color: PropTypes.object,
-};

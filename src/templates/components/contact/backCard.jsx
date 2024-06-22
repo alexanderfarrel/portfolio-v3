@@ -10,14 +10,13 @@ import { VariantsProfileCard } from "../contact/variantsProfileCard";
 import { useEffect, useState } from "react";
 
 export default function BackCard({
-  isOverflow,
   isAnimating,
   windowWidth,
   isDisabled,
   handleFlip,
   isFlipped,
-  setIsOverflow,
 }) {
+  const [isOverflow, setIsOverflow] = useState(false);
   const [yImg, setYImg] = useState(0);
   useEffect(() => {
     if (isFlipped) {
