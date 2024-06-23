@@ -11,6 +11,7 @@ import {
   Npm,
   GsapIcon,
 } from "../../../assets/icons/skillsIcons";
+import Zustand from "../../../assets/icons/skills/zustand";
 
 export default function SkillsBar({ id }) {
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function SkillsBar({ id }) {
         <GsapIcon className={"w-full h-full min-w-8 max-w-8"} />
         <img src="/icons/jwt.png" className="max-w-9" alt="jwt" />
         <img src="/icons/typescript.png" className="max-w-9" alt="Typescript" />
+        <Zustand className={"max-w-9 min-w-9"} />
       </div>
     </div>
   );
