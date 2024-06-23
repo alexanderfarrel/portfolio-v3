@@ -53,7 +53,7 @@ export default function ProjectsView({ windowWidth }) {
 
   return (
     <React.Fragment>
-      <div className="bg-gradient-to-b from-[#162635] from-20% to-neutral-950 relative">
+      <div className="bg-gradient-to-b from-[#162635] from-30% to-neutral-950 relative">
         {/* scroll to top */}
         <ScrollToTop
           scrollY={scrollY}
