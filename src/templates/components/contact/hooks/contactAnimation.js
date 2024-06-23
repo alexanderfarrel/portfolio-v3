@@ -11,6 +11,42 @@ export default function contactAnimation() {
         y: "50",
         delay: 2,
       })
+        .from("#instagram", {
+          opacity: 0,
+          y: -20,
+          duration: 0.4,
+          ease: "power3.inOut",
+        })
+        .from(
+          "#linkedIn",
+          {
+            opacity: 0,
+            y: -20,
+            duration: 0.4,
+            ease: "power3.inOut",
+          },
+          "-=0.3"
+        )
+        .from(
+          "#freelancer",
+          {
+            opacity: 0,
+            y: -20,
+            duration: 0.4,
+            ease: "power3.inOut",
+          },
+          "-=0.3"
+        )
+        .from(
+          "#fiver",
+          {
+            opacity: 0,
+            y: -20,
+            duration: 0.4,
+            ease: "power3.inOut",
+          },
+          "-=0.3"
+        )
         .to(
           "#roundedBlue",
           {
@@ -19,7 +55,7 @@ export default function contactAnimation() {
             ease: "easeOut",
             delay: 0.1,
           },
-          "+=.8"
+          "+=.2"
         )
         .to(
           "#roundedBlue",

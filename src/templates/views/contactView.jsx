@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { cursorDefault } from "../../services/hooks/handleCursorTrailer";
+import {
+  cursorDefault,
+  cursorHidden,
+} from "../../services/hooks/handleCursorTrailer";
 import BgStars from "../components/stars";
 import FrontCard from "../components/contact/frontCard";
 import BackCard from "../components/contact/backCard";
 import contactAnimation from "../components/contact/hooks/contactAnimation";
 import handleFlipFnc from "../components/contact/hooks/handleFlip";
+import FooterSocialMedia from "../components/contact/footerSocialMedia";
 
 export default function ContactView({ windowWidth }) {
   contactAnimation();
@@ -86,7 +90,7 @@ export default function ContactView({ windowWidth }) {
 
   return (
     <>
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full h-screen flex justify-center items-center overflow-hidden">
         <motion.section
           initial={{ overflow: "hidden" }}
           animate={
@@ -135,6 +139,10 @@ export default function ContactView({ windowWidth }) {
             />
           </motion.main>
         </motion.section>
+        <FooterSocialMedia
+          cursorHidden={cursorHidden}
+          cursorDefault={cursorDefault}
+        />
       </div>
       <BgStars factor={windowWidth < 1000 ? "5" : "3"} delay={2} />
     </>

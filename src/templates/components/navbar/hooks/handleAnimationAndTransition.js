@@ -16,7 +16,7 @@ export default function handleAnimationAndTransition({ open, url }) {
         setInitial(false);
         setOptions({ isHidden: false, startCount: true });
       },
-      url == "/" ? 10_000 : url == "/home" ? 3200 : 3000
+      url == "/" ? 8500 : url == "/home" ? 3200 : 3000
     );
 
     return () => clearTimeout(time);
