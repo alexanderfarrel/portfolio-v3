@@ -37,9 +37,14 @@ export default function Intro() {
         >
           <Navbar />
           <BgAurora color={color} colors={colors} delay={7.5} />
-          <Button id={"welcome"} intro className={"text-[5rem]"} cursorAuto>
-            Alexander Portfolio
-          </Button>
+          <div
+            id={"parent-welcome"}
+            className="absolute text-center top-1/2 -translate-y-1/2"
+          >
+            <Button id={"welcome"} intro className={"text-[5rem]"} cursorAuto>
+              Alexander Portfolio
+            </Button>
+          </div>
           <MainContent
             color={color}
             viewIntro={false}

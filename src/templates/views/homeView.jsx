@@ -7,7 +7,12 @@ import homeIntroAnimation from "../components/home/hooks/homeAnimation";
 export default function HomeView({ windowWidth }) {
   homeIntroAnimation();
 
-  const [colors] = useState(["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"]);
+  const [colors] = useState([
+    "rgba(19, 255, 170, 1)",
+    "rgba(30, 103, 198, 1)",
+    "rgba(206, 132, 207, 1)",
+    "rgba(221, 51, 92, 1)",
+  ]);
   const color = useMotionValue(colors[0]);
 
   return (

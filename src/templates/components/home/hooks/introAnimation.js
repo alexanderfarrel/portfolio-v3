@@ -7,27 +7,35 @@ export default function introAnimation() {
       const t1 = gsap.timeline();
       t1.from("#intro-slider", {
         xPercent: "-100",
-        duration: 1.2,
+        duration: 1.1,
         delay: 2,
         ease: "expo.inOut",
       })
-        .from(["#title-1", "#title-2"], {
-          opacity: 0,
-          x: "-=30",
-          duration: 0.4,
-          stagger: 0.4,
-          ease: "power3.inOut",
-        })
+        .from(
+          ["#title-1", "#title-2"],
+          {
+            opacity: 0,
+            x: "-=30",
+            duration: 0.5,
+            stagger: 0.3,
+            ease: "power3.inOut",
+          },
+          "-=0.4"
+        )
         .to(["#title-1", "#title-2"], {
           opacity: 0,
           x: "+=30",
-          delay: 0.6,
+          delay: 0.4,
         })
-        .to("#intro-slider", {
-          xPercent: "-100",
-          duration: 0.6,
-          ease: "power2.inOut",
-        })
+        .to(
+          "#intro-slider",
+          {
+            xPercent: "-100",
+            duration: 0.6,
+            ease: "power2.inOut",
+          },
+          "-=0.3"
+        )
         .from("#welcome", {
           opacity: 0,
           duration: 1,
@@ -35,13 +43,27 @@ export default function introAnimation() {
         .to("#welcome", {
           opacity: 0,
           duration: 0.5,
-          delay: 1.2,
+          delay: 0.7,
           display: "none",
         })
-        .from(
-          "#parentDiv",
+        .to(
+          "#parent-welcome",
           {
-            justifyContent: "center",
+            display: "none",
+          },
+          "<"
+        )
+        .from(
+          "#skill-upper",
+          {
+            display: "none",
+          },
+          "<"
+        )
+        .from(
+          "#skill-below",
+          {
+            display: "none",
           },
           "<"
         )
@@ -107,17 +129,13 @@ export default function introAnimation() {
             duration: 0.4,
             x: "+=100",
           },
-          "<"
+          "-=.5"
         )
-        .to(
-          "#roundedBlue",
-          {
-            scale: 1.5,
-            duration: 0.4,
-            ease: "easeOut",
-          },
-          "+=.8"
-        )
+        .to("#roundedBlue", {
+          scale: 1.5,
+          duration: 0.4,
+          ease: "easeOut",
+        })
         .to(
           "#roundedBlue",
           {

@@ -62,7 +62,6 @@ export default function MainContent({ color, viewIntro = false, windowWidth }) {
                   })
                 }
                 className={`text-sm`}
-                color={color}
               >
                 Download CV
               </Button>
@@ -75,7 +74,6 @@ export default function MainContent({ color, viewIntro = false, windowWidth }) {
                 className={`text-sm`}
                 delay={4.4}
                 onClick={() => (window.location.href = "/contact")}
-                color={color}
               >
                 Contact Me
               </Button>
