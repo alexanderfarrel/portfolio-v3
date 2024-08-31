@@ -83,7 +83,7 @@ export default function Button({
       whileTap={!intro && { scale: 0.97, transition: { duration: 0.1 } }}
       transition={
         intro
-          ? { duration: 3.6, delay: 4.8, type: "tween" }
+          ? { duration: 3.6, delay: 4.45, type: "tween" }
           : {
               repeat: Infinity,
               repeatType: "loop",

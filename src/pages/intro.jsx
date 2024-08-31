@@ -33,7 +33,7 @@ export default function Intro() {
 
         <motion.div
           id="parentDiv"
-          className="relative h-[100dvh] flex flex-col items-center py-3 justify-between"
+          className="relative h-[100vh] flex flex-col items-center py-3 justify-between"
         >
           <Navbar />
           <BgAurora color={color} colors={colors} delay={7.5} />
