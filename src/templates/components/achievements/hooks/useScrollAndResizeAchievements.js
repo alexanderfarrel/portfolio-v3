@@ -33,7 +33,7 @@ function useScrollAndResize() {
 
     window.addEventListener("scroll", handleScroll);
 
-    setXValue(getMaxValueBasedWidth(400, 1920, 75, 93.5));
+    setXValue(getMaxValueBasedWidth(400, 1920, 75, 95));
     setSwiperWidth(getMaxValueBasedWidth(400, 1920, 63, 98));
 
     function raf(time) {

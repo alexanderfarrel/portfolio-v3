@@ -14,7 +14,6 @@ export default function getMaxValueBasedWidth(
       maxValue -
       ((windowWidth - minScreenWidth) * (maxValue - minValue)) /
         (maxScreenWidth - minScreenWidth);
-    console.log(result);
     return result;
   }
 }

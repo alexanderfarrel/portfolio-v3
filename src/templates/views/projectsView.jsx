@@ -15,7 +15,6 @@ import {
   HeaderProjects,
 } from "../components/projects/importProjectsComponents";
 import {
-  handleMobileScroll,
   handleScrollLenisProjects,
   handleVideoPlay,
   paragraphVariants,

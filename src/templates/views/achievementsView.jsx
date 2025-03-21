@@ -21,6 +21,7 @@ import {
   useHandleMouseMove,
 } from "../components/achievements/hooks/importAchievementsHooks";
 
+// eslint-disable-next-line react/prop-types
 export default function AchievementsView({ windowWidth }) {
   achievementsAnimation();
 
@@ -65,52 +66,54 @@ export default function AchievementsView({ windowWidth }) {
           ~ Scroll Down ~
         </p>
       </header>
-      <ScrollToTop
-        windowWidth={windowWidth}
-        scrollY={scrollY}
-        mouseEnter={() => {
-          linkEnter(), cursorBackToTop();
-        }}
-        mouseLeave={() => {
-          cursorDefault();
-        }}
-      />
+      <section className="bg-black">
+        <ScrollToTop
+          windowWidth={windowWidth}
+          scrollY={scrollY}
+          mouseEnter={() => {
+            linkEnter(), cursorBackToTop();
+          }}
+          mouseLeave={() => {
+            cursorDefault();
+          }}
+        />
 
-      <ImagesZoom
-        windowWidth={windowWidth}
-        cursorDefault={cursorDefault}
-        openSwiper={openSwiper}
-        cursorSlide={cursorSlide}
-        linkEnter={linkEnter}
-      />
+        <ImagesZoom
+          windowWidth={windowWidth}
+          cursorDefault={cursorDefault}
+          openSwiper={openSwiper}
+          cursorSlide={cursorSlide}
+          linkEnter={linkEnter}
+        />
 
-      <ImagesCarousel
-        openSwiper={openSwiper}
-        cursorDefault={cursorDefault}
-        XValue={XValue}
-        picturesCarousel={picturesCarousel}
-        linkEnter={linkEnter}
-        cursorSlide={cursorSlide}
-        windowWidth={windowWidth}
-      />
+        <ImagesCarousel
+          openSwiper={openSwiper}
+          cursorDefault={cursorDefault}
+          XValue={XValue}
+          picturesCarousel={picturesCarousel}
+          linkEnter={linkEnter}
+          cursorSlide={cursorSlide}
+          windowWidth={windowWidth}
+        />
 
-      <SwiperCarousel
-        windowWidth={windowWidth}
-        swiperParentRef={swiperParentRef}
-        animateClose={animateClose}
-        swiperWidth={swiperWidth}
-        imageIndex={imageIndex}
-        openSwiper={openSwiper}
-        setImageIndex={setImageIndex}
-        picturesCarousel={picturesCarousel}
-      />
+        <SwiperCarousel
+          windowWidth={windowWidth}
+          swiperParentRef={swiperParentRef}
+          animateClose={animateClose}
+          swiperWidth={swiperWidth}
+          imageIndex={imageIndex}
+          openSwiper={openSwiper}
+          setImageIndex={setImageIndex}
+          picturesCarousel={picturesCarousel}
+        />
 
-      <Footer
-        windowWidth={windowWidth}
-        mouseEnter={() => textEnter()}
-        mouseLeave={cursorDefault}
-        customSubtitle={cursorBackToTop}
-      />
+        <Footer
+          windowWidth={windowWidth}
+          mouseEnter={() => textEnter()}
+          mouseLeave={cursorDefault}
+          customSubtitle={cursorBackToTop}
+        />
+      </section>
     </React.Fragment>
   );
 }

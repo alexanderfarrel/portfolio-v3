@@ -54,7 +54,10 @@ export default function ImagesCarousel({
   return (
     <React.Fragment>
       {/* images carousel */}
-      <section ref={carousel} className="h-[450vh] relative">
+      <section
+        ref={carousel}
+        className={`${windowWidth < 500 ? "h-[900vh]" : "h-[500vh]"} relative`}
+      >
         <div
           className={`sticky top-0 flex flex-col h-screen justify-center gap-10 overflow-hidden`}
         >

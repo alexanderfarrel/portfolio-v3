@@ -24,6 +24,9 @@ export const picturesCarousel = [
     src: "ajax.png",
   },
   {
+    src: "python2.jpg",
+  },
+  {
     src: "async.png",
   },
   {
@@ -52,5 +55,9 @@ export const picturesCarousel = [
   },
   {
     src: "talenta_ai.jpg",
+  },
+
+  {
+    src: "python1.jpg",
   },
 ];

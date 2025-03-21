@@ -24,5 +24,4 @@ export default function useWindowWidth() {
   }, [isClient]);
 
   return windowWidth;
-};
-
+}

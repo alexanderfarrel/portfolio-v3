@@ -81,6 +81,11 @@ export default function SkillsBar({ id }) {
         <img src="/icons/typescript.png" className="max-w-9" alt="Typescript" />
         <Zustand className={"max-w-9 min-w-9"} />
         <img src="/icons/docker.png" className="max-w-9" alt="Docker" />
+        <img
+          src="/icons/python.png"
+          className="max-w-9 mt-[5px]"
+          alt="Python"
+        />
       </div>
     </div>
   );
