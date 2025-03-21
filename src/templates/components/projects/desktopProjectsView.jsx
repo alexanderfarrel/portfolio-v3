@@ -148,7 +148,7 @@ export default function DesktopProjectsView({
               onMouseMove={() => textEnter()}
               onMouseLeave={cursorDefault}
             >
-              Real Time Chat
+              Wedding Invitation
             </h1>
             <p
               className={`text-[1.8rem] underline  ${
@@ -156,7 +156,7 @@ export default function DesktopProjectsView({
                   ? "decoration-emerald-600 text-neutral-300"
                   : "text-gray-600"
               } transition-colors duration-700 pb-2 cursor-none`}
-              onClick={() => window.open("https://messenger-alexz.vercel.app")}
+              onClick={() => window.open("https://tinandewa.netlify.app/user")}
               onMouseMove={() => {
                 linkEnter(), cursorLink();
               }}
@@ -164,7 +164,7 @@ export default function DesktopProjectsView({
                 cursorDefault();
               }}
             >
-              messenger-alexz.vercel.app
+              tinandewa.netlify.app
             </p>
             <p
               className={`text-xl ${
@@ -174,20 +174,20 @@ export default function DesktopProjectsView({
               onMouseLeave={cursorDefault}
             >
               Tech :{" "}
-              <Span isInView={isInView2} className="text-emerald-400">
-                MongoDB
-              </Span>
-              ,{" "}
-              <Span isInView={isInView2} className="text-gray-200">
-                Express
-              </Span>
-              ,{" "}
               <Span isInView={isInView2} className="text-sky-400">
                 React
               </Span>
               ,{" "}
-              <Span isInView={isInView2} className="text-gray-200">
+              <Span isInView={isInView2} className="text-purple-400">
+                Framer Motion
+              </Span>
+              ,{" "}
+              <Span isInView={isInView2} className="text-emerald-400">
                 Node
+              </Span>
+              ,{" "}
+              <Span isInView={isInView2} className="text-amber-400">
+                Firebase
               </Span>
             </p>
             <p
@@ -197,24 +197,27 @@ export default function DesktopProjectsView({
               onMouseMove={() => textEnter()}
               onMouseLeave={cursorDefault}
             >
-              Using{" "}
-              <Span isInView={isInView2} className="text-orange-400">
-                Socket.io
+              This is my first{" "}
+              <Span isInView={isInView2} className="text-red-400">
+                Freelance project
+              </Span>
+              , creating a{" "}
+              <Span isInView={isInView2} className="text-blue-400">
+                Wedding Invitation
               </Span>{" "}
-              as a{" "}
+              with Fullstack{" "}
+              <Span isInView={isInView2} className="text-sky-400">
+                React
+              </Span>{" "}
+              and{" "}
               <Span isInView={isInView2} className="text-amber-400">
-                web socket
-              </Span>
-              , unfortunately there are problems when hosting{" "}
-              <Span isInView={isInView2} className="text-orange-400">
-                Socket.io
+                Firebase
               </Span>{" "}
-              so that the website is not real time after being deployed but
-              works well locally, I made this project just to learn how to make
-              a{" "}
-              <Span isInView={isInView2} className="text-lime-400">
-                real time application
-              </Span>
+              as database, has an attractive appearance and animation in each{" "}
+              <Span isInView={isInView2} className="text-blue-400">
+                Invitation Website
+              </Span>{" "}
+              element, making this different from other Invitation Website
             </p>
           </div>
           <div
@@ -223,7 +226,7 @@ export default function DesktopProjectsView({
             } transition-colors duration-700 text-center max-w-3xl mx-auto cursor-none`}
           >
             <h1
-              className="text-5xl"
+              className="text-5xl text-fuchsia-400"
               ref={title3}
               onMouseMove={() => textEnter()}
               onMouseLeave={cursorDefault}
@@ -233,7 +236,7 @@ export default function DesktopProjectsView({
             <p
               className={`text-[1.8rem] underline ${
                 isInView3
-                  ? "decoration-teal-600 text-neutral-300"
+                  ? "decoration-fuchsia-600 text-neutral-300"
                   : "text-gray-600"
               } transition-colors duration-700 pb-2 cursor-none`}
               onClick={() => window.open("https://alexanderfarrel.github.io")}
@@ -426,17 +429,17 @@ export default function DesktopProjectsView({
               >
                 <video
                   ref={video2}
-                  src="/videos/messenger.mp4"
+                  src="/videos/wedding_invit.mp4"
                   autoPlay={isInView2}
                   loop={isInView2}
                   muted
                   className="object-cover"
                 />
-                <img src="/images/messenger_ss.jpg" alt="" />
+                <img src="/images/wedding_invit_ss.png" alt="" />
                 <div
                   className="hover:opacity-60 absolute w-full h-full top-0 left-0 bg-black z-10 opacity-0 flex justify-center items-center text-bold text-xl transition-all duration-200"
                   onClick={() =>
-                    window.open("https://messenger-alexz.vercel.app")
+                    window.open("https://tinandewa.netlify.app/user")
                   }
                 >
                   Try Demo

@@ -90,20 +90,20 @@ export default function MobileProjectsView({
                 }}
                 className="w-full h-full absolute"
                 onClick={() =>
-                  window.open("https://messenger-alexz.vercel.app")
+                  window.open("https://tinandewa.netlify.app/user")
                 }
               >
                 {isVideosActived ? (
                   <video
                     ref={video2}
-                    src="/videos/messenger.mp4"
+                    src="/videos/wedding_invit.mp4"
                     autoPlay={video == 2 && isVideosActived}
                     loop={video == 2}
                     muted
                     className="object-cover"
                   />
                 ) : (
-                  <img src="/images/messenger_ss.jpg" alt="" />
+                  <img src="/images/wedding_invit_ss.png" alt="" />
                 )}
               </motion.div>
               <motion.div
@@ -139,7 +139,7 @@ export default function MobileProjectsView({
                 if (video === 1) {
                   window.open("https://warungjujugan.vercel.app");
                 } else if (video === 2) {
-                  window.open("https://messenger-alexz.vercel.app");
+                  window.open("https://tinandewa.netlify.app/user");
                 } else if (video === 3) {
                   window.open("https://alexanderfarrel.github.io");
                 }
@@ -210,7 +210,7 @@ export default function MobileProjectsView({
                 custom={isHidden ? 2 : 0}
                 className="text-3xl font-bold text-emerald-600"
               >
-                Real Time Chat
+                Wedding Invitation
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 50 }}
@@ -218,10 +218,10 @@ export default function MobileProjectsView({
                 custom={1}
                 className="font-semibold underline decoration-2 decoration-emerald-600"
                 onClick={() =>
-                  window.open("https://messenger-alexz.vercel.app")
+                  window.open("https://tinandewa.netlify.app/user")
                 }
               >
-                messenger-alexz.vercel.app
+                tinandewa.netlify.app
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 50 }}
@@ -229,10 +229,10 @@ export default function MobileProjectsView({
                 custom={isHidden ? 0 : 2}
                 className="mt-1 font-light"
               >
-                Tech : <span className="text-emerald-400">MongoDB</span>,{" "}
-                <span className="text-gray-200">Express</span>,{" "}
-                <span className="text-sky-400">React</span>,{" "}
-                <span className="text-gray-200">Node</span>
+                Tech : <span className="text-sky-400">React</span>
+                <span className="text-purple-400">Framer Motion</span>
+                <span className="text-emerald-400">Node</span>
+                <span className="text-amber-400">Firebase</span>
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 50 }}
@@ -240,13 +240,15 @@ export default function MobileProjectsView({
                 custom={isHidden ? 0 : 3}
                 className="mt-2 font-light text-neutral-300"
               >
-                Using <span className="text-orange-400">Socket.io</span> as a{" "}
-                <span className="text-amber-400">web socket</span>,
-                unfortunately there are problems when hosting{" "}
-                <span className="text-orange-400">Socket.io</span> so that the
-                website is not real time after being deployed but works well
-                locally, I made this project just to learn how to make a{" "}
-                <span className="text-lime-400">real time application</span>
+                This is my first{" "}
+                <span className="text-red-400">Freelance project</span>,
+                creating a{" "}
+                <span className="text-blue-400">Wedding Invitation</span> with
+                Fullstack <span className="text-sky-400">React</span> and{" "}
+                <span className="text-amber-400">Firebase</span> as database,
+                has an attractive appearance and animation in each{" "}
+                <span className="text-blue-400">Invitation Website</span>{" "}
+                element, making this different from other Invitation Website
               </motion.p>
             </motion.div>
 
