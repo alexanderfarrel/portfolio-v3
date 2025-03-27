@@ -80,11 +80,19 @@ export default function SkillsBar({ id }) {
         <img src="/icons/jwt.png" className="max-w-9" alt="jwt" />
         <img src="/icons/typescript.png" className="max-w-9" alt="Typescript" />
         <Zustand className={"max-w-9 min-w-9"} />
-        <img src="/icons/docker.png" className="max-w-9" alt="Docker" />
+        <img src="/icons/docker.png" className="max-w-10" alt="Docker" />
         <img
           src="/icons/python.png"
           className="max-w-9 mt-[5px]"
           alt="Python"
+        />
+        <img src="/icons/php.png" className="max-w-10 pl-[2px]" alt="Php" />
+        <img src="/icons/laravel.png" className="max-w-9 -mr-1" alt="laravel" />
+        <img src="/icons/flutter.png" className="max-w-9 -mr-1" alt="flutter" />
+        <img
+          src="/icons/axios.png"
+          className="max-w-10 bg-white p-[2px] rounded-[2px]"
+          alt="axios"
         />
       </div>
     </div>

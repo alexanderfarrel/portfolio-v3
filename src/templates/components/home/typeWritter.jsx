@@ -7,7 +7,7 @@ export default function TypeWritter({
   windowWidth,
 }) {
   const [text] = useTypewriter({
-    words: ["Web Developer", "Fullstack Developer"],
+    words: ["Fullstack Developer", "Mobile Developer"],
     loop: true,
     delaySpeed: 1000,
   });

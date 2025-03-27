@@ -1,31 +1,41 @@
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function Magnetic({ children }) {
   const ref = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  // Gunakan useMotionValue agar lebih responsif
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Gunakan useSpring untuk animasi yang lebih halus
+  const smoothX = useSpring(x, { stiffness: 100, damping: 10 });
+  const smoothY = useSpring(y, { stiffness: 100, damping: 10 });
 
   const handleMouse = (e) => {
+    if (!ref.current) return;
+
     const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX, y: middleY });
+
+    x.set(middleX);
+    y.set(middleY);
   };
 
   const reset = () => {
-    setPosition({ x: 0, y: 0 });
+    x.set(0);
+    y.set(0);
   };
 
-  const { x, y } = position;
   return (
     <motion.div
       style={{ position: "relative" }}
       ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
-      animate={{ x, y }}
-      transition={{ type: "tween", duration: 0.1 }}
+      style={{ x: smoothX, y: smoothY }} // Gunakan nilai yang sudah di-smoothing
     >
       {children}
     </motion.div>
