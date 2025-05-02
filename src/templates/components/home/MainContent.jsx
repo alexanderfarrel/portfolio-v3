@@ -10,7 +10,12 @@ import {
 import { TypeWritter, ViewIntroBtn, SkillsBar } from "./importHomeComponents";
 import Swal from "sweetalert2";
 
-export default function MainContent({ color, viewIntro = false, windowWidth }) {
+export default function MainContent({
+  color,
+  viewIntro = false,
+  windowWidth,
+  setIsLeaving,
+}) {
   return (
     <>
       <SkillsBar id={"skill-upper"} />
@@ -97,6 +102,7 @@ export default function MainContent({ color, viewIntro = false, windowWidth }) {
           linkEnter={linkEnter}
           cursorLink={cursorLink}
           windowWidth={windowWidth}
+          setIsLeaving={setIsLeaving}
         />
       ) : (
         ""

@@ -25,7 +25,7 @@ export default function Home() {
     <>
       <motion.section initial={{ opacity: 0 }} animate={controls}>
         <Navbar setIsLeaving={setIsLeaving} isLeaving={isLeaving} />
-        <HomeView windowWidth={windowWidth} />
+        <HomeView windowWidth={windowWidth} setIsLeaving={setIsLeaving} />
         <BgStars factor={windowWidth < 1000 ? "5" : "3"} delay={2} />
       </motion.section>
     </>

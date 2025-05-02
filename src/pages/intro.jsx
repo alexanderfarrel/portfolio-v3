@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion, useMotionValue } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useAnimation, useMotionValue } from "framer-motion";
 import useWindowWidth from "../services/hooks/windowWidth";
 
 import Button from "../templates/ui/button";
@@ -15,6 +15,21 @@ export default function Intro() {
   const windowWidth = useWindowWidth();
   introAnimation();
   const color = useMotionValue(colors[0]);
+
+  const [isLeaving, setIsLeaving] = useState(false);
+
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isLeaving) {
+      controls.start({ opacity: 0, transition: { duration: 0.5 } });
+    } else {
+      controls.start({
+        opacity: 1,
+        transition: { duration: 1, delay: 2 },
+      });
+    }
+  }, [controls, isLeaving]);
 
   return (
     <React.Fragment>
@@ -32,10 +47,12 @@ export default function Intro() {
         </div>
 
         <motion.div
+          initial={{ opacity: 0 }}
+          animate={controls}
           id="parentDiv"
           className="relative h-[100vh] flex flex-col items-center py-3 justify-between"
         >
-          <Navbar />
+          <Navbar setIsLeaving={setIsLeaving} isLeaving={isLeaving} />
           <BgAurora color={color} colors={colors} delay={7.5} />
           <div
             id={"parent-welcome"}

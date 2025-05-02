@@ -7,6 +7,7 @@ export default function ViewIntroBtn({
   cursorLink,
   cursorDefault,
   windowWidth,
+  setIsLeaving,
 }) {
   const viewIntro = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -31,6 +32,18 @@ export default function ViewIntroBtn({
       }
     };
   }, []);
+
+  const handleClick = (e) => {
+    setIsLeaving(true);
+    if (viewIntro.current) {
+      BtnRipple({
+        e,
+        parent: viewIntro,
+        parentRect: viewIntro.current.getBoundingClientRect(),
+        path: "/",
+      });
+    }
+  };
   return (
     <motion.div
       whileHover={() => setIsHovered(true)}
@@ -40,16 +53,7 @@ export default function ViewIntroBtn({
       }`}
       id="view-intro"
       ref={viewIntro}
-      onClick={(e) => {
-        if (viewIntro.current) {
-          BtnRipple({
-            e,
-            parent: viewIntro,
-            parentRect: viewIntro.current.getBoundingClientRect(),
-            path: "/",
-          });
-        }
-      }}
+      onClick={(e) => handleClick(e)}
       onMouseEnter={() => {
         linkEnter();
         cursorLink();

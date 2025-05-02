@@ -5,7 +5,7 @@ import { BgAurora, MainContent } from "../components/home/importHomeComponents";
 import homeIntroAnimation from "../components/home/hooks/homeAnimation";
 import PropTypes from "prop-types";
 
-export default function HomeView({ windowWidth }) {
+export default function HomeView({ windowWidth, setIsLeaving }) {
   homeIntroAnimation();
 
   const [colors] = useState([
@@ -25,6 +25,7 @@ export default function HomeView({ windowWidth }) {
             color={color}
             viewIntro={true}
             windowWidth={windowWidth}
+            setIsLeaving={setIsLeaving}
           />
         </motion.div>
       </div>
@@ -34,4 +35,5 @@ export default function HomeView({ windowWidth }) {
 
 HomeView.propTypes = {
   windowWidth: PropTypes.number,
+  setIsLeaving: PropTypes.func,
 };
