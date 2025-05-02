@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollTrigger } from "gsap/all";
 import {
   cursorBackToTop,
@@ -21,10 +21,12 @@ import {
   projectsAnimation,
   projectsInitialState,
 } from "../components/projects/hooks/importProjectsHooks";
+import PropTypes from "prop-types";
+import { motion, useAnimation } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ProjectsView({ windowWidth }) {
+export default function ProjectsView({ windowWidth, isLeaving }) {
   // initial all animation gsap
   projectsAnimation({ windowWidth });
   // initial to fix header mobile intro animation
@@ -50,9 +52,27 @@ export default function ProjectsView({ windowWidth }) {
     setVideo,
   } = handleVideoPlay();
 
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isLeaving) {
+      controls.start({ opacity: 0, transition: { duration: 0.5 } });
+    } else {
+      controls.start({
+        opacity: 1,
+        y: 0,
+        transition: { duration: 1, delay: 2 },
+      });
+    }
+  }, [controls, isLeaving]);
+
   return (
     <React.Fragment>
-      <div className="bg-gradient-to-b from-[#162635] from-30% to-neutral-950 relative">
+      <motion.div
+        initial={{ y: -100, opacity: 0 }}
+        animate={controls}
+        className={`bg-gradient-to-b from-[#162635] from-30% to-neutral-950 relative`}
+      >
         {/* scroll to top */}
         <ScrollToTop
           scrollY={scrollY}
@@ -118,7 +138,12 @@ export default function ProjectsView({ windowWidth }) {
           fade
           speed={3}
         />
-      </div>
+      </motion.div>
     </React.Fragment>
   );
 }
+
+ProjectsView.propTypes = {
+  windowWidth: PropTypes.number,
+  isLeaving: PropTypes.bool,
+};

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function handleAnimationAndTransition({ open, url }) {
+export default function useHandleAnimationAndTransition({ open, url }) {
   const [initial, setInitial] = useState(true); // animation initialization
   const [timeoutId, setTimeoutId] = useState(null); // bg blue animation
   const [options, setOptions] = useState({

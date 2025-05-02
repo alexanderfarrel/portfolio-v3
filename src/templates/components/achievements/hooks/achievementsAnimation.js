@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { useLayoutEffect } from "react";
 
-export default function achievementsAnimation() {
+export default function useAchievementsAnimation() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const t1 = gsap.timeline();
@@ -10,7 +10,7 @@ export default function achievementsAnimation() {
         y: "-=50",
         duration: 0.5,
         ease: "circ",
-        delay: 2,
+        delay: 2.5,
       })
         .from(
           "#header-subtitle",

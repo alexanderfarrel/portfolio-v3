@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import Span from "../../ui/spanProjects";
 import React from "react";
 import handleDesktopScrollTrigger from "./hooks/handleDesktopScrollTrigger";
+import PropTypes from "prop-types";
 
 export default function DesktopProjectsView({
   windowWidth,
@@ -87,7 +88,7 @@ export default function DesktopProjectsView({
               onMouseLeave={cursorDefault}
             >
               Tech :{" "}
-              <Span isInView={isInView1} className="text-gray-200">
+              <Span isInView={isInView1} className="text-zinc-300">
                 NextJS
               </Span>
               ,{" "}
@@ -95,7 +96,7 @@ export default function DesktopProjectsView({
                 Firebase
               </Span>
               ,{" "}
-              <Span isInView={isInView1} className="text-gray-200">
+              <Span isInView={isInView1} className="text-green-500">
                 Node
               </Span>
             </p>
@@ -492,3 +493,21 @@ export default function DesktopProjectsView({
     </React.Fragment>
   );
 }
+
+DesktopProjectsView.propTypes = {
+  windowWidth: PropTypes.number,
+  title1: PropTypes.any,
+  title2: PropTypes.any,
+  title3: PropTypes.any,
+  cursorDefault: PropTypes.func,
+  textEnter: PropTypes.func,
+  linkEnter: PropTypes.func,
+  cursorLink: PropTypes.func,
+  isInView1: PropTypes.bool,
+  isInView2: PropTypes.bool,
+  isInView3: PropTypes.bool,
+  video: PropTypes.any,
+  video1: PropTypes.any,
+  video2: PropTypes.any,
+  video3: PropTypes.any,
+};

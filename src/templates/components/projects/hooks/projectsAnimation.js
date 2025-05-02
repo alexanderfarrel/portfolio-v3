@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { useLayoutEffect } from "react";
 
-export default function projectsAnimation({ windowWidth }) {
+export default function useProjectsAnimation({ windowWidth }) {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const t1 = gsap.timeline();
@@ -10,7 +10,7 @@ export default function projectsAnimation({ windowWidth }) {
         opacity: 0,
         duration: 0.5,
         ease: "circ",
-        delay: 2,
+        delay: 2.8,
       })
         .from(
           "#header-subtitle",

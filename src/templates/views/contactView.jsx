@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import {
@@ -11,8 +11,9 @@ import BackCard from "../components/contact/backCard";
 import contactAnimation from "../components/contact/hooks/contactAnimation";
 import handleFlipFnc from "../components/contact/hooks/handleFlip";
 import FooterSocialMedia from "../components/contact/footerSocialMedia";
+import PropTypes from "prop-types";
 
-export default function ContactView({ windowWidth }) {
+export default function ContactView({ windowWidth, isLeaving }) {
   contactAnimation();
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +72,7 @@ export default function ContactView({ windowWidth }) {
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -88,9 +89,25 @@ export default function ContactView({ windowWidth }) {
       });
   };
 
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isLeaving) {
+      controls.start({ opacity: 0, transition: { duration: 0.5 } });
+    } else {
+      controls.start({
+        opacity: 1,
+        transition: { duration: 0.3, delay: 1 },
+      });
+    }
+  }, [controls, isLeaving]);
   return (
     <>
-      <div className="w-full h-screen flex justify-center items-center overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={controls}
+        className="w-full h-screen flex justify-center items-center overflow-hidden opacity-20"
+      >
         <motion.section
           initial={{ overflow: "hidden" }}
           animate={
@@ -143,8 +160,13 @@ export default function ContactView({ windowWidth }) {
           cursorHidden={cursorHidden}
           cursorDefault={cursorDefault}
         />
-      </div>
-      <BgStars factor={windowWidth < 1000 ? "5" : "3"} delay={2} />
+        <BgStars factor={windowWidth < 1000 ? "5" : "3"} delay={2} />
+      </motion.div>
     </>
   );
 }
+
+ContactView.propTypes = {
+  windowWidth: PropTypes.number,
+  isLeaving: PropTypes.bool,
+};

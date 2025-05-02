@@ -1,4 +1,5 @@
 import { useMotionValue, motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 export default function SwiperCarousel({
   swiperParentRef,
@@ -22,6 +23,7 @@ export default function SwiperCarousel({
       setImageIndex((pv) => pv - 1);
     }
   };
+
   return (
     <>
       {/* images swipes */}
@@ -175,4 +177,30 @@ const Dots = ({ imageIndex, setImageIndex, picturesCarousel, windowWidth }) => {
       </div>
     </div>
   );
+};
+
+SwiperCarousel.propTypes = {
+  swiperParentRef: PropTypes.object,
+  windowWidth: PropTypes.number,
+  animateClose: PropTypes.bool,
+  swiperWidth: PropTypes.number,
+  imageIndex: PropTypes.number,
+  openSwiper: PropTypes.func,
+  setImageIndex: PropTypes.func,
+  picturesCarousel: PropTypes.array,
+};
+
+Dots.propTypes = {
+  imageIndex: PropTypes.number,
+  setImageIndex: PropTypes.func,
+  picturesCarousel: PropTypes.array,
+  windowWidth: PropTypes.number,
+};
+
+ImagesSwiper.propTypes = {
+  swiperParentRef: PropTypes.object,
+  swiperWidth: PropTypes.number,
+  imageIndex: PropTypes.number,
+  picturesCarousel: PropTypes.array,
+  windowWidth: PropTypes.number,
 };

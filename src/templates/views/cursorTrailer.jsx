@@ -93,7 +93,7 @@ export default function CursorTrailer() {
         cursorVariant == "default" || cursorVariant == "link"
           ? ""
           : "mix-blend-difference"
-      } ${windowWidth < 1200 ? "hidden" : ""}`}
+      } ${windowWidth < 1024 ? "hidden" : ""}`}
     >
       <motion.img
         initial={{ scale: 0 }}

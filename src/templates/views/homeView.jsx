@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import { BgAurora, MainContent } from "../components/home/importHomeComponents";
 import homeIntroAnimation from "../components/home/hooks/homeAnimation";
+import PropTypes from "prop-types";
 
 export default function HomeView({ windowWidth }) {
   homeIntroAnimation();
@@ -30,3 +31,7 @@ export default function HomeView({ windowWidth }) {
     </React.Fragment>
   );
 }
+
+HomeView.propTypes = {
+  windowWidth: PropTypes.number,
+};

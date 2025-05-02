@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 import Home from "../../assets/icons/navIcons/home";
 import {
   cursorDefault,
@@ -15,8 +15,10 @@ import {
   containerVariants,
   handleNavClickFnc,
 } from "../components//navbar/hooks/importNavbarHooks";
+import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
-export default function NavbarView({ url }) {
+export default function NavbarView({ url, setIsLeaving, isLeaving }) {
   const { yValue, setYValue, defaultYValue } = handleYValue({ url });
   const [open, setOpen] = useState(false); // for open navbar
 
@@ -35,14 +37,32 @@ export default function NavbarView({ url }) {
     timeoutId,
   });
 
+  const location = useLocation();
+
   const handleNavClick = (path) => {
-    handleNavClickFnc(path, handleClickHamburger);
+    handleClickHamburger();
+    if (path === location.pathname) return;
+    setIsLeaving(true);
+    setTimeout(() => {
+      handleNavClickFnc(path, handleClickHamburger);
+      setIsLeaving(false);
+    }, 500);
   };
+
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isLeaving) {
+      controls.start({ opacity: 0, transition: { delay: 0.3, duration: 0.2 } });
+    } else {
+      controls.start({ right: isHidden ? 0 : 10 });
+    }
+  }, [controls, isHidden, isLeaving]);
 
   return (
     <motion.nav
       className="fixed right-0 top-1/2 -translate-y-1/2 min-h-[3.2rem] max-h-[18rem] w-12 flex justify-center items-center z-30 cursor-auto"
-      animate={{ right: isHidden ? 0 : 10 }}
+      animate={controls}
     >
       {/* container */}
       <motion.main
@@ -212,3 +232,9 @@ export default function NavbarView({ url }) {
     </motion.nav>
   );
 }
+
+NavbarView.propTypes = {
+  url: PropTypes.string,
+  setIsLeaving: PropTypes.func,
+  isLeaving: PropTypes.bool,
+};

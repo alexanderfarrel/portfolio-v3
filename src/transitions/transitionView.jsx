@@ -5,6 +5,7 @@ import gsap from "gsap";
 import useWindowWidth from "../services/hooks/windowWidth";
 import { useStoreGlobal } from "../services/zustand/store";
 import CursorTrailer from "../templates/views/cursorTrailer";
+import PropTypes from "prop-types";
 
 const routes = {
   "/": "Home",
@@ -75,9 +76,7 @@ export default function Transition({ children, backgroundColor }) {
           },
         }}
         exit={{ height: "120dvh" }}
-        className={`w-full h-full fixed bg-gradient-to-tl from-gray-900 to-gray-700 top-[-10dvh] ${
-          windowWidth < 1000 ? "rounded-b-[50px]" : "rounded-b-[100px]"
-        } hidden z-50`}
+        className={`w-full h-full fixed bg-gray-900 top-[-10dvh] hidden z-50`}
       />
       <motion.div
         initial={{ height: "0dvh" }}
@@ -91,9 +90,7 @@ export default function Transition({ children, backgroundColor }) {
           },
         }}
         exit={{ height: "0dvh" }}
-        className={`bg-gradient-to-br from-gray-700 to-gray-900 w-full h-0 fixed bottom-[-10dvh] ${
-          windowWidth < 1000 ? "rounded-t-[50px]" : "rounded-t-[100px]"
-        } z-50`}
+        className={`bg-gray-900 w-full h-0 fixed bottom-[-10dvh] z-50`}
       />
       <div
         id="title"
@@ -107,6 +104,11 @@ export default function Transition({ children, backgroundColor }) {
     </motion.div>
   );
 }
+
+Transition.propTypes = {
+  children: PropTypes.node,
+  backgroundColor: PropTypes.string,
+};
 
 // const SVG = ({ height, width }) => {
 //   const initialPath = `
