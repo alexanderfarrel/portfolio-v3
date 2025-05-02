@@ -35,7 +35,7 @@ export default function Transition({ children, backgroundColor }) {
         y: "+=50",
         opacity: 0,
         delay: 0.75,
-        duration: 0.5,
+        duration: 0.4,
         ease: "circ",
       })
         .to("#title", {
