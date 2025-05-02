@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import {
   Javascript,
-  Html,
-  Css,
-  Bootstrap,
   ReactIcon,
   Github,
   Firebase,
@@ -12,6 +9,7 @@ import {
   GsapIcon,
 } from "../../../assets/icons/skillsIcons";
 import Zustand from "../../../assets/icons/skills/zustand";
+import PropTypes from "prop-types";
 
 export default function SkillsBar({ id }) {
   useEffect(() => {
@@ -46,10 +44,6 @@ export default function SkillsBar({ id }) {
         style={{ "--direction": "-50%" }}
       >
         <Javascript className="max-w-9 min-w-9 text-yellow-500" />
-        <Html className="max-w-9 min-w-9 text-orange-500" />
-        <Css className="max-w-9 min-w-9 text-blue-500" />
-        <Bootstrap className="min-w-10 max-w-10 text-purple-500" />
-        <img src="/icons/sass.png" className="max-w-10" alt="sass" />
         <ReactIcon className="max-w-10 min-w-10 text-cyan-500" />
         <Github className="max-w-10 min-w-10 text-gray-300" />
         <Firebase className={"max-w-10 min-w-10 text-amber-500"} />
@@ -98,3 +92,7 @@ export default function SkillsBar({ id }) {
     </div>
   );
 }
+
+SkillsBar.propTypes = {
+  id: PropTypes.string,
+};
